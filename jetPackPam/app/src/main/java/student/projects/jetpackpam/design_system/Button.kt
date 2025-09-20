@@ -27,8 +27,7 @@ fun LongButton(
         shape = RoundedCornerShape(10.dp),
         contentPadding = PaddingValues(12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Primary
-        )
+            containerColor = MaterialTheme.colorScheme.primary        )
     ) {
         Text(text = text,
         style = MaterialTheme.typography.titleSmall

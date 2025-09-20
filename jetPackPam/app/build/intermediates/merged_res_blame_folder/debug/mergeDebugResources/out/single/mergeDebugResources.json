@@ -1,66 +1,82 @@
 [
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/xml_backup_rules.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/xml/backup_rules.xml"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-anydpi_ic_launcher.xml.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-anydpi/ic_launcher.xml"
+        "merged": "student.projects.jetpackpam.app-debug-62:/xml_data_extraction_rules.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/drawable_pamicon.png.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/drawable/pamicon.png"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/font_inter_medium_lightitalic.ttf.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/font/inter_medium_lightitalic.ttf"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/xml_backup_rules.xml.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/xml/backup_rules.xml"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/font_space_grotesk_bold.ttf.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/font/space_grotesk_bold.ttf"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/xml_data_extraction_rules.xml.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/xml/data_extraction_rules.xml"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-anydpi_ic_launcher_round.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-anydpi/ic_launcher_round.xml"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/font_inter_medium.ttf.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/font/inter_medium.ttf"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-anydpi_ic_launcher.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-anydpi/ic_launcher.xml"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-anydpi_ic_launcher_round.xml.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-anydpi/ic_launcher_round.xml"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/drawable/ic_launcher_foreground.xml"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-61:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-63:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_pamicon.png.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/drawable/pamicon.png"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-62:/font_inter_regular.ttf.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/font/inter_regular.ttf"
     }
 ]

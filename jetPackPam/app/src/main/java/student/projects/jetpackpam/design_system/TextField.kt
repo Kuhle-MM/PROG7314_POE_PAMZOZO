@@ -59,8 +59,8 @@ fun TextFieldLong(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                cursorColor = Primary,
-                focusedBorderColor = Primary,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = Color.Transparent
             ),
             placeholder = {

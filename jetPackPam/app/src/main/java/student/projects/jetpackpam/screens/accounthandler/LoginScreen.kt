@@ -75,7 +75,8 @@ fun LoginScreen() {
         when(deviceConfiguration){
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column (
-                    modifier = rootModifier,
+                    modifier = rootModifier
+                        .background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.spacedBy(32.dp)
                 ){
                     LoginHeader(

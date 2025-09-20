@@ -3,6 +3,7 @@ package student.projects.jetpackpam.screens.mainapp
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -20,7 +21,7 @@ import androidx.wear.compose.material.ContentAlpha
 import student.projects.jetpackpam.bottomNav.BottomBarScreen
 import student.projects.jetpackpam.bottomNav.BottomNavGraph
 import student.projects.jetpackpam.ui.theme.Primary
-import student.projects.jetpackpam.ui.theme.White
+
 
 
 @Composable
@@ -44,7 +45,7 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
-        containerColor = White
+        containerColor = MaterialTheme.colorScheme.background
     )  {
         screens.forEach { screen ->
             AddItem(
