@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation(libs.material3.adaptive)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

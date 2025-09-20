@@ -10,6 +10,10 @@ color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable pamicon
+font inter_medium
+font inter_medium_lightitalic
+font inter_regular
+font space_grotesk_bold
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name

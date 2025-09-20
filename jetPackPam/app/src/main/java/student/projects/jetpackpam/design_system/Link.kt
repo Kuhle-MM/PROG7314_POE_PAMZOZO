@@ -19,7 +19,7 @@ fun LinkButton(
      modifier = modifier
          .clickable(onClick = onClick),
      style = MaterialTheme.typography.titleSmall,
-     color = Primary,
+     color = MaterialTheme.colorScheme.primary,
      textAlign = TextAlign.Center
  )
 
