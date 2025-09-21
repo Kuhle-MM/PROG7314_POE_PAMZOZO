@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
                 //MainScreen()
                // LoginScreen()
                 //SignUpScreen()
+                ChatScreen()
             }
         }
     }

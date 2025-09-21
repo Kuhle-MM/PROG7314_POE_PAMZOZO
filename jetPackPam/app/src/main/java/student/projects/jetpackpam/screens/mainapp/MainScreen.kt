@@ -77,9 +77,9 @@ fun RowScope.AddItem(
             it.route == screen.route
         } == true,
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = Primary,
+            selectedIconColor = MaterialTheme.colorScheme.primary,
             unselectedIconColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-            selectedTextColor = Primary,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
             unselectedTextColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
         ),
         onClick = {
