@@ -1,16 +1,32 @@
 package student.projects.jetpackpam.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
+val BackgroundAuth = Color(0xFFF0A1F8)
+val Background = Color(0xFFFFFFFF)
+val Secondary = Color(0xFFAB51B4)
+val PrimaryDarkGradient = Brush.linearGradient(
+    colorStops = arrayOf(
+        0.16f to Color(0xFF1B123D),
+        0.32f to Color(0xFF2F1982),
+        0.53f to Color(0xFF1B123D)
+    )
+)
+val SecondaryDark = Color(0xFFA10DB0)
 val Primary = Color(0xFFF0A1F8)
-val Secondary = Color(0xFAB51B4)
+val PrimaryDark = Color(0xFF381E9D)
+val Surface = Color(0xFFEFEFF2)
+val onSurface = Color(0xFF1B1B1C)
+val onSurfaceVariant = Color(0xFF535364)
+val SurfaceLowest = Color(0xFFFFFFFF)
 
-val White = Color(0xFFFFFFFF)
+// Dark Mode Surface Variants
+val SurfaceDark = Color(0xFF121212)
+val onSurfaceDark = Color(0xFFEDEDED)
+val onSurfaceVariantDark = Color(0xFFB0AFC5)
+val SurfaceLowestDark = Color(0xFF0A0A0A)
+
+
+
+
