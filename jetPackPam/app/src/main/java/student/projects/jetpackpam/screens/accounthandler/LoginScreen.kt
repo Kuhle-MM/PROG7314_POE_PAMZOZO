@@ -36,13 +36,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
+import student.projects.jetpackpam.design_system.GoogleBtn
 import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.util.DeviceConfiguration
 
+
+// ali i know that every thing looks crazy, i will go over everything tomorrow for now scroll down and follow the comments
 @Composable
 fun LoginScreen() {
+    // here they are remember by states
     var emailText by remember{ mutableStateOf("") }
     var passwordText by remember{ mutableStateOf("") }
     Scaffold (
@@ -175,6 +179,7 @@ fun LoginHeader(
 
 @Composable
 fun LoginFormSection(
+    // here are the varibales and dont worry about the remeber state is set on the top scroll up
     emailText: String,
     onEmailTextChange: (String) -> Unit,
     passwordText: String,
@@ -206,7 +211,9 @@ fun LoginFormSection(
         Spacer(modifier = Modifier.height(24.dp))
         LongButton(
             text = "Log in",
-            onClick = {},
+            onClick = {
+                //code here for log in
+            },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -215,6 +222,15 @@ fun LoginFormSection(
             onClick = {},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        GoogleBtn(
+            text = "Log in Using Google",
+            onClick = {
+                //code here for sso
+            },
+            modifier = Modifier.fillMaxWidth(),
+            imageRes =  student.projects.jetpackpam.R.drawable.google_logo
         )
     }
 }

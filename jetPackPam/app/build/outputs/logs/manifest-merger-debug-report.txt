@@ -101,6 +101,14 @@ MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_stud
 		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:4:5-67
+MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:9:5-67
+MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:9:5-67
+MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:19:6-67
+MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:19:6-67
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:4:22-64
 application
 ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
 INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
@@ -366,12 +374,6 @@ MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_stud
 		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
-uses-permission#android.permission.INTERNET
-ADDED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:9:5-67
-MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:19:6-67
-MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:19:6-67
-	android:name
-		ADDED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:9:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:10:5-79
 MERGED from [androidx.work:work-runtime:2.7.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\644362827ebbbc14202fc84a1c1d613c\transformed\work-runtime-2.7.0\AndroidManifest.xml:26:5-79
