@@ -9,8 +9,8 @@ namespace PROG7314_POE.Controllers
     public class LocationController : ControllerBase
     {
         //POST /location → SetReturnLocation(Location location)
-        [HttpPost("Location")]
+     //   [HttpPost("Location")]
         //GET /location → GetCurrentLocation()
-        [HttpGet("Location")]
+      //  [HttpGet("Location")]
     }
 }
