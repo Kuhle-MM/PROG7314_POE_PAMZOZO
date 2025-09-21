@@ -20,11 +20,11 @@ namespace PROG7314_POE.Controllers
             _cameraService = cameraService;
         }
 
-        [HttpGet("stream")]
-        public IActionResult GetCameraFeed()
-        {
-            var imageBytes = _cameraService.GetLiveFeed();
-            return File(imageBytes, "image/jpeg");
-        }
+        //[HttpGet("stream")]
+        //public IActionResult GetCameraFeed()
+        //{
+        //    var imageBytes = _cameraService.GetLiveFeed();
+        //    return File(imageBytes, "image/jpeg");
+        //}
     }
 }

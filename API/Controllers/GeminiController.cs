@@ -8,6 +8,6 @@ namespace PROG7314_POE.Controllers
     public class GeminiController : ControllerBase
     {
         //POST /ask → AskGemini(GeminiQuery query)
-        [HttpPost("AskGemini")]
+       // [HttpPost("AskGemini")]
     }
 }

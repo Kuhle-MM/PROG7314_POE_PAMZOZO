@@ -22,19 +22,19 @@ namespace PROG7314_POE.Controllers
                 _geminiService = geminiService;
             }
 
-            [HttpPost("navigate")]
-            public IActionResult Navigate([FromBody] string command)
-            {
-                var result = _navigationService.ProcessCommand(command);
-                return Ok(result);
-            }
+            //[HttpPost("navigate")]
+            //public IActionResult Navigate([FromBody] string command)
+            //{
+            //    var result = _navigationService.ProcessCommand(command);
+            //    return Ok(result);
+            //}
 
-            [HttpPost("ask-gemini")]
-            public async Task<IActionResult> AskGemini([FromBody] string question)
-            {
-                var response = await _geminiService.AskQuestionAsync(question);
-                return Ok(response);
-            }
+            //[HttpPost("ask-gemini")]
+            //public async Task<IActionResult> AskGemini([FromBody] string question)
+            //{
+            //    var response = await _geminiService.AskQuestionAsync(question);
+            //    return Ok(response);
+            //}
     }
 
     
