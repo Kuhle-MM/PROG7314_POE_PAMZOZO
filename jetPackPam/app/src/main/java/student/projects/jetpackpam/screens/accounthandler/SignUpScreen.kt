@@ -306,7 +306,7 @@ fun SignUpFormSection(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         GoogleBtn(
             text = "Log in Using Google",
             onClick = {

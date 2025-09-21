@@ -102,7 +102,9 @@ fun GoogleBtn(
             )
         }
     }
-}@Preview(showBackground = true)
+}
+
+@Preview(showBackground = true)
 @Composable
 fun GoogleBtnPreview() {
     MaterialTheme {
