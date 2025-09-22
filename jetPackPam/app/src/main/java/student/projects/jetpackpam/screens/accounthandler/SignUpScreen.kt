@@ -197,7 +197,7 @@ fun SignUpHeader(
             text = "Sign Up",
             style = MaterialTheme.typography.titleLarge,
 
-        )
+            )
         Text(
             text = "Enter the fields to create your new profile",
             style = MaterialTheme.typography.bodyLarge

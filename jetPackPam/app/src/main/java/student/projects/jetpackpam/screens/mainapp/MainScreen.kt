@@ -1,6 +1,7 @@
 package student.projects.jetpackpam.screens.mainapp
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -17,10 +18,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.material.ContentAlpha
 import student.projects.jetpackpam.bottomNav.BottomBarScreen
 import student.projects.jetpackpam.bottomNav.BottomNavGraph
-import student.projects.jetpackpam.ui.theme.Primary
+
 
 
 
