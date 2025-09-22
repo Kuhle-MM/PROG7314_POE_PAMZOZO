@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
             JetPackPamTheme(){
 
                 //MainScreen()
-               // LoginScreen()
-                //SignUpScreen()
-                ChatScreen()
+                //LoginScreen()
+                SignUpScreen()
+                //ChatScreen()
             }
         }
     }
