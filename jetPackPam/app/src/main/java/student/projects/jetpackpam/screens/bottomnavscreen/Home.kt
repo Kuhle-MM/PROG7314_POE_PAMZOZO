@@ -29,7 +29,7 @@ import student.projects.jetpackpam.R
 
 
 @Composable
-fun HomeScreen(onMessageClick: () -> Unit) {
+fun HomeScreen() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.White // optional background color
@@ -81,7 +81,7 @@ fun HomeScreen(onMessageClick: () -> Unit) {
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
     HomeScreen(
-        onMessageClick = { /* do nothing for preview */ }
+
     )
 }
 
