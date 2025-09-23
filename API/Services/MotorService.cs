@@ -2,5 +2,8 @@
 {
     public class MotorService
     {
+        //calculations for the motor direction
+
+        //calculations for the motor speed
     }
 }
