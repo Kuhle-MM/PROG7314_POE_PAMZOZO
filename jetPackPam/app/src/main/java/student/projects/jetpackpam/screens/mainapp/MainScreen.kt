@@ -1,7 +1,8 @@
 package student.projects.jetpackpam.screens.mainapp
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.ContentAlpha
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -11,31 +12,40 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import student.projects.jetpackpam.bottomNav.BottomBarScreen
-import student.projects.jetpackpam.bottomNav.BottomNavGraph
-
-
+import androidx.wear.compose.material.ContentAlpha
+import student.projects.jetpackpam.appNavigation.AuthNavGraph
+import student.projects.jetpackpam.appNavigation.BottomBarScreen
+import student.projects.jetpackpam.appNavigation.BottomNavGraph
+import student.projects.jetpackpam.appNavigation.RootNavGraph
+import student.projects.jetpackpam.models.AuthorizationModelViewModel
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(authViewModel: AuthorizationModelViewModel) {
     val navController = rememberNavController()
+
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) { innerPadding ->
-        BottomNavGraph(navController = navController, paddingValues = innerPadding)
+        BottomNavGraph(
+            navController = navController,
+            paddingValues = innerPadding
+        )
     }
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: androidx.navigation.NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Video,
@@ -44,9 +54,7 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background
-    )  {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -61,12 +69,10 @@ fun BottomBar(navController: NavHostController) {
 fun RowScope.AddItem(
     screen: BottomBarScreen,
     currentDestination: NavDestination?,
-    navController: NavHostController
+    navController: androidx.navigation.NavHostController
 ) {
     NavigationBarItem(
-        label = {
-            Text(text = screen.title)
-        },
+        label = { Text(text = screen.title) },
         icon = {
             Icon(
                 imageVector = screen.icon,
@@ -76,12 +82,6 @@ fun RowScope.AddItem(
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.primary,
-            unselectedIconColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            unselectedTextColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
-        ),
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id)

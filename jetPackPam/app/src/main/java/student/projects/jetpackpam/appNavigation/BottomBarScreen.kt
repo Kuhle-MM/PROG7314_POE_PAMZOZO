@@ -1,15 +1,10 @@
-package student.projects.jetpackpam.bottomNav
+package student.projects.jetpackpam.appNavigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Gamepad
 import androidx.compose.material.icons.outlined.Games
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.VideoCall
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen (
@@ -33,6 +28,6 @@ sealed class BottomBarScreen (
         object Games : BottomBarScreen(
             route = "games",
             title = "Games",
-            icon = Icons.Outlined.Games
+            icon = Icons.Outlined.Gamepad
         )
 }
