@@ -8,6 +8,5 @@
         public double leftMotorSpeed { get; set; }
         public double rightMotorSpeed { get; set; }
 
-
     }
 }
