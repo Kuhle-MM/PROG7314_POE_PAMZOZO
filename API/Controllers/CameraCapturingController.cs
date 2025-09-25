@@ -13,9 +13,9 @@ namespace PROG7314_POE.Controllers
         ////GET /map → GetMapData()
         //[HttpGet("GetMapData")]
 
-        private readonly CameraService _cameraService;
+        private readonly CameraCapturingService _cameraService;
 
-        public CameraCapturingController(CameraService cameraService)
+        public CameraCapturingController(CameraCapturingService cameraService)
         {
             _cameraService = cameraService;
         }
