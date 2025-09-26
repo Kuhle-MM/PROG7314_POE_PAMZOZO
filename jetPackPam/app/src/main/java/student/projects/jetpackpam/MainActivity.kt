@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.firsttimecustom.LanguageSelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.ui.theme.JetPackPamTheme
 
@@ -18,7 +20,9 @@ class MainActivity : ComponentActivity() {
 
                 //MainScreen()
                 //LoginScreen()
-                LanguageSelectionScreen()
+                //LanguageSelectionScreen()
+                //PersonalitySelectionScreen()
+                PersonalitySelectionScreen2()
             }
         }
     }
