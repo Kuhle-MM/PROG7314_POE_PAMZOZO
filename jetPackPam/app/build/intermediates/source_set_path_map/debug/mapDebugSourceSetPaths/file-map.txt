@@ -56,10 +56,10 @@ student.projects.jetpackpam.app-play-services-base-18.0.1-54 C:\Users\lab_servic
 student.projects.jetpackpam.app-lifecycle-viewmodel-ktx-2.9.3-55 C:\Users\lab_services_student\.gradle\caches\8.13\transforms\f380851538f199c397bcc9dbce2c017b\transformed\lifecycle-viewmodel-ktx-2.9.3\res
 student.projects.jetpackpam.app-savedstate-release-56 C:\Users\lab_services_student\.gradle\caches\8.13\transforms\f720a732cc75fc04fbdf6e2c07be9e6c\transformed\savedstate-release\res
 student.projects.jetpackpam.app-core-ktx-1.17.0-57 C:\Users\lab_services_student\.gradle\caches\8.13\transforms\fc9e198876ded727cbfe91d9f7877481\transformed\core-ktx-1.17.0\res
-student.projects.jetpackpam.app-pngs-58 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\build\generated\res\pngs\debug
-student.projects.jetpackpam.app-resValues-59 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\build\generated\res\resValues\debug
-student.projects.jetpackpam.app-packageDebugResources-60 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-student.projects.jetpackpam.app-packageDebugResources-61 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-student.projects.jetpackpam.app-debug-62 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\build\intermediates\merged_res\debug\mergeDebugResources
-student.projects.jetpackpam.app-debug-63 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\debug\res
-student.projects.jetpackpam.app-main-64 C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\res
+student.projects.jetpackpam.app-pngs-58 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\build\generated\res\pngs\debug
+student.projects.jetpackpam.app-resValues-59 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\build\generated\res\resValues\debug
+student.projects.jetpackpam.app-packageDebugResources-60 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+student.projects.jetpackpam.app-packageDebugResources-61 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+student.projects.jetpackpam.app-debug-62 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\build\intermediates\merged_res\debug\mergeDebugResources
+student.projects.jetpackpam.app-debug-63 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\debug\res
+student.projects.jetpackpam.app-main-64 C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\res

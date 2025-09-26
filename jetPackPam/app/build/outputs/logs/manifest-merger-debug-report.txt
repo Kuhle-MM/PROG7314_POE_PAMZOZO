@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-27:12
 MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:2:1-62:12
 MERGED from [androidx.navigation:navigation-runtime-android:2.9.4] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\0edec9633d4e7e19e11c56061663ae91\transformed\navigation-runtime-release\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-android:2.9.4] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\512655a9a164b2e23bef3a8da7be78c5\transformed\navigation-common-release\AndroidManifest.xml:17:1-22:12
@@ -92,18 +92,18 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\lab_services_studen
 MERGED from [androidx.window.extensions.core:core:1.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\53bd813a3f925c0574c23c57285c366f\transformed\core-1.0.0\AndroidManifest.xml:2:1-7:12
 MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:15:2-22:13
 	package
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
 MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:53:5-60:19
 MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:53:5-60:19
 MERGED from [androidx.wear.compose:compose-foundation:1.5.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\4cf7bef4153467504b9905f4dc0a7736\transformed\compose-foundation-1.5.1\AndroidManifest.xml:22:5-26:19
@@ -145,49 +145,49 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\la
 MERGED from [androidx.room:room-runtime:2.2.5] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\3c21cc707b16868abd761ca04bedc1b3\transformed\room-runtime-2.2.5\AndroidManifest.xml:24:5-29:19
 MERGED from [androidx.room:room-runtime:2.2.5] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\3c21cc707b16868abd761ca04bedc1b3\transformed\room-runtime-2.2.5\AndroidManifest.xml:24:5-29:19
 	android:extractNativeLibs
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.17.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\61e54af060bb12d1b9c891f24bbbdaec\transformed\core-1.17.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-35
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-41
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:9-54
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:9-54
 	android:roundIcon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-54
 	android:icon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:9-43
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:9-43
 	android:allowBackup
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:9-35
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:9-35
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-48
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-48
 	android:dataExtractionRules
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:9-65
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:9-65
 activity#student.projects.jetpackpam.MainActivity
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-24:20
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-24:20
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:13-45
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:13-45
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:13-36
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:13-36
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:13-52
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:13-52
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:13-41
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-23:29
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-23:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:17-69
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:17-69
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:25-66
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:17-77
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:27-74
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:27-74
 uses-sdk
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:6:5-44
 MERGED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:6:5-44
 MERGED from [androidx.navigation:navigation-runtime-android:2.9.4] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\0edec9633d4e7e19e11c56061663ae91\transformed\navigation-runtime-release\AndroidManifest.xml:20:5-44
@@ -363,9 +363,9 @@ MERGED from [androidx.window.extensions.core:core:1.0.0] C:\Users\lab_services_s
 MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:18:6-75
 MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:18:6-75
 	android:targetSdkVersion
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.INTERNET
 ADDED from [com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:0.19.0-beta01] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e77f4fa5948ba25084c45eac85879906\transformed\ads-mobile-sdk-0.19.0-beta01\AndroidManifest.xml:9:5-67
 MERGED from [org.chromium.net:cronet-api:119.6045.31] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\75e4eab76c44dc508e0bd8cddca463c4\transformed\cronet-api-119.6045.31\AndroidManifest.xml:19:6-67
