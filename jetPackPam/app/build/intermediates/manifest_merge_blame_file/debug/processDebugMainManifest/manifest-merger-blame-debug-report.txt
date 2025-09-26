@@ -111,47 +111,47 @@
 62-->[androidx.core:core:1.17.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\61e54af060bb12d1b9c891f24bbbdaec\transformed\core-1.17.0\AndroidManifest.xml:26:22-94
 63
 64    <application
-64-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
+64-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:5:5-25:19
 65        android:allowBackup="true"
-65-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:9-35
+65-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:9-35
 66        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 66-->[androidx.core:core:1.17.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\61e54af060bb12d1b9c891f24bbbdaec\transformed\core-1.17.0\AndroidManifest.xml:28:18-86
 67        android:dataExtractionRules="@xml/data_extraction_rules"
-67-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:9-65
+67-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:9-65
 68        android:debuggable="true"
 69        android:extractNativeLibs="false"
 70        android:fullBackupContent="@xml/backup_rules"
-70-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:9-54
+70-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:9-54
 71        android:icon="@mipmap/ic_launcher"
-71-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:9-43
+71-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:9-43
 72        android:label="@string/app_name"
-72-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-41
+72-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-41
 73        android:roundIcon="@mipmap/ic_launcher_round"
-73-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-54
+73-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-54
 74        android:supportsRtl="true"
-74-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-35
+74-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-35
 75        android:testOnly="true"
 76        android:theme="@style/Theme.JetPackPam" >
-76-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-48
+76-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-48
 77        <activity
-77-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-24:20
+77-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-24:20
 78            android:name="student.projects.jetpackpam.MainActivity"
-78-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:13-41
+78-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:13-41
 79            android:exported="true"
-79-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:13-36
+79-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:13-36
 80            android:label="@string/app_name"
-80-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:13-45
+80-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:13-45
 81            android:theme="@style/Theme.JetPackPam" >
-81-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:13-52
+81-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:13-52
 82            <intent-filter>
-82-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-23:29
+82-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-23:29
 83                <action android:name="android.intent.action.MAIN" />
-83-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:17-69
-83-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:25-66
+83-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:17-69
+83-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:25-66
 84
 85                <category android:name="android.intent.category.LAUNCHER" />
-85-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:17-77
-85-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:27-74
+85-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:17-77
+85-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:27-74
 86            </intent-filter>
 87        </activity>
 88        <activity
