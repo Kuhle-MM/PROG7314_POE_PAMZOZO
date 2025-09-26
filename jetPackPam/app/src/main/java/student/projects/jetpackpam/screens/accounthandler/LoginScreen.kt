@@ -19,15 +19,12 @@ import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
-import androidx.compose.runtime.collectAsState
 
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelViewModel) {
     var emailText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
 
-    // ✅ Collect login state from ViewModel
-    val isLoggedIn by authViewModel.isLoggedIn.collectAsState(initial = false)
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -127,6 +124,9 @@ fun LoginFormSection(
     navController: NavController,
     authViewModel: AuthorizationModelViewModel
 ) {
+    val isLoading by remember { derivedStateOf { authViewModel.isLoading } }
+    val errorMessage by remember { derivedStateOf { authViewModel.errorMessage } }
+
     Column(modifier = modifier) {
         TextFieldLong(
             text = emailText,
@@ -145,15 +145,34 @@ fun LoginFormSection(
             isTextSecret = true,
             modifier = Modifier.fillMaxWidth()
         )
+
+        // Error message
+        errorMessage?.let { msg ->
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = msg,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Login button
         LongButton(
-            text = "Log in",
+            text = if (isLoading) "Logging in..." else "Log in",
             onClick = {
-                // ✅ call ViewModel login
-                authViewModel.login(emailText, passwordText)
+                authViewModel.login(emailText, passwordText) {
+                    // Navigate to main app (bottom navigation) on success
+                    navController.navigate("main") { // 👈 changed from "home" to "main"
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading
         )
+
         Spacer(modifier = Modifier.height(16.dp))
         LinkButton(
             text = "Don't have an account?",

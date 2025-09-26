@@ -8,44 +8,83 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+
 class AuthorizationModelViewModel : ViewModel() {
 
-    private val _isLoggedIn = MutableStateFlow(false)
-    // StateFlow for observing sign-up state
-    private val _isSignedUp = MutableStateFlow(false)
-    val isSignedUp: StateFlow<Boolean> = _isSignedUp.asStateFlow()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // Compose-friendly state for login
-    var isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
+    private val _isLoggedIn = MutableStateFlow<FirebaseUser?>(null)
+    val currentUser: StateFlow<FirebaseUser?> = _isLoggedIn.asStateFlow()
 
     var isLoading by mutableStateOf(false)
         private set
 
-    // Dummy login function
-    fun login(email: String, password: String) {
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
+
+    fun login(email: String, password: String, onSuccess: () -> Unit) {
+        if (email.isBlank() || password.isBlank()) {
+            errorMessage = "Email and password cannot be empty"
+            return
+        }
+
         isLoading = true
-        _isLoggedIn.value = email == "test@example.com" && password == "1234"
-        isLoading = false
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                isLoading = false
+                if (task.isSuccessful) {
+                    _isLoggedIn.value = auth.currentUser
+                    onSuccess()
+                } else {
+                    errorMessage = task.exception?.message
+                }
+            }
     }
 
-    fun logout() {
-        _isLoggedIn.value = false
-    }
-
-    // Dummy sign-up function
     fun signUp(
         name: String,
         surname: String,
         email: String,
         phone: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
+        onSuccess: () -> Unit
     ) {
+        if (password != confirmPassword) {
+            errorMessage = "Passwords do not match"
+            return
+        }
+
+        if (email.isBlank() || password.isBlank()) {
+            errorMessage = "Email and Password cannot be empty"
+            return
+        }
+
         isLoading = true
+        errorMessage = null
 
-        // Basic check
-        _isSignedUp.value = password == confirmPassword && email.isNotBlank() && password.isNotBlank()
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                isLoading = false
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    val profileUpdates = com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                        .setDisplayName("$name $surname")
+                        .build()
+                    user?.updateProfile(profileUpdates)
 
-        isLoading = false
+                    _isLoggedIn.value = user
+                    onSuccess()
+                } else {
+                    errorMessage = task.exception?.localizedMessage ?: "Sign-up failed"
+                }
+            }
+    }
+
+    fun logout() {
+        auth.signOut()
+        _isLoggedIn.value = null
     }
 }

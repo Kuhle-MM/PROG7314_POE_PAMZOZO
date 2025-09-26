@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.GamesScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.VideoScreen
