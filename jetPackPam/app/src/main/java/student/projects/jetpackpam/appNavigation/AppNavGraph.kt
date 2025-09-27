@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 
@@ -30,8 +31,13 @@ fun AppNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         // Main App (contains bottom navigation)
-        composable("main") { // 👈 renamed from "home" to avoid conflict
+        composable("main") {
             MainScreen(authViewModel, rootNavController = navController)
+        }
+
+        // Chat Screen
+        composable("chat") {
+            ChatScreen()
         }
     }
 }
