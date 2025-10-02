@@ -15,6 +15,9 @@ namespace PROG7314_POE
             builder.Services.AddScoped<GeminiService>();
             builder.Services.AddSingleton<NavigationService>();
 
+            builder.Services.AddHttpClient<TranslationService>();
+            builder.Services.AddScoped<TranslationService>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
