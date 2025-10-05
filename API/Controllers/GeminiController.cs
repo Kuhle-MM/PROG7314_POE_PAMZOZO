@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PROG7314_POE.Models;
+using PROG7314_POE.Services;
 
 namespace PROG7314_POE.Controllers
 {
@@ -7,7 +8,21 @@ namespace PROG7314_POE.Controllers
     [ApiController]
     public class GeminiController : ControllerBase
     {
-        //POST /ask → AskGemini(GeminiQuery query)
-        [HttpPost("AskGemini")]
+        private readonly GeminiService _geminiService;
+
+        public GeminiController(GeminiService geminiService)
+        {
+            _geminiService = geminiService;
+        }
+
+        [HttpPost("ask")]
+        public async Task<ActionResult<GeminiResponse>> AskGemini([FromBody] GeminiQuery query)
+        {
+            if (string.IsNullOrWhiteSpace(query.Question))
+                return BadRequest("Question cannot be empty");
+
+            var answer = await _geminiService.AskGeminiAsync(query.Question);
+            return Ok(new GeminiResponse { Answer = answer });
+        }
     }
 }

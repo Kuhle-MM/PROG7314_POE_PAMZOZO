@@ -1,14 +1,14 @@
 package student.projects.jetpackpam.screens
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AttachFile
@@ -18,17 +18,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.displayCutout
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.design_system.MessageTextField
 import student.projects.jetpackpam.design_system.PrimaryIconButton
@@ -43,6 +34,7 @@ fun ChatScreen() {
     val listState = rememberLazyListState()
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -58,6 +50,13 @@ fun ChatScreen() {
                             if (messageText.isNotBlank()) {
                                 messages = messages + Message(messageText, true)
                                 messageText = ""
+
+                                // scroll to bottom after sending
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(0)
+                                }
+
+                                // TODO: Call your Retrofit Gemini API here
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -79,6 +78,12 @@ fun ChatScreen() {
                                 if (messageText.isNotBlank()) {
                                     messages = messages + Message(messageText, true)
                                     messageText = ""
+
+                                    coroutineScope.launch {
+                                        listState.animateScrollToItem(0)
+                                    }
+
+                                    // TODO: Call your Retrofit Gemini API here
                                 }
                             },
                             modifier = Modifier
@@ -99,12 +104,6 @@ fun ChatScreen() {
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(horizontal = 16.dp, vertical = 24.dp)
             .consumeWindowInsets(WindowInsets.navigationBars)
-
-        LaunchedEffect(messages.size) {
-            if (messages.isNotEmpty()) {
-                listState.animateScrollToItem(0)
-            }
-        }
 
         when (deviceConfiguration) {
             DeviceConfiguration.MOBILE_PORTRAIT -> {
@@ -158,6 +157,7 @@ fun ChatScreen() {
     }
 }
 
+
 @Composable
 private fun ChatList(
     messages: List<Message>,
@@ -194,11 +194,53 @@ fun ChatBubble(message: Message, modifier: Modifier = Modifier) {
                 )
                 .padding(12.dp)
         ) {
-            Text(
-                text = message.text,
-                color = if (isUserMe) Color.White else MaterialTheme.colorScheme.onSurface
-            )
+            if (message.text == "__typing__") {
+                TypingIndicator()
+            } else {
+                Text(
+                    text = message.text,
+                    color = if (isUserMe) Color.White else MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun TypingIndicator() {
+    val infiniteTransition = rememberInfiniteTransition(label = "typingAnim")
+
+    val dot1 by infiniteTransition.animateFloat(
+        initialValue = 0f, targetValue = -6f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(300, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = "dot1"
+    )
+    val dot2 by infiniteTransition.animateFloat(
+        initialValue = 0f, targetValue = -6f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(300, delayMillis = 150, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = "dot2"
+    )
+    val dot3 by infiniteTransition.animateFloat(
+        initialValue = 0f, targetValue = -6f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(300, delayMillis = 300, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = "dot3"
+    )
+
+    Row(
+        modifier = Modifier.padding(8.dp),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(".", modifier = Modifier.offset(y = dot1.dp))
+        Spacer(modifier = Modifier.width(2.dp))
+        Text(".", modifier = Modifier.offset(y = dot2.dp))
+        Spacer(modifier = Modifier.width(2.dp))
+        Text(".", modifier = Modifier.offset(y = dot3.dp))
     }
 }
 

@@ -1,35 +1,115 @@
 package student.projects.jetpackpam.screens.accounthandler
 
+import android.app.Activity
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 import student.projects.jetpackpam.design_system.GoogleBtn
 import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
-fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelViewModel) {
+fun LoginScreen(
+    navController: NavController,
+    authViewModel: AuthorizationModelViewModel,
+    googleAuthClient: GoogleAuthClient,
+    googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
+) {
+    val context = LocalContext.current
+
+    // --- Local state for email & password ---
     var emailText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
 
+    // --- Collect state from ViewModel ---
+    val isLoading by authViewModel.isLoading.collectAsState()
+    val errorMessage by authViewModel.errorMessage.collectAsState()
 
+    // --- Log ViewModel state changes ---
+    LaunchedEffect(isLoading, errorMessage) {
+        Log.d("LoginScreen", "Loading state: $isLoading")
+        Log.d("LoginScreen", "Error message: $errorMessage")
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+
+    // --- Classic Sign-In launcher (fallback) ---
+    val classicLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        coroutineScope.launch {
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                try {
+                    val signInResult = googleAuthClient.signInWithIntent(result.data!!)
+                    authViewModel.handleGoogleSignInResult(signInResult)
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Google Sign-In failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toast.makeText(context, "Google Sign-In cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // --- Google Sign-In button click ---
+    val onGoogleSignInClick: () -> Unit = {
+        coroutineScope.launch {
+            try {
+                val intentSender = googleAuthClient.signIn()
+                if (intentSender != null) {
+                    // ✅ Prefer One Tap if available
+                    googleSignInLauncher.launch(
+                        IntentSenderRequest.Builder(intentSender).build()
+                    )
+                } else {
+                    // ⚙️ Fallback to classic
+                    val fallbackIntent = googleAuthClient.getSignInIntent()
+                    classicLauncher.launch(fallbackIntent)
+                }
+            } catch (e: Exception) {
+                Log.e("LoginScreen", "Google Sign-In error", e)
+                Toast.makeText(
+                    context,
+                    "Google Sign-In failed: ${e.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+
+    // --- Scaffold Layout ---
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
+
         val rootModifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -41,29 +121,30 @@ fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelV
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
+        // --- Adaptive UI layout ---
         when (deviceConfiguration) {
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column(
                     modifier = rootModifier.background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
-                    LoginHeader(modifier = Modifier.fillMaxWidth())
+                    LoginHeader()
                     LoginFormSection(
                         emailText = emailText,
                         onEmailTextChange = { emailText = it },
                         passwordText = passwordText,
                         onPasswordTextChange = { passwordText = it },
-                        modifier = Modifier.fillMaxWidth(),
                         navController = navController,
-                        authViewModel = authViewModel
+                        authViewModel = authViewModel,
+                        onGoogleSignInClick = onGoogleSignInClick,
+                        isLoading = isLoading,
+                        errorMessage = errorMessage
                     )
                 }
             }
             DeviceConfiguration.MOBILE_LANDSCAPE -> {
                 Row(
-                    modifier = rootModifier
-                        .windowInsetsPadding(WindowInsets.displayCutout)
-                        .padding(horizontal = 32.dp),
+                    modifier = rootModifier.padding(horizontal = 32.dp),
                     horizontalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
                     LoginHeader(modifier = Modifier.weight(1f))
@@ -72,17 +153,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelV
                         onEmailTextChange = { emailText = it },
                         passwordText = passwordText,
                         onPasswordTextChange = { passwordText = it },
+                        navController = navController,
+                        authViewModel = authViewModel,
+                        onGoogleSignInClick = onGoogleSignInClick,
+                        isLoading = isLoading,
+                        errorMessage = errorMessage,
                         modifier = Modifier
                             .weight(1f)
-                            .verticalScroll(rememberScrollState()),
-                        navController = navController,
-                        authViewModel = authViewModel
+                            .verticalScroll(rememberScrollState())
                     )
                 }
             }
-            DeviceConfiguration.TABLET_PORTRAIT,
-            DeviceConfiguration.TABLET_LANDSCAPE,
-            DeviceConfiguration.DESKTOP -> {
+            else -> {
                 Column(
                     modifier = rootModifier
                         .verticalScroll(rememberScrollState())
@@ -90,15 +172,21 @@ fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelV
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    LoginHeader(modifier = Modifier.widthIn(max = 540.dp), alignment = Alignment.CenterHorizontally)
+                    LoginHeader(
+                        modifier = Modifier.widthIn(max = 540.dp),
+                        alignment = Alignment.CenterHorizontally
+                    )
                     LoginFormSection(
                         emailText = emailText,
                         onEmailTextChange = { emailText = it },
                         passwordText = passwordText,
                         onPasswordTextChange = { passwordText = it },
-                        modifier = Modifier.widthIn(max = 540.dp),
                         navController = navController,
-                        authViewModel = authViewModel
+                        authViewModel = authViewModel,
+                        onGoogleSignInClick = onGoogleSignInClick,
+                        isLoading = isLoading,
+                        errorMessage = errorMessage,
+                        modifier = Modifier.widthIn(max = 540.dp)
                     )
                 }
             }
@@ -107,7 +195,10 @@ fun LoginScreen(navController: NavController, authViewModel: AuthorizationModelV
 }
 
 @Composable
-fun LoginHeader(alignment: Alignment.Horizontal = Alignment.Start, modifier: Modifier = Modifier) {
+fun LoginHeader(
+    alignment: Alignment.Horizontal = Alignment.Start,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier, horizontalAlignment = alignment) {
         Text(text = "Log in", style = MaterialTheme.typography.titleLarge)
         Text(text = "Log in to get started", style = MaterialTheme.typography.bodyLarge)
@@ -120,14 +211,18 @@ fun LoginFormSection(
     onEmailTextChange: (String) -> Unit,
     passwordText: String,
     onPasswordTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     navController: NavController,
-    authViewModel: AuthorizationModelViewModel
+    authViewModel: AuthorizationModelViewModel,
+    onGoogleSignInClick: () -> Unit,
+    isLoading: Boolean,
+    errorMessage: String?,
+    modifier: Modifier = Modifier
 ) {
-    val isLoading by remember { derivedStateOf { authViewModel.isLoading } }
-    val errorMessage by remember { derivedStateOf { authViewModel.errorMessage } }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
+        // --- Email field ---
         TextFieldLong(
             text = emailText,
             onValueChange = onEmailTextChange,
@@ -136,7 +231,10 @@ fun LoginFormSection(
             isTextSecret = false,
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // --- Password field ---
         TextFieldLong(
             text = passwordText,
             onValueChange = onPasswordTextChange,
@@ -146,7 +244,7 @@ fun LoginFormSection(
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Error message
+        // --- Show error message if present ---
         errorMessage?.let { msg ->
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -158,14 +256,23 @@ fun LoginFormSection(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Login button
+        // --- Login Button ---
         LongButton(
             text = if (isLoading) "Logging in..." else "Log in",
             onClick = {
-                authViewModel.login(emailText, passwordText) {
-                    // Navigate to main app (bottom navigation) on success
-                    navController.navigate("main") { // 👈 changed from "home" to "main"
-                        popUpTo("login") { inclusive = true }
+                coroutineScope.launch {
+                    try {
+                        Log.d("LoginScreen", "Attempting login for email: $emailText")
+                        authViewModel.login(emailText, passwordText) {
+                            Log.d("LoginScreen", "Login successful. Navigating to main screen.")
+                            Toast.makeText(context, "Welcome back!", Toast.LENGTH_SHORT).show()
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("LoginScreen", "Login failed: ${e.message}", e)
+                        Toast.makeText(context, "Login failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                     }
                 }
             },
@@ -174,17 +281,23 @@ fun LoginFormSection(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // --- Navigate to Sign Up ---
         LinkButton(
             text = "Don't have an account?",
             onClick = { navController.navigate("signUp") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        // --- Google Sign-In Button ---
         GoogleBtn(
             text = "Log in Using Google",
-            onClick = { /* SSO login */ },
+            onClick = onGoogleSignInClick,
             modifier = Modifier.fillMaxWidth(),
             imageRes = student.projects.jetpackpam.R.drawable.google_logo
         )
+
     }
 }
