@@ -22,11 +22,11 @@ class MainActivity : ComponentActivity() {
 
                 //MainScreen()
                 //LoginScreen()
-                //LanguageSelectionScreen()
+                LanguageSelectionScreen()
                 //PersonalitySelectionScreen()
                 //PersonalitySelectionScreen2()
                 //FontSelectionScreen()
-                PamThemeSelectionScreen()
+                //PamThemeSelectionScreen()
             }
         }
     }
