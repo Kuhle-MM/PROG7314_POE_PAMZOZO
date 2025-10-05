@@ -27,6 +27,10 @@ namespace PROG7314_POE
             //builder.Services.AddSingleton<CameraService>();
             builder.Services.AddSingleton<GoogleCalendarService>();
 
+
+            builder.Services.AddSingleton<PROG7314_POE.Repository.InMemoryRepository>();
+            builder.Services.AddSingleton<PROG7314_POE.Services.IGameService, PROG7314_POE.Services.GameService>();
+
             var app = builder.Build();
             // Enable swagger in all environments
             app.UseSwagger();
