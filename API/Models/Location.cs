@@ -7,4 +7,10 @@
         public double Latitude { get; internal set; }
         public double Longitude { get; internal set; }
     }
+
+    public class Mapping
+    {
+        public string RobotId { get; set; }
+        public List<Location> Coordinates { get; set; }
+    }
 }
