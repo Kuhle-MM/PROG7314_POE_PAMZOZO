@@ -147,6 +147,9 @@ int drawable common_google_signin_btn_text_light 0x7f050014
 int drawable common_google_signin_btn_text_light_focused 0x7f050015
 int drawable common_google_signin_btn_text_light_normal 0x7f050016
 int drawable common_google_signin_btn_text_light_normal_background 0x7f050017
+int drawable darkpamblue 0x7f050032
+int drawable darkpamgreen 0x7f050033
+int drawable darkpamog 0x7f050034
 int drawable googleg_disabled_color_18 0x7f050018
 int drawable googleg_standard_color_18 0x7f050019
 int drawable ic_call_answer 0x7f05001a
@@ -157,6 +160,9 @@ int drawable ic_call_decline 0x7f05001e
 int drawable ic_call_decline_low 0x7f05001f
 int drawable ic_launcher_background 0x7f050020
 int drawable ic_launcher_foreground 0x7f050021
+int drawable lightpamblue 0x7f050035
+int drawable lightpamgreen 0x7f050036
+int drawable lightpamog 0x7f050037
 int drawable notification_action_background 0x7f050022
 int drawable notification_bg 0x7f050023
 int drawable notification_bg_low 0x7f050024
