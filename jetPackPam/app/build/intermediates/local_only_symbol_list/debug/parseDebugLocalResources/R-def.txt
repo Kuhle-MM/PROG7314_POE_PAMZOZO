@@ -7,8 +7,14 @@ color purple_700
 color teal_200
 color teal_700
 color white
+drawable darkpamblue
+drawable darkpamgreen
+drawable darkpamog
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable lightpamblue
+drawable lightpamgreen
+drawable lightpamog
 drawable pamicon
 font inter_medium
 font inter_medium_lightitalic

@@ -148,6 +148,9 @@ drawable common_google_signin_btn_text_light
 drawable common_google_signin_btn_text_light_focused
 drawable common_google_signin_btn_text_light_normal
 drawable common_google_signin_btn_text_light_normal_background
+drawable darkpamblue
+drawable darkpamgreen
+drawable darkpamog
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_call_answer
@@ -158,6 +161,9 @@ drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable lightpamblue
+drawable lightpamgreen
+drawable lightpamog
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
