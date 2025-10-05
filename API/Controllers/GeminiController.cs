@@ -28,5 +28,23 @@ namespace PROG7314_POE.Controllers
             var answer = await _geminiService.AskGeminiAsync(query.Question);
             return Ok(new { answer });
         }
+
+        [HttpGet("models")]
+        public async Task<IActionResult> ListModels([FromServices] IConfiguration config, [FromServices] HttpClient httpClient)
+        {
+            var apiKey = config["GeminiApiKey"];
+            var url = $"https://generativelanguage.googleapis.com/v1/models?key={apiKey}";
+
+            var response = await httpClient.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest(content);
+            }
+
+            return Ok(content);
+        }
+
     }
 }
