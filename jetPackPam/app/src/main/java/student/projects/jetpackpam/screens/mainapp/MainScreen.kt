@@ -18,20 +18,27 @@ import androidx.navigation.compose.rememberNavController
 import student.projects.jetpackpam.appNavigation.BottomBarScreen
 import student.projects.jetpackpam.appNavigation.BottomNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+
+
+
 
 @Composable
 fun MainScreen(
     authViewModel: AuthorizationModelViewModel,
-    rootNavController: NavHostController // 👈 outer nav controller
+    rootNavController: NavHostController,
+    googleAuthClient: GoogleAuthClient
 ) {
-    val bottomNavController = rememberNavController() // 👈 inner nav controller
+    val bottomNavController = rememberNavController()
 
     Scaffold(
         bottomBar = { BottomBar(navController = bottomNavController) }
     ) { innerPadding ->
         BottomNavGraph(
             navController = bottomNavController,
-            paddingValues = innerPadding
+            paddingValues = innerPadding,
+            googleAuthClient = googleAuthClient,
+            authViewModel = authViewModel
         )
     }
 }
