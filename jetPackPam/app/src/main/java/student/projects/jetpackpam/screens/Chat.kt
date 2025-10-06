@@ -1,5 +1,9 @@
 package student.projects.jetpackpam.screens
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.design_system.MessageTextField
@@ -40,123 +45,86 @@ fun ChatScreen() {
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars,
         bottomBar = {
-            when (deviceConfiguration) {
-                DeviceConfiguration.MOBILE_PORTRAIT,
-                DeviceConfiguration.MOBILE_LANDSCAPE -> {
-                    ChatMessageInput(
-                        messageText = messageText,
-                        onMessageTextChange = { messageText = it },
-                        onSendClick = {
-                            if (messageText.isNotBlank()) {
-                                messages = messages + Message(messageText, true)
-                                messageText = ""
-
-                                // scroll to bottom after sending
-                                coroutineScope.launch {
-                                    listState.animateScrollToItem(0)
-                                }
-
-                                // TODO: Call your Retrofit Gemini API here
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                DeviceConfiguration.TABLET_PORTRAIT,
-                DeviceConfiguration.TABLET_LANDSCAPE,
-                DeviceConfiguration.DESKTOP -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                    ) {
-                        ChatMessageInput(
-                            messageText = messageText,
-                            onMessageTextChange = { messageText = it },
-                            onSendClick = {
-                                if (messageText.isNotBlank()) {
-                                    messages = messages + Message(messageText, true)
-                                    messageText = ""
-
-                                    coroutineScope.launch {
-                                        listState.animateScrollToItem(0)
-                                    }
-
-                                    // TODO: Call your Retrofit Gemini API here
-                                }
-                            },
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .widthIn(max = 540.dp)
-                                .fillMaxWidth()
-                        )
+            ChatMessageInput(
+                messageText = messageText,
+                onMessageTextChange = { messageText = it },
+                onSendClick = {
+                    if (messageText.isNotBlank()) {
+                        messages = messages + Message(messageText, true)
+                        messageText = ""
+                        coroutineScope.launch { listState.animateScrollToItem(0) }
                     }
-                }
-            }
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     ) { innerPadding ->
 
-        val rootModifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-            .padding(horizontal = 16.dp, vertical = 24.dp)
-            .consumeWindowInsets(WindowInsets.navigationBars)
+        // Only one Column
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+        ) {
+            // Chat list
+            ChatList(messages = messages, listState = listState, modifier = Modifier.weight(1f))
 
-        when (deviceConfiguration) {
-            DeviceConfiguration.MOBILE_PORTRAIT -> {
-                Column(
-                    modifier = rootModifier.background(MaterialTheme.colorScheme.background),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    ChatList(messages = messages, listState = listState, modifier = Modifier.fillMaxSize())
-                }
-            }
-
-            DeviceConfiguration.MOBILE_LANDSCAPE -> {
-                Row(
-                    modifier = rootModifier
-                        .windowInsetsPadding(WindowInsets.displayCutout)
-                        .padding(horizontal = 32.dp),
-                    horizontalArrangement = Arrangement.spacedBy(32.dp)
-                ) {
-                    ChatList(
-                        messages = messages,
-                        listState = listState,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                    )
-                }
-            }
-
-            DeviceConfiguration.TABLET_PORTRAIT,
-            DeviceConfiguration.TABLET_LANDSCAPE,
-            DeviceConfiguration.DESKTOP -> {
-                Column(
-                    modifier = rootModifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(top = 48.dp),
-                    verticalArrangement = Arrangement.spacedBy(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Column(modifier = Modifier.widthIn(max = 540.dp)) {
-                        ChatList(
-                            messages = messages,
-                            listState = listState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight()
-                        )
-                    }
-                }
-            }
+            // Optional buttons
+             ExternalAppButtons()
         }
     }
 }
 
+@Composable
+fun ExternalAppButtons() {
+    val context = LocalContext.current
+
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxWidth()) {
+
+        // Spotify
+        Button(onClick = {
+            try {
+                val intent = context.packageManager.getLaunchIntentForPackage("com.spotify.music")
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, "Spotify not installed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Error opening Spotify", Toast.LENGTH_SHORT).show()
+            }
+        }) { Text("Spotify") }
+
+//        // Phone
+        Button(onClick = {
+            try {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    //data = Uri.parse("tel:+27123456789")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Phone app not available", Toast.LENGTH_SHORT).show()
+            }
+        }) { Text("Call") }
+
+        // WhatsApp
+        Button(onClick = {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                   // data = Uri.parse("https://wa.me/+27123456789")
+                    setPackage("com.whatsapp")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+            }
+        }) { Text("WhatsApp") }
+    }
+}
 
 @Composable
 private fun ChatList(
