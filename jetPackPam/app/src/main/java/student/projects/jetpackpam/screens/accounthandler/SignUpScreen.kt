@@ -311,7 +311,7 @@ fun SignUpFormSection(
 
         GoogleBtn(
             text = "Log in Using Google",
-            onClick = { /* TODO: Implement Google SSO */ },
+            onClick = { /* Implement Google SSO */ },
             modifier = Modifier.fillMaxWidth(),
             imageRes = student.projects.jetpackpam.R.drawable.google_logo
         )
