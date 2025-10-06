@@ -22,6 +22,10 @@ import student.projects.jetpackpam.screens.bottomnavscreen.GamesScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.VideoScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
+import student.projects.jetpackpam.screens.charades.GameOverScreen
+import student.projects.jetpackpam.screens.charades.PlayingGameScreen
+import student.projects.jetpackpam.screens.charades.StartUpScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValues,
@@ -58,6 +62,14 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
             )
         }
         composable("video") { VideoScreen() }
-        composable("games") { GamesScreen() }
+        composable("games") { StartUpScreen(navController = navController) }
+        composable("start") { StartUpScreen(navController) }
+        composable("category") { CategorySelectionScreen(navController) }
+        composable("playing/{sessionId}/{category}") { backStackEntry ->
+            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
+            val category = backStackEntry.arguments?.getString("category") ?: ""
+            PlayingGameScreen(navController, sessionId, category)
+        }
+        composable("gameover") { GameOverScreen(navController) }
     }
 }

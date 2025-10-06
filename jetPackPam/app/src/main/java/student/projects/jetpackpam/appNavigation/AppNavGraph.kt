@@ -19,6 +19,10 @@ import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
+import student.projects.jetpackpam.screens.charades.GameOverScreen
+import student.projects.jetpackpam.screens.charades.PlayingGameScreen
+import student.projects.jetpackpam.screens.charades.StartUpScreen
 
 private const val TAG = "AppNavGraph"
 
@@ -125,5 +129,14 @@ fun AppNavGraph(
                 }
             )
         }
+
+                        composable("startup") { StartUpScreen(navController) }
+                        composable("category") { CategorySelectionScreen(navController) }
+                        composable("playing/{sessionId}/{category}") { backStackEntry ->
+                            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
+                            val category = backStackEntry.arguments?.getString("category") ?: ""
+                            PlayingGameScreen(navController, sessionId, category)
+                        }
+                        composable("gameover") { GameOverScreen(navController) }
+                    }
     }
-}
