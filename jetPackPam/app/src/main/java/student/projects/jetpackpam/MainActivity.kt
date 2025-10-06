@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                //Gaming section
+            //Gaming section
 //                Surface {
 //                    val navController = rememberNavController()
 //                    NavHost(
@@ -76,11 +76,10 @@ class MainActivity : ComponentActivity() {
 //                }
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    // AppNavGraph controls all navigation & session flow
-//                    AppNavGraph(
-//                        googleAuthClient = googleAuthClient,
-//                        authViewModel = authViewModel
-//                    )
+                    AppNavGraph(
+                        googleAuthClient = googleAuthClient,
+                        authViewModel = authViewModel
+                    )
 
                     //MainScreen()
                     //LoginScreen()
@@ -88,7 +87,7 @@ class MainActivity : ComponentActivity() {
                     //PersonalitySelectionScreen()
                     //PersonalitySelectionScreen2()
                     //FontSelectionScreen()
-                   // PamThemeSelectionScreen()
+                    // PamThemeSelectionScreen()
                 }
             }
         }
