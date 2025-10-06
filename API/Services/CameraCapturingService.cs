@@ -1,6 +1,6 @@
 ﻿namespace PROG7314_POE.Services
 {
-    public class CameraService
+    public class CameraCapturingService
     {
         public async Task<byte[]> CaptureImageAsync()
         {
