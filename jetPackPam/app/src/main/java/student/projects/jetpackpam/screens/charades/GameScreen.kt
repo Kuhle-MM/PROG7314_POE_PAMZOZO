@@ -1,16 +1,28 @@
 package student.projects.jetpackpam.screens.charades
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.net.Uri
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -30,10 +42,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.R
 import student.projects.jetpackpam.data.CharadesRequest
+import student.projects.jetpackpam.data.GuessItem
+import student.projects.jetpackpam.data.GuessRequest
 import student.projects.jetpackpam.retrofit.CharadesRetrofitInstance
+import kotlin.collections.isNotEmpty
 
 //@Composable
 //fun CharadesNavGraph() {
@@ -70,7 +86,7 @@ fun StartUpScreen(navController: NavController) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24), 
+                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
                 contentDescription = "Play Button",
                 modifier = Modifier
                     .size(120.dp)
@@ -201,34 +217,210 @@ fun CategorySelectionScreen(navController: NavController) {
         }
     }
 }
-
+@SuppressLint("ServiceCast")
 @Composable
 fun PlayingGameScreen(navController: NavController, sessionId: String, category: String) {
-    // Force landscape orientation
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    var guesses by remember { mutableStateOf<List<GuessItem>>(emptyList()) }
+    var currentIndex by remember { mutableStateOf(0) }
+    var currentGuess by remember { mutableStateOf("Loading...") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var timeLeft by remember { mutableStateOf(60) }
+    var isGameOver by remember { mutableStateOf(false) }
+
+    // Track results
+    var correctGuesses by remember { mutableStateOf<List<String>>(emptyList()) }
+    var skippedGuesses by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    // Force landscape orientation
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         onDispose {
-            // Optional: restore portrait on exit
             (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
-    Text("Session: $sessionId\nCategory: $category\nGame is starting...")
+
+    // Load guesses
+    LaunchedEffect(Unit) {
+        try {
+            guesses = CharadesRetrofitInstance.api.getAllGuesses(category)
+            if (guesses.isNotEmpty()) {
+                currentGuess = guesses[currentIndex].text
+            } else {
+                currentGuess = "No guesses found."
+            }
+        } catch (e: Exception) {
+            errorMessage = e.localizedMessage
+        }
+    }
+
+    // Countdown Timer
+    LaunchedEffect(Unit) {
+        while (timeLeft > 0 && !isGameOver) {
+            delay(1000)
+            timeLeft--
+        }
+        isGameOver = true
+    }
+
+    // When game over, navigate and pass the lists
+    if (isGameOver) {
+        LaunchedEffect(Unit) {
+            val correctParam = Uri.encode(correctGuesses.joinToString(","))
+            val skippedParam = Uri.encode(skippedGuesses.joinToString(","))
+            navController.navigate("gameover?correct=$correctParam&skipped=$skippedParam") {
+                popUpTo("playing/$sessionId/$category") { inclusive = true }
+            }
+        }
+    }
+
+    // --- Helpers ---
+    fun vibrateFeedback() {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        vibrator?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                @Suppress("DEPRECATION")
+                it.vibrate(150)
+            }
+        }
+    }
+
+    fun nextGuess() {
+        if (guesses.isNotEmpty()) {
+            currentIndex = (currentIndex + 1) % guesses.size
+            currentGuess = guesses[currentIndex].text
+        }
+    }
+
+    // --- Sensor Setup ---
+    val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+    val sensorEventListener = object : SensorEventListener {
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+        override fun onSensorChanged(event: SensorEvent) {
+            val x = event.values[0] // in landscape, forward/back tilt is X-axis
+
+            if (x > 3f) { // Tilt forward = Correct
+                scope.launch {
+                    vibrateFeedback()
+                    correctGuesses = correctGuesses + currentGuess
+                    nextGuess()
+                }
+            } else if (x < -3f) { // Tilt backward = Skip
+                scope.launch {
+                    vibrateFeedback()
+                    skippedGuesses = skippedGuesses + currentGuess
+                    nextGuess()
+                }
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+        onDispose { sensorManager.unregisterListener(sensorEventListener) }
+    }
+
+    // --- UI ---
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF101010))
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(color = Color.White)
+        } else if (errorMessage != null) {
+            Text(errorMessage!!, color = Color.Red)
+        } else {
+            Text(
+                text = "Time left: $timeLeft s",
+                style = MaterialTheme.typography.titleLarge.copy(color = Color.Yellow)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = currentGuess,
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                ),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = { nextGuess() },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8C77F7))
+            ) {
+                Text("Next Guess", color = Color.White)
+            }
+        }
+    }
 }
 
 @Composable
-fun GameOverScreen(navController: NavController) {
-    // Force landscape orientation
+fun GameOverScreen(navController: NavController, correct: String?, skipped: String?) {
     val context = LocalContext.current
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         onDispose {
-            // Optional: restore portrait on exit
             (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
-    Text("Game Over!")
-    Button(onClick = { navController.navigate("startup") }) {
-        Text("Restart")
+
+    val correctList = correct?.split(",")?.filter { it.isNotBlank() } ?: emptyList()
+    val skippedList = skipped?.split(",")?.filter { it.isNotBlank() } ?: emptyList()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF202020))
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Text(
+            "Game Over!",
+            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(" Correct Words:", color = Color.Green, fontWeight = FontWeight.Bold)
+        correctList.forEach { word ->
+            Text("- $word", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("⏭ Skipped Words:", color = Color.Red, fontWeight = FontWeight.Bold)
+        skippedList.forEach { word ->
+            Text("- $word", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = {
+                navController.navigate("startup") {
+                    popUpTo("startup") { inclusive = true }
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8C77F7))
+        ) {
+            Text("Restart", color = Color.White)
+        }
     }
 }

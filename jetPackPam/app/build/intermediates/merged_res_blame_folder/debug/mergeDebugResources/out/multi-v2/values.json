@@ -4,6 +4,23 @@
             "outputFile": "student.projects.jetpackpam.app-mergeDebugResources-67:/values/values.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "46",
+                        "endOffsets": "99"
+                    },
+                    "to": {
+                        "startLines": "104",
+                        "startColumns": "4",
+                        "startOffsets": "5085",
+                        "endColumns": "45",
+                        "endOffsets": "5126"
+                    }
+                },
+                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\7a5709f85f2f43f99a8d34a9c31e4f85\\transformed\\coil-base-2.7.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -37,23 +54,6 @@
                         "endLines": "179,230,231,232,233,234,235,236,237,238,241,242,243,244,245,246,247,248,249,250,251,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,318,321",
                         "endColumns": "72,87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,73,56,56,71,49,53,70,70,69,68,57,75,70,73,85,49,69,64,12,12",
                         "endOffsets": "9450,14289,14375,14456,14540,14609,14674,14757,14863,14949,15069,15123,15192,15253,15322,15411,15506,15580,15677,15770,15868,16017,16108,16196,16292,16390,16454,16522,16609,16703,16770,16842,16914,17015,17124,17200,17269,17317,17383,17447,17521,17578,17635,17707,17757,17811,17882,17953,18023,18092,18150,18226,18297,18371,18457,18507,18577,18642,20290,20443"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "59",
-                        "endColumns": "87",
-                        "endOffsets": "142"
-                    },
-                    "to": {
-                        "startLines": "344",
-                        "startColumns": "4",
-                        "startOffsets": "21735",
-                        "endColumns": "86",
-                        "endOffsets": "21817"
                     }
                 },
                 {
@@ -197,7 +197,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",
@@ -286,7 +286,26 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,66",
+                        "endLines": "1,4",
+                        "endColumns": "47,13",
+                        "endOffsets": "60,202"
+                    },
+                    "to": {
+                        "startLines": "184,225",
+                        "startColumns": "4,4",
+                        "startOffsets": "9774,13955",
+                        "endLines": "184,227",
+                        "endColumns": "47,13",
+                        "endOffsets": "9817,14089"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "7,2,3,4,5,6,8",
                         "startColumns": "4,4,4,4,4,4,4",
@@ -320,20 +339,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
                     "from": {
-                        "startLines": "2",
+                        "startLines": "3",
                         "startColumns": "4",
-                        "startOffsets": "57",
-                        "endColumns": "46",
-                        "endOffsets": "99"
+                        "startOffsets": "59",
+                        "endColumns": "87",
+                        "endOffsets": "142"
                     },
                     "to": {
-                        "startLines": "104",
+                        "startLines": "344",
                         "startColumns": "4",
-                        "startOffsets": "5085",
-                        "endColumns": "45",
-                        "endOffsets": "5126"
+                        "startOffsets": "21735",
+                        "endColumns": "86",
+                        "endOffsets": "21817"
                     }
                 },
                 {
@@ -389,25 +408,6 @@
                         "endLines": "25,55,56,62,63,72,73,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,105,106,107,150,151,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,180,185,186,187,188,189,190,191,300,329,333,334,338,339,345,346,402,412,445,466,508,514",
                         "endColumns": "59,71,87,64,65,68,62,69,67,71,69,60,73,72,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,64,34,34,54,62,54,57,57,60,62,56,50,49,60,56,65,33,34,34,69,66,71,68,68,73,71,87,70,116,12,109,12,128,71,66,24,24,24,24,24,24",
                         "endOffsets": "875,1885,1973,2329,2395,3135,3198,3684,3752,3824,3894,3955,4029,4102,4163,4224,4286,4350,4412,4473,4541,4641,4701,4767,4840,4909,4966,5018,5080,5198,5274,5339,7864,7899,8181,8244,8299,8357,8415,8476,8539,8596,8647,8697,8758,8815,8881,8915,8950,8985,9520,9884,9956,10025,10094,10168,10240,10328,19179,20866,21067,21177,21378,21507,21889,21956,23703,24004,25735,26416,27417,27584"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "1,2",
-                        "startColumns": "4,4",
-                        "startOffsets": "17,66",
-                        "endLines": "1,4",
-                        "endColumns": "47,13",
-                        "endOffsets": "60,202"
-                    },
-                    "to": {
-                        "startLines": "184,225",
-                        "startColumns": "4,4",
-                        "startOffsets": "9774,13955",
-                        "endLines": "184,227",
-                        "endColumns": "47,13",
-                        "endOffsets": "9817,14089"
                     }
                 },
                 {

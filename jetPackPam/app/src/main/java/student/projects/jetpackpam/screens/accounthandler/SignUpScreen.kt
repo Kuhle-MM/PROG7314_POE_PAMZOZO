@@ -1,6 +1,5 @@
 package student.projects.jetpackpam.screens.accounthandler
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -30,6 +29,7 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 @Composable
 fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModelViewModel) {
     val TAG = "SignUpDebug"
+
     // UI state
     var emailText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
@@ -46,7 +46,7 @@ fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModel
     val errorMessage by authViewModel.errorMessage.collectAsStateWithLifecycle()
     val signUpSuccess by authViewModel.signUpSuccess.collectAsStateWithLifecycle()
 
-    // Navigate to login when signup is successful
+    // Navigate on success
     LaunchedEffect(signUpSuccess) {
         if (signUpSuccess) {
             Log.d(TAG, "Sign-up success observed in Composable")
@@ -70,40 +70,34 @@ fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModel
             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(horizontal = 16.dp, vertical = 24.dp)
-            .verticalScroll(rememberScrollState())
 
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
+
         when (deviceConfiguration) {
+
+            // --- MOBILE PORTRAIT ---
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column(
-                    modifier = rootModifier,
+                    modifier = rootModifier.verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     SignUpHeader()
 
                     SignUpFormSection(
-                        emailText = emailText,
-                        onEmailTextChange = { emailText = it },
-                        passwordText = passwordText,
-                        onPasswordTextChange = { passwordText = it },
-                        confirmPasswordText = confirmPasswordText,
-                        onConfirmPasswordChange = { confirmPasswordText = it },
-                        nameText = nameText,
-                        onNameTextChange = { nameText = it },
-                        surnameText = surnameText,
-                        onSurnameTextChange = { surnameText = it },
-                        phoneNumberText = phoneNumberText,
-                        onPhoneNumberTextChange = { phoneNumberText = it },
-                        navController = navController,
-                        authViewModel = authViewModel,
-                        isLoading = isLoading,
-                        coroutineScope = coroutineScope,
-                        context = context
+                        emailText, { emailText = it },
+                        passwordText, { passwordText = it },
+                        confirmPasswordText, { confirmPasswordText = it },
+                        nameText, { nameText = it },
+                        surnameText, { surnameText = it },
+                        phoneNumberText, { phoneNumberText = it },
+                        navController, authViewModel, isLoading,
+                        coroutineScope, context
                     )
-                        Spacer(modifier = Modifier.height(10.dp))
-                    // Show error message
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     errorMessage?.let { msg ->
                         Text(
                             text = msg,
@@ -114,40 +108,35 @@ fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModel
                     }
                 }
             }
+
+            // --- MOBILE LANDSCAPE ---
             DeviceConfiguration.MOBILE_LANDSCAPE -> {
                 Row(
-                    modifier = rootModifier
-                        .padding(horizontal = 32.dp),
+                    modifier = rootModifier.padding(horizontal = 32.dp),
                     horizontalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
                     Column(
-                        modifier = rootModifier,
+                        modifier = Modifier
+                            .weight(1f)
+                            .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         SignUpHeader()
 
                         SignUpFormSection(
-                            emailText = emailText,
-                            onEmailTextChange = { emailText = it },
-                            passwordText = passwordText,
-                            onPasswordTextChange = { passwordText = it },
-                            confirmPasswordText = confirmPasswordText,
-                            onConfirmPasswordChange = { confirmPasswordText = it },
-                            nameText = nameText,
-                            onNameTextChange = { nameText = it },
-                            surnameText = surnameText,
-                            onSurnameTextChange = { surnameText = it },
-                            phoneNumberText = phoneNumberText,
-                            onPhoneNumberTextChange = { phoneNumberText = it },
-                            navController = navController,
-                            authViewModel = authViewModel,
-                            isLoading = isLoading,
-                            coroutineScope = coroutineScope,
-                            context = context
+                            emailText, { emailText = it },
+                            passwordText, { passwordText = it },
+                            confirmPasswordText, { confirmPasswordText = it },
+                            nameText, { nameText = it },
+                            surnameText, { surnameText = it },
+                            phoneNumberText, { phoneNumberText = it },
+                            navController, authViewModel, isLoading,
+                            coroutineScope, context
                         )
+
                         Spacer(modifier = Modifier.height(10.dp))
-                        // Show error message
+
                         errorMessage?.let { msg ->
                             Text(
                                 text = msg,
@@ -159,55 +148,42 @@ fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModel
                     }
                 }
             }
+
+            // --- TABLET OR OTHER DEVICES ---
             else -> {
                 Column(
                     modifier = rootModifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(top = 48.dp),
+                        .padding(top = 48.dp)
+                        .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        modifier = rootModifier,
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SignUpHeader()
+                    SignUpHeader()
 
-                        SignUpFormSection(
-                            emailText = emailText,
-                            onEmailTextChange = { emailText = it },
-                            passwordText = passwordText,
-                            onPasswordTextChange = { passwordText = it },
-                            confirmPasswordText = confirmPasswordText,
-                            onConfirmPasswordChange = { confirmPasswordText = it },
-                            nameText = nameText,
-                            onNameTextChange = { nameText = it },
-                            surnameText = surnameText,
-                            onSurnameTextChange = { surnameText = it },
-                            phoneNumberText = phoneNumberText,
-                            onPhoneNumberTextChange = { phoneNumberText = it },
-                            navController = navController,
-                            authViewModel = authViewModel,
-                            isLoading = isLoading,
-                            coroutineScope = coroutineScope,
-                            context = context
+                    SignUpFormSection(
+                        emailText, { emailText = it },
+                        passwordText, { passwordText = it },
+                        confirmPasswordText, { confirmPasswordText = it },
+                        nameText, { nameText = it },
+                        surnameText, { surnameText = it },
+                        phoneNumberText, { phoneNumberText = it },
+                        navController, authViewModel, isLoading,
+                        coroutineScope, context
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    errorMessage?.let { msg ->
+                        Text(
+                            text = msg,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(horizontal = 16.dp)
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        // Show error message
-                        errorMessage?.let { msg ->
-                            Text(
-                                text = msg,
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                        }
                     }
                 }
             }
         }
-
     }
 }
 
@@ -244,7 +220,6 @@ fun SignUpFormSection(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-        // Name & Surname fields
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             TextFieldLong(
                 text = nameText,
@@ -300,11 +275,9 @@ fun SignUpFormSection(
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Sign Up button with coroutine
         LongButton(
             text = if (isLoading) "Signing up..." else "Sign Up",
             onClick = {
-                Log.d(TAG, "Sign-up button clicked")
                 coroutineScope.launch {
                     try {
                         authViewModel.signUp(
@@ -312,13 +285,17 @@ fun SignUpFormSection(
                             surnameText,
                             emailText,
                             passwordText,
-                            confirmPasswordText,
+                            confirmPasswordText
                         ) {
-                            Log.d(TAG, "onSuccess lambda triggered")
+                            Log.d("SignUpDebug", "onSuccess lambda triggered")
                         }
                     } catch (e: Exception) {
-                        Log.e(TAG, "Sign-up exception: ${e.localizedMessage}")
-                        Toast.makeText(context, "Sign up failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                        Log.e("SignUpDebug", "Sign-up exception: ${e.localizedMessage}")
+                        Toast.makeText(
+                            context,
+                            "Sign up failed: ${e.localizedMessage}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             },
@@ -326,19 +303,15 @@ fun SignUpFormSection(
             enabled = !isLoading
         )
 
-        // Navigate to login
         LinkButton(
             text = "You already have a profile?",
             onClick = { navController.navigate("login") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        // Google SSO placeholder
         GoogleBtn(
             text = "Log in Using Google",
-            onClick = {
-                // TODO: Implement Google SSO here
-            },
+            onClick = { /* TODO: Implement Google SSO */ },
             modifier = Modifier.fillMaxWidth(),
             imageRes = student.projects.jetpackpam.R.drawable.google_logo
         )

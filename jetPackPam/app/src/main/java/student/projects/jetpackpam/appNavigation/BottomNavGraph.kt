@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.ProfileScreen
@@ -70,6 +72,17 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
             val category = backStackEntry.arguments?.getString("category") ?: ""
             PlayingGameScreen(navController, sessionId, category)
         }
-        composable("gameover") { GameOverScreen(navController) }
+        composable(
+            route = "gameover?correct={correct}&skipped={skipped}",
+            arguments = listOf(
+                navArgument("correct") { type = NavType.StringType; defaultValue = "" },
+                navArgument("skipped") { type = NavType.StringType; defaultValue = "" }
+            )
+        ) { backStackEntry ->
+            val correct = backStackEntry.arguments?.getString("correct")
+            val skipped = backStackEntry.arguments?.getString("skipped")
+            GameOverScreen(navController = navController, correct = correct, skipped = skipped)
+        }
+
     }
 }
