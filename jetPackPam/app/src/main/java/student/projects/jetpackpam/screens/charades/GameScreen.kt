@@ -35,21 +35,21 @@ import student.projects.jetpackpam.R
 import student.projects.jetpackpam.data.CharadesRequest
 import student.projects.jetpackpam.retrofit.CharadesRetrofitInstance
 
-@Composable
-fun CharadesNavGraph() {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "start") {
-        composable("start") { StartUpScreen(navController) }
-        composable("category") { CategorySelectionScreen(navController) }
-        composable("playing/{sessionId}/{category}") { backStackEntry ->
-            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
-            val category = backStackEntry.arguments?.getString("category") ?: ""
-            PlayingGameScreen(navController, sessionId, category)
-        }
-        composable("gameover") { GameOverScreen(navController) }
-    }
-}
+//@Composable
+//fun CharadesNavGraph() {
+//    val navController = rememberNavController()
+//
+//    NavHost(navController = navController, startDestination = "start") {
+//        composable("start") { StartUpScreen(navController) }
+//        composable("category") { CategorySelectionScreen(navController) }
+//        composable("playing/{sessionId}/{category}") { backStackEntry ->
+//            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
+//            val category = backStackEntry.arguments?.getString("category") ?: ""
+//            PlayingGameScreen(navController, sessionId, category)
+//        }
+//        composable("gameover") { GameOverScreen(navController) }
+//    }
+//}
 
 @Composable
 fun StartUpScreen(navController: NavController) {

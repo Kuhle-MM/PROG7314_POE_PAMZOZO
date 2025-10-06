@@ -127,6 +127,7 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 drawable abc_vector_test
+drawable baseline_play_circle_outline_24
 drawable common_full_open_on_phone
 drawable common_google_signin_btn_icon_dark
 drawable common_google_signin_btn_icon_dark_focused
@@ -146,6 +147,9 @@ drawable common_google_signin_btn_text_light
 drawable common_google_signin_btn_text_light_focused
 drawable common_google_signin_btn_text_light_normal
 drawable common_google_signin_btn_text_light_normal_background
+drawable darkpamblue
+drawable darkpamgreen
+drawable darkpamog
 drawable google_logo
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
@@ -160,6 +164,9 @@ drawable ic_launcher_foreground
 drawable ic_other_sign_in
 drawable ic_passkey
 drawable ic_password
+drawable lightpamblue
+drawable lightpamgreen
+drawable lightpamog
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low

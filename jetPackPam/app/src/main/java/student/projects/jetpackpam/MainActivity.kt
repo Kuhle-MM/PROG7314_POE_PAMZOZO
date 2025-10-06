@@ -18,7 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
-import student.projects.jetpackpam.screens.charades.CharadesNavGraph
+//import student.projects.jetpackpam.screens.charades.CharadesNavGraph
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
@@ -54,15 +54,8 @@ class MainActivity : ComponentActivity() {
 
         // --- Compose UI setup ---
         setContent {
-            JetPackPamTheme(){
 
-                //MainScreen()
-                //LoginScreen()
-               // LanguageSelectionScreen()
-                //PersonalitySelectionScreen()
-                //PersonalitySelectionScreen2()
-                //FontSelectionScreen()
-                //PamThemeSelectionScreen()
+
 
                 //Gaming section
 //                Surface {
@@ -84,10 +77,18 @@ class MainActivity : ComponentActivity() {
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     // AppNavGraph controls all navigation & session flow
-                    AppNavGraph(
-                        googleAuthClient = googleAuthClient,
-                        authViewModel = authViewModel
-                    )
+//                    AppNavGraph(
+//                        googleAuthClient = googleAuthClient,
+//                        authViewModel = authViewModel
+//                    )
+
+                    //MainScreen()
+                    //LoginScreen()
+                    //LanguageSelectionScreen()
+                    //PersonalitySelectionScreen()
+                    //PersonalitySelectionScreen2()
+                    //FontSelectionScreen()
+                   // PamThemeSelectionScreen()
                 }
             }
         }
