@@ -1,4 +1,9 @@
-﻿namespace PROG7314_POE.Services
+﻿using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+
+namespace PROG7314_POE.Services
 {
     public class GeminiService
     {
@@ -11,22 +16,53 @@
             _apiKey = config["GeminiApiKey"];
         }
 
-        public async Task<string> AskGeminiAsync(string question)
+        public async Task<string> AskGeminiAsync(string prompt)
         {
             var request = new
             {
-                question = question
+                contents = new[]
+                {
+                    new {
+                        parts = new[]
+                        {
+                            new { text = prompt }
+                        }
+                    }
+                }
             };
 
-            var response = await _httpClient.PostAsJsonAsync($"https://gemini.googleapis.com/v1/ask?key={_apiKey}", request);
-            response.EnsureSuccessStatusCode();
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={_apiKey}";
+
+            var response = await _httpClient.PostAsJsonAsync(url, request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return $"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}";
+            }
+
             var result = await response.Content.ReadFromJsonAsync<GeminiResponse>();
-            return result.Answer;
+
+            return result?.Candidates?[0]?.Content?.Parts?[0]?.Text ?? "No response from Gemini.";
         }
 
         public class GeminiResponse
         {
-            public string Answer { get; set; }
+            public Candidate[] Candidates { get; set; }
+
+            public class Candidate
+            {
+                public Content Content { get; set; }
+            }
+
+            public class Content
+            {
+                public Part[] Parts { get; set; }
+            }
+
+            public class Part
+            {
+                public string Text { get; set; }
+            }
         }
     }
 }

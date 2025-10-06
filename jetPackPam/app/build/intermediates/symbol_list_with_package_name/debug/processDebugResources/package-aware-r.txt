@@ -1,4 +1,11 @@
 student.projects.jetpackpam
+anim fragment_fast_out_extra_slow_in
+animator fragment_close_enter
+animator fragment_close_exit
+animator fragment_fade_enter
+animator fragment_fade_exit
+animator fragment_open_enter
+animator fragment_open_exit
 attr action
 attr activityAction
 attr activityName
@@ -21,7 +28,6 @@ attr finishSecondaryWithPrimary
 attr font
 attr fontProviderAuthority
 attr fontProviderCerts
-attr fontProviderFallbackQuery
 attr fontProviderFetchStrategy
 attr fontProviderFetchTimeout
 attr fontProviderPackage
@@ -66,10 +72,6 @@ attr tag
 attr targetPackage
 attr ttcIndex
 attr uri
-bool enable_system_alarm_service_default
-bool enable_system_foreground_service_default
-bool enable_system_job_service_default
-bool workmanager_test_configuration
 color androidx_core_ripple_material_light
 color androidx_core_secondary_text_default_material_light
 color black
@@ -124,12 +126,8 @@ dimen notification_small_icon_size_as_large
 dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
-drawable admob_close_button_black_circle_white_cross
-drawable admob_close_button_white_circle_black_cross
-drawable admob_close_button_white_cross
+drawable abc_vector_test
 drawable baseline_play_circle_outline_24
-drawable circular_vignette_bottom
-drawable circular_vignette_top
 drawable common_full_open_on_phone
 drawable common_google_signin_btn_icon_dark
 drawable common_google_signin_btn_icon_dark_focused
@@ -152,6 +150,7 @@ drawable common_google_signin_btn_text_light_normal_background
 drawable darkpamblue
 drawable darkpamgreen
 drawable darkpamog
+drawable google_logo
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_call_answer
@@ -162,6 +161,9 @@ drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_other_sign_in
+drawable ic_passkey
+drawable ic_password
 drawable lightpamblue
 drawable lightpamgreen
 drawable lightpamog
@@ -179,8 +181,6 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable pamicon
-drawable rectangular_vignette_bottom
-drawable rectangular_vignette_top
 font inter_medium
 font inter_medium_lightitalic
 font inter_regular
@@ -241,13 +241,14 @@ id browser_actions_menu_item_text
 id browser_actions_menu_items
 id browser_actions_menu_view
 id chronometer
-id compose_prefetch_scheduler
+id coil_request_manager
 id compose_view_saveable_id_tag
 id consume_window_insets_tag
 id dark
 id dialog_button
 id edit_text_id
 id forever
+id fragment_container_view_tag
 id hide_graphics_layer_in_inspector_tag
 id hide_ime_id
 id hide_in_inspector_tag
@@ -275,18 +276,17 @@ id report_drawn
 id right_icon
 id right_side
 id rtl
+id special_effects_controller_view_tag
 id standard
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
 id tag_accessibility_heading
 id tag_accessibility_pane_title
-id tag_compat_insets_dispatch
 id tag_on_apply_window_listener
 id tag_on_receive_content_listener
 id tag_on_receive_content_mime_types
 id tag_screen_reader_focusable
 id tag_state_description
-id tag_system_bar_state_monitor
 id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
@@ -296,11 +296,11 @@ id text2
 id time
 id title
 id topToBottom
-id view_tree_disjoint_parent
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
+id visible_removing_fragment_view_tag
 id wide
 id wrapped_composition_tag
 integer google_play_services_version
@@ -319,11 +319,11 @@ layout notification_template_part_chronometer
 layout notification_template_part_time
 mipmap ic_launcher
 mipmap ic_launcher_round
-raw keep_cronet_api
-string CronetProviderClassName
+raw firebase_common_keep
+string android_credentials_TYPE_PASSWORD_CREDENTIAL
+string androidx_credentials_TYPE_PUBLIC_KEY_CREDENTIAL
 string androidx_startup
 string app_name
-string autofill
 string call_notification_answer_action
 string call_notification_answer_video_action
 string call_notification_decline_action
@@ -331,7 +331,6 @@ string call_notification_hang_up_action
 string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
-string close_button
 string close_drawer
 string close_sheet
 string common_google_play_services_enable_button
@@ -355,10 +354,17 @@ string common_signin_button_text_long
 string copy_toast_msg
 string default_error_message
 string default_popup_window_title
+string default_web_client_id
 string dropdown_menu
 string fallback_menu_item_copy_link
 string fallback_menu_item_open_in_browser
 string fallback_menu_item_share_link
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
+string google_web_client_id
 string in_progress
 string indeterminate
 string m3c_bottom_sheet_collapse_description
@@ -418,21 +424,12 @@ string m3c_time_picker_period_toggle_description
 string m3c_time_picker_pm
 string m3c_tooltip_long_press_label
 string m3c_tooltip_pane_description
-string mraid_alert_accept
-string mraid_alert_decline
-string mraid_allow_calendar_event
-string mraid_allow_store_picture
-string mraid_create_calendar_event
-string mraid_save_image
-string native_body
-string native_headline
-string native_media_view
 string navigation_menu
 string not_selected
+string project_id
 string range_end
 string range_start
 string selected
-string snackbar_pane_title
 string state_empty
 string state_off
 string state_on
@@ -440,29 +437,34 @@ string status_bar_notification_info_overflow
 string switch_role
 string tab
 string template_percent
-string test_ad
 string tooltip_description
 string tooltip_label
 style DialogWindowTheme
 style EdgeToEdgeFloatingDialogTheme
 style EdgeToEdgeFloatingDialogWindowTheme
+style FloatingDialogTheme
 style FloatingDialogWindowTheme
 style TextAppearance_Compat_Notification
 style TextAppearance_Compat_Notification_Info
 style TextAppearance_Compat_Notification_Line2
 style TextAppearance_Compat_Notification_Time
 style TextAppearance_Compat_Notification_Title
+style Theme_Hidden
 style Theme_JetPackPam
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 styleable ActivityFilter activityAction activityName
 styleable ActivityNavigator android_name action data dataPattern targetPackage
 styleable ActivityRule alwaysExpand tag
+styleable AnimatedStateListDrawableCompat android_dither android_visible android_variablePadding android_constantSize android_enterFadeDuration android_exitFadeDuration
+styleable AnimatedStateListDrawableItem android_id android_drawable
+styleable AnimatedStateListDrawableTransition android_drawable android_toId android_fromId android_reversible
 styleable Capability queryPatterns shortcutMatchRequired
 styleable ColorStateListItem android_color android_alpha android_lStar alpha lStar
-styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFallbackQuery fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
+styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
 styleable FontFamilyFont android_font android_fontWeight android_fontStyle android_ttcIndex android_fontVariationSettings font fontStyle fontVariationSettings fontWeight ttcIndex
-styleable FontFamilyProviderFallback fontProviderQuery fontProviderSystemFontFamily fontVariationSettings
+styleable Fragment android_name android_id android_tag
+styleable FragmentContainerView android_name android_tag
 styleable GradientColor android_startColor android_endColor android_type android_centerX android_centerY android_gradientRadius android_tileMode android_centerColor android_startX android_startY android_endX android_endY
 styleable GradientColorItem android_color android_offset
 styleable LoadingImageView circleCrop imageAspectRatio imageAspectRatioAdjust
@@ -477,6 +479,8 @@ styleable SignInButton buttonSize colorScheme scopeUris
 styleable SplitPairFilter primaryActivityName secondaryActivityAction secondaryActivityName
 styleable SplitPairRule animationBackgroundColor clearTop finishPrimaryWithSecondary finishSecondaryWithPrimary splitLayoutDirection splitMaxAspectRatioInLandscape splitMaxAspectRatioInPortrait splitMinHeightDp splitMinSmallestWidthDp splitMinWidthDp splitRatio tag
 styleable SplitPlaceholderRule animationBackgroundColor finishPrimaryWithPlaceholder placeholderActivityName splitLayoutDirection splitMaxAspectRatioInLandscape splitMaxAspectRatioInPortrait splitMinHeightDp splitMinSmallestWidthDp splitMinWidthDp splitRatio stickyPlaceholder tag
+styleable StateListDrawable android_dither android_visible android_variablePadding android_constantSize android_enterFadeDuration android_exitFadeDuration
+styleable StateListDrawableItem android_drawable
 xml backup_rules
 xml data_extraction_rules
 xml image_share_filepaths

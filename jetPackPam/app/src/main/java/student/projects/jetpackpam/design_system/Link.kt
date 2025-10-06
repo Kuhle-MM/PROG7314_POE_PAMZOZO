@@ -14,13 +14,11 @@ fun LinkButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
- Text(
-     text = text,
-     modifier = modifier
-         .clickable(onClick = onClick),
-     style = MaterialTheme.typography.titleSmall,
-     color = MaterialTheme.colorScheme.primary,
-     textAlign = TextAlign.Center
- )
-
+    Text(
+        text = text,
+        modifier = modifier.clickable(onClick = onClick),
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center
+    )
 }
