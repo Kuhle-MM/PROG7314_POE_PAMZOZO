@@ -111,8 +111,6 @@ fun AppNavGraph(
 
         }
 
-
-
         // --- Profile screen (with manual sign-out) ---
         composable("profile") {
             ProfileScreen(
