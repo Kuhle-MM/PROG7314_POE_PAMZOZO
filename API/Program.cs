@@ -1,4 +1,5 @@
 
+using PROG7314_POE.Controllers;
 using PROG7314_POE.Services;
 
 namespace PROG7314_POE
@@ -10,28 +11,36 @@ namespace PROG7314_POE
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddHttpClient<GeminiService>();
+            builder.Services.AddScoped<GeminiService>();
+            builder.Services.AddSingleton<NavigationService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<GeminiService>();
-            builder.Services.AddSingleton<NavigationService>();
-            builder.Services.AddSingleton<CameraService>();
+            //builder.Services.AddSingleton<GeminiService>();
+            //builder.Services.AddSingleton<NavigationService>();
+            //builder.Services.AddSingleton<CameraService>();
+            builder.Services.AddSingleton<GoogleCalendarService>();
 
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            // Enable swagger in all environments
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PAM API v1");
+                c.RoutePrefix = "swagger"; // Means swagger will be at /swagger
+            });
+            // Configure the HTTP request pipeline.
+            //if (app.Environment.IsDevelopment())
+            //{
+            //    app.UseSwagger();
+            //    app.UseSwaggerUI();
+            //}
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 
