@@ -31,7 +31,6 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -54,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    //implementation(libs.ads.mobile.sdk)
     implementation(libs.androidx.compose.material)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation(libs.material3.adaptive)
@@ -87,6 +88,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+//Nav Graph
+    implementation("androidx.navigation:navigation-compose:2.7.3")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
     // --- Debug ---
     debugImplementation(libs.androidx.ui.tooling)
