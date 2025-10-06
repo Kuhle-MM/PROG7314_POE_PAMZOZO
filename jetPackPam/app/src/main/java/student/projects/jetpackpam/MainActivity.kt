@@ -76,11 +76,10 @@ class MainActivity : ComponentActivity() {
 //                }
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    // AppNavGraph controls all navigation & session flow
-//                    AppNavGraph(
-//                        googleAuthClient = googleAuthClient,
-//                        authViewModel = authViewModel
-//                    )
+                    AppNavGraph(
+                        googleAuthClient = googleAuthClient,
+                        authViewModel = authViewModel
+                    )
 
                     //MainScreen()
                     //LoginScreen()
