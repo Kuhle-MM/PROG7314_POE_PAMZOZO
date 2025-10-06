@@ -49,7 +49,7 @@ fun HomeScreen(navController: NavHostController) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            ElevatedButton(onClick = { navController.navigate("profile") }) {
+            ElevatedButton(onClick = { navController.navigate("chat") }) {
                 Icon(
                     imageVector = Icons.Default.ChatBubbleOutline,
                     contentDescription = "Chat"

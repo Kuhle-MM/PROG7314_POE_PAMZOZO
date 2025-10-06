@@ -38,12 +38,16 @@ fun AppNavGraph(
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
         onResult = { result ->
+            Log.d("LoginScreen", "One Tap launcher callback triggered. Result code: ${result.resultCode}")
             if (result.resultCode == Activity.RESULT_OK) {
                 coroutineScope.launch {
                     try {
                         val signInResult =
                             googleAuthClient.signInWithIntent(result.data ?: return@launch)
                         authViewModel.handleGoogleSignInResult(signInResult)
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true }
+                        }
                     } catch (e: Exception) {
                         Log.e(TAG, "Error processing Google One Tap result", e)
                         authViewModel.handleGoogleSignInError(e.localizedMessage)

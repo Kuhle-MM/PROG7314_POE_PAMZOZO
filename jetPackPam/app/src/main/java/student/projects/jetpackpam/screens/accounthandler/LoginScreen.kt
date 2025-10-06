@@ -61,17 +61,21 @@ fun LoginScreen(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         coroutineScope.launch {
+            Log.d("LoginScreen", "Classic launcher callback triggered. Result code: ${result.resultCode}")
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 try {
                     val signInResult = googleAuthClient.signInWithIntent(result.data!!)
+
                     authViewModel.handleGoogleSignInResult(signInResult)
                     navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }
                 } catch (e: Exception) {
+                    Log.e("LoginScreen", "Classic Google sign-in failed", e)
                     Toast.makeText(context, "Google Sign-In failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
             } else {
+                Log.d("LoginScreen", "Classic Google Sign-In cancelled or data is null: ${result.data}")
                 Toast.makeText(context, "Google Sign-In cancelled", Toast.LENGTH_SHORT).show()
             }
         }
@@ -79,16 +83,17 @@ fun LoginScreen(
 
     // --- Google Sign-In button click ---
     val onGoogleSignInClick: () -> Unit = {
+        Log.d("LoginScreen", "Google Sign-In button clicked")
         coroutineScope.launch {
             try {
                 val intentSender = googleAuthClient.signIn()
                 if (intentSender != null) {
-                    // ✅ Prefer One Tap if available
+                    Log.d("LoginScreen", "Launching One Tap Sign-In")
                     googleSignInLauncher.launch(
                         IntentSenderRequest.Builder(intentSender).build()
                     )
                 } else {
-                    // ⚙️ Fallback to classic
+                    Log.d("LoginScreen", "One Tap not available, using classic launcher")
                     val fallbackIntent = googleAuthClient.getSignInIntent()
                     classicLauncher.launch(fallbackIntent)
                 }
