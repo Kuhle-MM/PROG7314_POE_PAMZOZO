@@ -4,29 +4,29 @@ namespace PROG7314_POE.Services
 {
     public class NavigationService
     {
-        private Location _homeLocation;
-        private Location _currentLocation;
+        private readonly Dictionary<string, List<Location>> _maps = new();
 
-        public void SetHomeLocation(Location location)
+        public void SetMapping(string robotId, List<Location> coordinates)
         {
-            _homeLocation = location;
+            _maps[robotId] = coordinates;
         }
 
-        public Location GetCurrentLocation()
+        public List<Location> GetMapping(string robotId)
         {
-            return _currentLocation;
+            if (_maps.TryGetValue(robotId, out var coordinates))
+            {
+                return coordinates;
+            }
+
+            return new List<Location>();
         }
 
-        public void UpdateCurrentLocation(float x, float y)
+        public void UpdateLocation(string robotId, Location location)
         {
-            _currentLocation = new Location { X = x, Y = y };
-        }
+            if (!_maps.ContainsKey(robotId))
+                _maps[robotId] = new List<Location>();
 
-        public string GetPathToHome()
-        {
-            // Simplified example
-            return $"Navigating from ({_currentLocation.X},{_currentLocation.Y}) to ({_homeLocation.X},{_homeLocation.Y})";
+            _maps[robotId].Add(location);
         }
-
     }
 }
