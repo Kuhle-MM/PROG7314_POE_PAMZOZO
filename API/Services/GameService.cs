@@ -15,6 +15,10 @@ namespace PROG7314_POE.Services
             _repo = repo;
         }
 
+        public IEnumerable<GameItem> GetItemsByCategory(string category)
+        {
+            return _repo.GetItems(category);
+        }
 
         public IEnumerable<string> GetCategories() => _repo.GetCategories();
 
@@ -193,4 +197,6 @@ namespace PROG7314_POE.Services
 
         public void AddItem(GameItem item) => _repo.AddItem(item);
     }
+
+
 }

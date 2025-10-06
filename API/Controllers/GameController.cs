@@ -16,6 +16,16 @@ namespace Charades.Controllers
             _game = game;
         }
 
+        [HttpGet("categories/{category}/items")]
+        public IActionResult GetItemsByCategory(string category)
+        {
+            var items = _game.GetItemsByCategory(category);
+            if (items == null || !items.Any())
+                return NotFound($"No items found in category '{category}'");
+
+            return Ok(items);
+        }
+
 
         [HttpGet("categories")]
         public IActionResult GetCategories() => Ok(_game.GetCategories());

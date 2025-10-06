@@ -5,6 +5,8 @@ namespace PROG7314_POE.Services
     public interface IGameService
     {
         IEnumerable<string> GetCategories();
+        IEnumerable<GameItem> GetItemsByCategory(string category);
+
         GameSession StartSession(string category, int roundSeconds = 60);
         GameSession? GetSession(string sessionId);
         GameItem? NextItem(string sessionId);
