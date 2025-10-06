@@ -126,6 +126,7 @@ int dimen notification_top_pad_large_text 0x7f040017
 int drawable admob_close_button_black_circle_white_cross 0x7f050000
 int drawable admob_close_button_white_circle_black_cross 0x7f050001
 int drawable admob_close_button_white_cross 0x7f050002
+int drawable baseline_play_circle_outline_24 0x7f050038
 int drawable circular_vignette_bottom 0x7f050003
 int drawable circular_vignette_top 0x7f050004
 int drawable common_full_open_on_phone 0x7f050005
