@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import student.projects.jetpackpam.ui.theme.Primary
 
@@ -100,10 +102,56 @@ fun TextFieldLong(
     }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun TextLong() {
-//    TextFieldLong(
-//        onMessageClick = { /* do nothing for preview */ }
-//    )
-//}
+@Composable
+fun MessageTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    hint: String,
+    modifier: Modifier = Modifier
+)
+{
+    Column (
+        modifier = modifier
+    ){
+
+        Spacer(modifier = Modifier.height(6.dp))
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = text,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            textStyle = MaterialTheme.typography.bodyLarge,
+            shape = MaterialTheme.shapes.medium,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun TextLongPreview() {
+    TextFieldLong(
+        text = "",
+        onValueChange = {},
+        label = "Password",
+        hint = "Enter your password",
+        isTextSecret = true
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun MessageTextFieldPreview() {
+    MessageTextField(
+        text = "Hello there!",
+        onValueChange = {}, // no-op for preview
+        label = "Message",
+        hint = "Type your message..."
+    )
+}

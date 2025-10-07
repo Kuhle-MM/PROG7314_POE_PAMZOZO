@@ -2,11 +2,9 @@ package student.projects.jetpackpam.screens.mainapp
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,20 +15,31 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.material.ContentAlpha
-import student.projects.jetpackpam.bottomNav.BottomBarScreen
-import student.projects.jetpackpam.bottomNav.BottomNavGraph
-import student.projects.jetpackpam.ui.theme.Primary
+import student.projects.jetpackpam.appNavigation.BottomBarScreen
+import student.projects.jetpackpam.appNavigation.BottomNavGraph
+import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+
 
 
 
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(
+    authViewModel: AuthorizationModelViewModel,
+    rootNavController: NavHostController,
+    googleAuthClient: GoogleAuthClient
+) {
+    val bottomNavController = rememberNavController()
+
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = bottomNavController) }
     ) { innerPadding ->
-        BottomNavGraph(navController = navController, paddingValues = innerPadding)
+        BottomNavGraph(
+            navController = bottomNavController,
+            paddingValues = innerPadding,
+            googleAuthClient = googleAuthClient,
+            authViewModel = authViewModel
+        )
     }
 }
 
@@ -44,9 +53,7 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background
-    )  {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -64,9 +71,7 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     NavigationBarItem(
-        label = {
-            Text(text = screen.title)
-        },
+        label = { Text(text = screen.title) },
         icon = {
             Icon(
                 imageVector = screen.icon,
@@ -76,12 +81,6 @@ fun RowScope.AddItem(
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = Primary,
-            unselectedIconColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-            selectedTextColor = Primary,
-            unselectedTextColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
-        ),
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id)

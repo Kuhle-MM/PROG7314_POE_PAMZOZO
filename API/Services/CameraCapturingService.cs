@@ -1,16 +1,24 @@
-﻿namespace PROG7314_POE.Services
-{
-    public class CameraCapturingService
+﻿
+    namespace PROG7314_POE.Services
     {
-        public async Task<byte[]> CaptureImageAsync()
+        public class CameraService
         {
-            // Simulate reading from a USB camera
-            return await File.ReadAllBytesAsync("path/to/sample.jpg");
-        }
+            public byte[] GetLiveFeed()
+            {
+                // Simulate a camera snapshot (replace with actual camera integration)
+                return File.ReadAllBytes("path/to/sample.jpg");
+            }
 
-        public string ConvertToBase64(byte[] imageData)
-        {
-            return Convert.ToBase64String(imageData);
+            public async Task<byte[]> CaptureImageAsync()
+            {
+                return await File.ReadAllBytesAsync("path/to/sample.jpg");
+            }
+
+            public string ConvertToBase64(byte[] imageData)
+            {
+                return Convert.ToBase64String(imageData);
+            }
         }
     }
-}
+
+
