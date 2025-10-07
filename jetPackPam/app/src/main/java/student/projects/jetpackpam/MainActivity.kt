@@ -1,37 +1,121 @@
 package student.projects.jetpackpam
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import student.projects.jetpackpam.appNavigation.RootNavGraph
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.auth.api.identity.Identity
+import student.projects.jetpackpam.appNavigation.AppNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
-import student.projects.jetpackpam.screens.ChatScreen
+import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Surface
+import androidx.core.content.ContextCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
-import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
+import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
+//import student.projects.jetpackpam.screens.charades.CharadesNavGraph
+import student.projects.jetpackpam.screens.charades.GameOverScreen
+import student.projects.jetpackpam.screens.charades.PlayingGameScreen
+import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.firsttimecustom.FontSelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.LanguageSelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.PamThemeSelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen
+import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.ui.theme.JetPackPamTheme
 import student.projects.jetpackpam.ui.theme.Surface
 
-
-// if you are lost look at the screen package and then the auth screens for log in
 class MainActivity : ComponentActivity() {
-    private val authViewModel: AuthorizationModelViewModel by viewModels()
+
+    // --- Dependencies used throughout the app ---
+    private lateinit var authViewModel: AuthorizationModelViewModel
+    private lateinit var googleAuthClient: GoogleAuthClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //microphone permissions
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (!isGranted) {
+                    Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG).show()
+                }
+            }
+
+        // Check permission
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Already granted
+            }
+            else -> {
+                // Ask for permission
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            }
+        }
+        // --- Initialize the GoogleAuthClient ---
+        // This manages all Google One Tap / Sign-In operations
+        googleAuthClient = GoogleAuthClient(
+            context = applicationContext,
+            oneTapClient = Identity.getSignInClient(applicationContext)
+        )
+
+        // --- ViewModel setup using a Factory ---
+        // The factory injects our googleAuthClient into the ViewModel
+        val factory = AuthorizationModelViewModelFactory(googleAuthClient)
+        authViewModel = ViewModelProvider(this, factory)[AuthorizationModelViewModel::class.java]
+
+        // --- Compose UI setup ---
         setContent {
-            JetPackPamTheme () {
+
+
+
+            //Gaming section
+//                Surface {
+//                    val navController = rememberNavController()
+//                    NavHost(
+//                        navController = navController,
+//                        startDestination = "startup"
+//                    ) {
+//                        composable("startup") { StartUpScreen(navController) }
+//                        composable("category") { CategorySelectionScreen(navController) }
+//                        composable("playing/{sessionId}/{category}") { backStackEntry ->
+//                            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
+//                            val category = backStackEntry.arguments?.getString("category") ?: ""
+//                            PlayingGameScreen(navController, sessionId, category)
+//                        }
+//                        composable("gameover") { GameOverScreen(navController) }
+//                    }
+//                }
+            JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    RootNavGraph(authViewModel)
+                    AppNavGraph(
+                        googleAuthClient = googleAuthClient,
+                        authViewModel = authViewModel
+                    )
+
+                    //MainScreen()
+                    //LoginScreen()
+                    //LanguageSelectionScreen()
+                    //PersonalitySelectionScreen()
+                    //PersonalitySelectionScreen2()
+                    //FontSelectionScreen()
+                    // PamThemeSelectionScreen()
                 }
             }
         }
+
     }
 }
