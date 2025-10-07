@@ -8,6 +8,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -19,7 +20,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -85,7 +88,7 @@ fun StartUpScreen(navController: NavController) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24), 
+                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
                 contentDescription = "Play Button",
                 modifier = Modifier
                     .size(120.dp)
@@ -227,10 +230,14 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
     var currentGuess by remember { mutableStateOf("Loading...") }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var timeLeft by remember { mutableStateOf(60) } // 60 seconds countdown
+    var timeLeft by remember { mutableStateOf(60) }
     var isGameOver by remember { mutableStateOf(false) }
 
-    // Force landscape orientation
+    // Track results
+    var correctGuesses by remember { mutableStateOf<List<String>>(emptyList()) }
+    var skippedGuesses by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    // --- Orientation ---
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         onDispose {
@@ -238,7 +245,7 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
         }
     }
 
-    // --- Load guesses once ---
+    // --- Load guesses ---
     LaunchedEffect(Unit) {
         try {
             guesses = CharadesRetrofitInstance.api.getAllGuesses(category)
@@ -252,7 +259,7 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
         }
     }
 
-    // --- Countdown Timer ---
+    // --- Timer ---
     LaunchedEffect(Unit) {
         while (timeLeft > 0 && !isGameOver) {
             delay(1000)
@@ -261,16 +268,18 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
         isGameOver = true
     }
 
-    // Navigate to GameOverScreen when timer ends
+    // --- Navigate when finished ---
     if (isGameOver) {
         LaunchedEffect(Unit) {
-            navController.navigate("gameover") {
+            val correctParam = Uri.encode(correctGuesses.joinToString(","))
+            val skippedParam = Uri.encode(skippedGuesses.joinToString(","))
+            navController.navigate("gameover?correct=$correctParam&skipped=$skippedParam") {
                 popUpTo("playing/$sessionId/$category") { inclusive = true }
             }
         }
     }
 
-    // --- Helper: Vibration ---
+    // --- Helpers ---
     fun vibrateFeedback() {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
         vibrator?.let {
@@ -283,10 +292,9 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
         }
     }
 
-    // --- Helper: Advance to Next Guess ---
     fun nextGuess() {
         if (guesses.isNotEmpty()) {
-            currentIndex = (currentIndex + 1) % guesses.size // loops automatically
+            currentIndex = (currentIndex + 1) % guesses.size
             currentGuess = guesses[currentIndex].text
         }
     }
@@ -295,34 +303,40 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
     val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
+    var lastActionTime by remember { mutableStateOf(0L) }
+
     val sensorEventListener = object : SensorEventListener {
-        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-            // no-op
-        }
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
         override fun onSensorChanged(event: SensorEvent) {
-            val y = event.values[1]  // Y-axis is forward/back tilt in landscape
-            // optional: val x = event.values[0] for side tilt
+            val now = System.currentTimeMillis()
+            // Prevent multiple triggers too fast
+            if (now - lastActionTime < 800) return
 
-            // Adjust threshold for better sensitivity
-            if (y < -3f) { // Tilt forward
+            val y = event.values[1] // Landscape tilt detection uses Y axis
+
+            if (y < -5f) { // Device tilted DOWN (correct)
+                lastActionTime = now
                 scope.launch {
-                    // submit correct guess
+                    vibrateFeedback()
+                    correctGuesses = correctGuesses + currentGuess
+                    nextGuess()
                 }
-            } else if (y > 3f) { // Tilt backward
+            } else if (y > 5f) { // Device tilted UP (skip)
+                lastActionTime = now
                 scope.launch {
-                    // skip guess
+                    vibrateFeedback()
+                    skippedGuesses = skippedGuesses + currentGuess
+                    nextGuess()
                 }
             }
         }
-
     }
 
     DisposableEffect(Unit) {
-        sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_UI)
         onDispose { sensorManager.unregisterListener(sensorEventListener) }
     }
-
 
     // --- UI ---
     Column(
@@ -338,9 +352,8 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
         } else if (errorMessage != null) {
             Text(errorMessage!!, color = Color.Red)
         } else {
-            // Show countdown timer
             Text(
-                text = "Time left: $timeLeft s",
+                text = "⏱ $timeLeft s left",
                 style = MaterialTheme.typography.titleLarge.copy(color = Color.Yellow)
             )
 
@@ -357,7 +370,6 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // --- Manual Next (for testing) ---
             Button(
                 onClick = { nextGuess() },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8C77F7))
@@ -369,18 +381,63 @@ fun PlayingGameScreen(navController: NavController, sessionId: String, category:
 }
 
 @Composable
-fun GameOverScreen(navController: NavController) {
-    // Force landscape orientation
+fun GameOverScreen(navController: NavController, correct: String?, skipped: String?) {
     val context = LocalContext.current
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         onDispose {
-            // Optional: restore portrait on exit
             (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
-    Text("Game Over!")
-    Button(onClick = { navController.navigate("startup") }) {
-        Text("Restart")
+
+    val correctList = correct?.split(",")?.filter { it.isNotBlank() } ?: emptyList()
+    val skippedList = skipped?.split(",")?.filter { it.isNotBlank() } ?: emptyList()
+
+    // Scrollable for long lists
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF202020))
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "Game Over!",
+            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text("Correct Words:", color = Color.Green, fontWeight = FontWeight.Bold)
+        correctList.forEach { word ->
+            Text("• $word", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Skipped Words:", color = Color.Red, fontWeight = FontWeight.Bold)
+        skippedList.forEach { word ->
+            Text("• $word", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        val activity = (LocalContext.current as? Activity)
+
+        Button(
+            onClick = {
+                activity?.finish()
+                activity?.let {
+                    val intent = it.intent
+                    intent.putExtra("navigateToCharades", true)
+                    it.startActivity(intent)
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8C77F7))
+        ) {
+            Text("Go home", color = Color.White)
+        }
+
     }
 }

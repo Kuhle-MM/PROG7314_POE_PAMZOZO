@@ -1,6 +1,9 @@
 package student.projects.jetpackpam
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +15,9 @@ import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Surface
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -39,7 +44,27 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //microphone permissions
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (!isGranted) {
+                    Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG).show()
+                }
+            }
 
+        // Check permission
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Already granted
+            }
+            else -> {
+                // Ask for permission
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            }
+        }
         // --- Initialize the GoogleAuthClient ---
         // This manages all Google One Tap / Sign-In operations
         googleAuthClient = GoogleAuthClient(
@@ -57,7 +82,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                //Gaming section
+            //Gaming section
 //                Surface {
 //                    val navController = rememberNavController()
 //                    NavHost(
@@ -87,7 +112,7 @@ class MainActivity : ComponentActivity() {
                     //PersonalitySelectionScreen()
                     //PersonalitySelectionScreen2()
                     //FontSelectionScreen()
-                   // PamThemeSelectionScreen()
+                    // PamThemeSelectionScreen()
                 }
             }
         }
