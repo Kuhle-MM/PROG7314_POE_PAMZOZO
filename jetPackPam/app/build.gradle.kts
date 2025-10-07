@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation(libs.firebase.database)
 
     // --- Testing ---
     testImplementation(libs.junit)
