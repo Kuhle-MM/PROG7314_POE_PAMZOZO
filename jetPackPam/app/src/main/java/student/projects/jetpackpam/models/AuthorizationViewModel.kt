@@ -13,6 +13,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.content.Context
+import android.widget.Toast
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 
 /**
@@ -29,7 +34,7 @@ class AuthorizationModelViewModel(
     private val _signUpSuccess = MutableStateFlow(false)
     val signUpSuccess: StateFlow<Boolean> = _signUpSuccess
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val db = FirebaseDatabase.getInstance().reference // ✅ Added Realtime DB reference
+    private val db = FirebaseDatabase.getInstance().reference //Added Realtime DB reference
 
     // Loading state for UI
     private val _isLoading = MutableStateFlow(false)
@@ -291,4 +296,29 @@ class AuthorizationModelViewModel(
     fun resetSignUpState() {
         _signUpSuccess.value = false
     }
+
+
+
+    fun signOutSafely(
+        context: Context,
+        navController: NavHostController,
+        authViewModel: AuthorizationModelViewModel
+    ) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                authViewModel.signOut()
+                Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
+                navController.navigate("login") {
+                    popUpTo("main") { inclusive = true }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    context,
+                    "Sign-out failed: ${e.localizedMessage ?: "Unknown error"}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
 }
