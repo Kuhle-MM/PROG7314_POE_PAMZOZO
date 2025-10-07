@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PROG7314_POE", "PROG7314_POE.csproj", "{944A7FDA-6DFA-4271-B3A9-507B76D978AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PamAPITest", "..\PamAPITest\PamAPITest.csproj", "{146171DD-C58E-4FAC-9EC4-8451F3BB0F00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{944A7FDA-6DFA-4271-B3A9-507B76D978AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{944A7FDA-6DFA-4271-B3A9-507B76D978AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{944A7FDA-6DFA-4271-B3A9-507B76D978AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{146171DD-C58E-4FAC-9EC4-8451F3BB0F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{146171DD-C58E-4FAC-9EC4-8451F3BB0F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{146171DD-C58E-4FAC-9EC4-8451F3BB0F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{146171DD-C58E-4FAC-9EC4-8451F3BB0F00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
