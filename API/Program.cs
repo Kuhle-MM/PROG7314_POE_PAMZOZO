@@ -12,6 +12,12 @@ namespace PROG7314_POE
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                // Listen on all IP addresses (0.0.0.0) on port 7298
+                options.ListenAnyIP(7298);
+            });
+
             // Add services to the container.
             builder.Services.AddHttpClient<GeminiService>();
             builder.Services.AddScoped<GeminiService>();
@@ -64,7 +70,7 @@ namespace PROG7314_POE
             //    app.UseSwaggerUI();
             //}
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
 
