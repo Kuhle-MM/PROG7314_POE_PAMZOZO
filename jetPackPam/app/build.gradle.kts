@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.firebase.database)
+    implementation(libs.androidx.foundation)
+    implementation(libs.material3)
+    implementation(libs.androidx.material3.window.size.class1)
 
     // --- Testing ---
     testImplementation(libs.junit)
