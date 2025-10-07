@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.appNavigation.BottomBarScreen
 import student.projects.jetpackpam.appNavigation.BottomNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.sidenavscreen.SideNav
 
@@ -31,7 +32,8 @@ import student.projects.jetpackpam.screens.sidenavscreen.SideNav
 fun MainScreen(
     authViewModel: AuthorizationModelViewModel,
     rootNavController: NavHostController,
-    googleAuthClient: GoogleAuthClient
+    googleAuthClient: GoogleAuthClient,
+    languageViewModel: LanguageViewModel
 ) {
     val bottomNavController = rememberNavController()
     val activity = LocalContext.current as Activity
@@ -39,6 +41,7 @@ fun MainScreen(
     val isExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val languageViewModel = languageViewModel
 
     if (isExpanded) {
         // 🔹 Tablet / Large Screen Layout → Side Navigation
@@ -49,7 +52,8 @@ fun MainScreen(
                     navController = bottomNavController,
                     paddingValues = PaddingValues(16.dp),
                     googleAuthClient = googleAuthClient,
-                    authViewModel = authViewModel
+                    authViewModel = authViewModel,
+                    languageViewModel
                 )
             }
         }
@@ -94,7 +98,7 @@ fun MainScreen(
                         "fontSize" -> "Font Size"
                         "pamTheme" -> "Pam Theme"
                         "personality" -> "Personality"
-                        else -> "App"
+                        else -> "Profile"
                     }
 
                     TopAppBar(
@@ -114,7 +118,8 @@ fun MainScreen(
                     navController = bottomNavController,
                     paddingValues = innerPadding,
                     googleAuthClient = googleAuthClient,
-                    authViewModel = authViewModel
+                    authViewModel = authViewModel,
+                    languageViewModel
                 )
             }
         }

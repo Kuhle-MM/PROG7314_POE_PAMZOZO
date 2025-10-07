@@ -29,11 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.LanguageRequest
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.retrofit.languageApi
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
-fun LanguageSelectionScreen() {
+fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -42,17 +43,12 @@ fun LanguageSelectionScreen() {
     var selectedLanguage by remember { mutableStateOf("English") }
     var currentLanguageCode by remember { mutableStateOf("en") }
 
-    var uiTexts by remember {
-        mutableStateOf(
-            mutableMapOf(
-                "header" to "Select preferred language",
-                "description" to "Choose the language you prefer for the app",
-                "buttonNext" to "Next",
-                "footer" to "Powered by Pam"
-            )
-        )
-    }
+    var uiTexts by remember { mutableStateOf(languageViewModel.uiTexts) }
 
+    fun updateAppLanguage(language: String, code: String, newTexts: Map<String, String>) {
+        languageViewModel.setLanguage(language)
+        languageViewModel.updateTexts(newTexts)
+    }
     fun languageCode(language: String): String {
         return when (language) {
             "Afrikaans" -> "af"
