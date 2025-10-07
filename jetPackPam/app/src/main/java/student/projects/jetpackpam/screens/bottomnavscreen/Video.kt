@@ -1,5 +1,6 @@
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -7,17 +8,25 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CenterFocusStrong
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -43,6 +53,7 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.CameraRequest
 import student.projects.jetpackpam.data.MotorRequest
 import student.projects.jetpackpam.retrofit.PiRetrofitInstance
+import kotlin.math.hypot
 
 @Composable
 fun VideoScreen() {
@@ -53,18 +64,27 @@ fun VideoScreen() {
             (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
+
     val coroutineScope = rememberCoroutineScope()
     var imageUrl by remember { mutableStateOf("http://10.0.2.2:5000/api/camera/stream") }
+    var hasFeed by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // Refresh live feed every 1 second
     LaunchedEffect(Unit) {
         while (true) {
-            imageUrl = "http://10.0.2.2:5000/api/camera/stream?ts=${System.currentTimeMillis()}"
+            try {
+                imageUrl = "http://10.0.2.2:5000/api/camera/stream?ts=${System.currentTimeMillis()}"
+                hasFeed = true
+                errorMessage = null
+            } catch (e: Exception) {
+                hasFeed = false
+                errorMessage = "⚠️ Unable to refresh video feed. Check connection."
+            }
             delay(1000)
         }
     }
 
-    // Landscape layout
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -72,7 +92,7 @@ fun VideoScreen() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left - Joystick control for motors
+        // ---------- Left: Motor Joystick ----------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -94,8 +114,9 @@ fun VideoScreen() {
                                     rightMotorSpeed = rightSpeed
                                 )
                             )
+                            errorMessage = null
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            errorMessage = "⚠️ Could not connect to motor API."
                         }
                     }
                 },
@@ -104,29 +125,59 @@ fun VideoScreen() {
                         try {
                             PiRetrofitInstance.api.moveMotors(MotorRequest(0, 0, 0, 0))
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            errorMessage = "⚠️ Failed to stop motors. API not responding."
                         }
                     }
                 }
             )
         }
 
-        // Center - Live video feed
+        // ---------- Center: Video Feed ----------
         Box(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxHeight(),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(imageUrl),
-                contentDescription = "Camera Feed",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            if (hasFeed) {
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = imageUrl,
+                        onError = { hasFeed = false; errorMessage = "🚫 No live feed detected." }
+                    ),
+                    contentDescription = "Camera Feed",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                // Fallback when no live feed detected
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = errorMessage ?: "🚫 No live feed detected.",
+                        color = Color.White,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            try {
+                                imageUrl = "http://10.0.2.2:5000/api/camera/stream?ts=${System.currentTimeMillis()}"
+                                hasFeed = true
+                                errorMessage = null
+                            } catch (e: Exception) {
+                                errorMessage = "⚠️ Failed to reconnect to feed."
+                            }
+                        }
+                    }) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Retry", tint = Color.White)
+                    }
+                }
+            }
         }
 
-        // Right - Camera control for pan/tilt
+        // ---------- Right: Camera Controls ----------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -139,8 +190,9 @@ fun VideoScreen() {
                     coroutineScope.launch {
                         try {
                             PiRetrofitInstance.api.moveCamera(CameraRequest(pan, tilt))
+                            errorMessage = null
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            errorMessage = "⚠️ Could not connect to camera API."
                         }
                     }
                 },
@@ -148,115 +200,134 @@ fun VideoScreen() {
                     coroutineScope.launch {
                         try {
                             PiRetrofitInstance.api.moveCamera(CameraRequest(pan = 0, tilt = 0))
+                            errorMessage = null
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            errorMessage = "⚠️ Reset failed. Camera API unreachable."
                         }
                     }
                 }
             )
         }
     }
-}
 
-// -------------------- JOYSTICK CONTROL --------------------
+    // ---------- Overlay Error Message ----------
+//    errorMessage?.let {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 8.dp)
+//                .background(Color(0xAA000000)),
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Text(text = it, color = Color.Red, modifier = Modifier.padding(8.dp))
+//        }
+//    }
+}
 
 @Composable
 fun JoystickControl(
-    modifier: Modifier = Modifier,
-    onMove: (Int, Int) -> Unit,
+    onMove: (x: Int, y: Int) -> Unit,
     onStop: () -> Unit
 ) {
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
+    var handlePosition by remember { mutableStateOf(Offset.Zero) }
+    val radius = 100f
 
     Box(
-        modifier = modifier
-            .size(150.dp)
-            .clip(CircleShape)
-            .background(Color.DarkGray.copy(alpha = 0.4f))
+        modifier = Modifier
+            .size(200.dp)
+            .background(Color.DarkGray, CircleShape)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragEnd = {
-                        offsetX = 0f
-                        offsetY = 0f
+                        handlePosition = Offset.Zero
                         onStop()
                     },
                     onDrag = { change, dragAmount ->
                         change.consume()
-                        offsetX = (offsetX + dragAmount.x).coerceIn(-60f, 60f)
-                        offsetY = (offsetY + dragAmount.y).coerceIn(-60f, 60f)
-                        onMove(offsetX.toInt(), offsetY.toInt())
+                        val newOffset = handlePosition + dragAmount
+                        val distance = hypot(newOffset.x, newOffset.y)
+                        if (distance < radius) {
+                            handlePosition = newOffset
+                        }
+                        val normalizedX = (newOffset.x / radius * 100).toInt()
+                        val normalizedY = (-newOffset.y / radius * 100).toInt()
+                        onMove(normalizedX, normalizedY)
                     }
                 )
             },
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .offset(x = offsetX.dp, y = offsetY.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-        )
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            drawCircle(Color.Gray)
+            drawCircle(Color.Red, radius = 20f, center = Offset(
+                size.width / 2 + handlePosition.x,
+                size.height / 2 + handlePosition.y
+            ))
+        }
     }
 }
 
-// -------------------- CAMERA CONTROL --------------------
-
+//Camera control with two sliders (Pan and Tilt) and reset button.
 @Composable
 fun CameraControl(
-    modifier: Modifier = Modifier,
-    onMove: (Int, Int) -> Unit,
+    onMove: (pan: Int, tilt: Int) -> Unit,
     onReset: () -> Unit
 ) {
     var pan by remember { mutableStateOf(0) }
     var tilt by remember { mutableStateOf(0) }
 
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier
+            .background(Color.DarkGray.copy(alpha = 0.6f))
+            .padding(16.dp)
+            .width(150.dp)
     ) {
-        IconButton(
-            onClick = {
-                tilt = (tilt + 10).coerceIn(-90, 90)
-                onMove(pan, tilt)
-            }
+        Text("Camera Control", color = Color.White)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Icon(Icons.Default.CenterFocusStrong, contentDescription = "Tilt Up", tint = Color.White)
-        }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            IconButton(onClick = {
-                pan = (pan - 10).coerceIn(-90, 90)
-                onMove(pan, tilt)
-            }) {
-                Text("◀", color = Color.White)
+            Button(onClick = { tilt = (tilt + 10).coerceAtMost(90); onMove(pan, tilt) }) {
+                //Text("🔼")
+                Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Up")
             }
-
-            IconButton(onClick = onReset) {
-                Icon(Icons.Default.Refresh, contentDescription = "Reset", tint = Color.Red)
-            }
-
-            IconButton(onClick = {
-                pan = (pan + 10).coerceIn(-90, 90)
-                onMove(pan, tilt)
-            }) {
-                Text("▶", color = Color.White)
+            Button(onClick = { tilt = (tilt - 10).coerceAtLeast(-90); onMove(pan, tilt) }) {
+                //Text("🔽")
+                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Down")
             }
         }
 
-        IconButton(
-            onClick = {
-                tilt = (tilt - 10).coerceIn(-90, 90)
-                onMove(pan, tilt)
-            }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text("▼", color = Color.White)
+            Button(onClick = { pan = (pan - 10).coerceAtLeast(-90); onMove(pan, tilt) }) {
+                //Text("◀️")
+                Icon(Icons.Default.ChevronLeft, contentDescription = "Left")
+            }
+            Button(onClick = { pan = (pan + 10).coerceAtMost(90); onMove(pan, tilt) }) {
+                //Text("▶️")
+                Icon(Icons.Default.ChevronRight, contentDescription = "Right")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(onClick = {
+            pan = 0
+            tilt = 0
+            onReset()
+        }) {
+            Icon(Icons.Default.Refresh, contentDescription = "Reset")
         }
     }
 }
-
 // -------------------- PREVIEW --------------------
 
 @Preview(showBackground = true)
