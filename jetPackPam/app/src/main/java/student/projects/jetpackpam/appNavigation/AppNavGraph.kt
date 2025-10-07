@@ -24,7 +24,7 @@ import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
 
-private const val TAG = "AppNavGraph"
+const val TAG = "AppNavGraph"
 
 @Composable
 fun AppNavGraph(
@@ -64,16 +64,6 @@ fun AppNavGraph(
             }
         }
     )
-
-    // --- Navigation control based on authentication state ---
-    LaunchedEffect(userData) {
-        // If user logs in successfully → move to MainScreen
-        if (userData != null && navController.currentDestination?.route != "main") {
-            navController.navigate("main") {
-                popUpTo("login") { inclusive = true }
-            }
-        }
-    }
 
     // --- Navigation graph definition ---
     NavHost(

@@ -6,7 +6,9 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +20,7 @@ import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAu
  * 1. Email/Password login & sign-up
  * 2. Google One Tap login
  *
- * This separates Google login from email login to prevent auto-login issues.
+ * Automatically creates Realtime Database structure after successful sign-up.
  */
 class AuthorizationModelViewModel(
     private val googleAuthClient: GoogleAuthClient
@@ -27,6 +29,7 @@ class AuthorizationModelViewModel(
     private val _signUpSuccess = MutableStateFlow(false)
     val signUpSuccess: StateFlow<Boolean> = _signUpSuccess
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val db = FirebaseDatabase.getInstance().reference // ✅ Added Realtime DB reference
 
     // Loading state for UI
     private val _isLoading = MutableStateFlow(false)
@@ -41,7 +44,6 @@ class AuthorizationModelViewModel(
     val userData: StateFlow<UserData?> = _userData.asStateFlow()
 
     // --- EMAIL/PASSWORD LOGIN ---
-
     fun login(email: String, password: String, onSuccess: () -> Unit) {
         if (email.isBlank() || password.isBlank()) {
             _errorMessage.value = "Email and password cannot be empty"
@@ -59,7 +61,9 @@ class AuthorizationModelViewModel(
                         UserData(
                             userId = firebaseUser.uid,
                             username = firebaseUser.displayName,
+                            email = firebaseUser.email,
                             profilePictureUrl = firebaseUser.photoUrl?.toString()
+
                         )
                     }
                     onSuccess()
@@ -69,6 +73,7 @@ class AuthorizationModelViewModel(
             }
     }
 
+    // --- EMAIL/PASSWORD SIGN-UP ---
     fun signUp(
         name: String,
         surname: String,
@@ -76,8 +81,7 @@ class AuthorizationModelViewModel(
         password: String,
         confirmPassword: String,
         onSuccess: () -> Unit
-    )
-    {
+    ) {
         Log.d("SignUpViewModel", "Starting sign-up for: $email")
 
         if (name.isBlank() || surname.isBlank() || email.isBlank() ||
@@ -88,7 +92,7 @@ class AuthorizationModelViewModel(
             return
         }
 
-        if (! Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _errorMessage.value = "Invalid email address"
             Log.w("SignUpViewModel", "Invalid email format: $email")
             return
@@ -105,13 +109,28 @@ class AuthorizationModelViewModel(
                 _isLoading.value = true
                 Log.d("SignUpViewModel", "Attempting Firebase sign-up...")
 
-                // Example: Firebase sign-up call
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
-                        Log.i("SignUpViewModel", "Sign-up successful for: $email")
-                        _isLoading.value = false
-                        _signUpSuccess.value = true
-                        onSuccess()
+                        val profileUpdate = UserProfileChangeRequest.Builder()
+                            .setDisplayName("$name $surname")
+                            .build()
+                        val user = auth.currentUser
+                        if (user != null) {
+                            Log.i("SignUpViewModel", "Sign-up successful for: $email")
+
+                            // ✅ Create default user structure in Realtime Database
+                            createUserStructure(
+                                uid = user.uid,
+                                name = name,
+                                surname = surname,
+                                email = email,
+                                password = password
+                            )
+
+                            _isLoading.value = false
+                            _signUpSuccess.value = true
+                            onSuccess()
+                        }
                     }
                     .addOnFailureListener { e ->
                         Log.e("SignUpViewModel", "Sign-up failed: ${e.localizedMessage}")
@@ -127,34 +146,130 @@ class AuthorizationModelViewModel(
         }
     }
 
-    // --- GOOGLE ONE TAP LOGIN ---
+    // ✅ --- NEW: Create Realtime Database structure ---
+    private fun createUserStructure(uid: String, name: String, surname: String, email: String, password: String) {
+        val userRef = db.child("User").child(uid)
 
-    /**
-     * Launch One Tap login and return the IntentSender to the UI.
-     */
+        val userData = mapOf(
+            "command" to "",
+            "pi" to mapOf(
+                "piid" to "",
+                "picolour" to "",
+                "camerapan" to 0,
+                "cameratilt" to 0,
+                "motorspeed" to 0,
+                "motorx" to 0,
+                "motory" to 0
+            ),
+            "mapping" to mapOf(
+                "mappingid" to "",
+                "image" to ""
+            ),
+            "preference" to mapOf(
+                "preferenceid" to "",
+                "preferenceName" to ""
+            ),
+            "profile" to mapOf(
+                "name" to name,
+                "surname" to surname,
+                "email" to email,
+                "password" to password,
+                "phonenumber" to ""
+            )
+        )
+
+        userRef.setValue(userData)
+            .addOnSuccessListener {
+                Log.d("FirebaseDB", "User data successfully created for $uid")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirebaseDB", "Failed to create user structure", e)
+            }
+    }
+
+    // --- GOOGLE ONE TAP LOGIN ---
     suspend fun getGoogleSignInIntentSender(): IntentSender? {
         return googleAuthClient.signIn()
     }
 
-    /**
-     * Handle result returned from Google One Tap sign-in.
-     */
     fun handleGoogleSignInResult(result: SignInResult) {
         viewModelScope.launch {
-            _isLoading.value = false
-            if (result.data != null) {
-                // Save Google account info (user may confirm Firebase login separately)
-                _userData.value = result.data
-                _errorMessage.value = null
-            } else {
-                _errorMessage.value = result.errorMessage ?: "Google sign-in canceled"
+            _isLoading.value = true
+
+            val idToken = result.idToken
+            if (idToken.isNullOrBlank()) {
+                _errorMessage.value = result.errorMessage ?: "Google sign-in failed"
+                _isLoading.value = false
+                return@launch
             }
+
+            // Create Firebase credential
+            val googleCredential = GoogleAuthProvider.getCredential(idToken, null)
+
+            // Sign in with Firebase
+            auth.signInWithCredential(googleCredential)
+                .addOnSuccessListener { authResult ->
+                    val firebaseUser = authResult.user
+                    val email = firebaseUser?.email
+                    val username = firebaseUser?.displayName
+                    val photo = firebaseUser?.photoUrl?.toString()
+
+                    if (firebaseUser == null || email.isNullOrBlank()) {
+                        _errorMessage.value = "Failed to get email from Firebase"
+                        _isLoading.value = false
+                        return@addOnSuccessListener
+                    }
+
+                    // Check if email already has sign-in methods
+                    auth.fetchSignInMethodsForEmail(email)
+                        .addOnSuccessListener { signInMethods ->
+                            when {
+                                // Already linked with Google
+                                signInMethods.signInMethods?.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD) == true -> {
+                                    _userData.value = UserData(
+                                        userId = firebaseUser.uid,
+                                        username = username,
+                                        email = email,
+                                        profilePictureUrl = photo
+                                    )
+                                    _errorMessage.value = null
+                                    Log.d("GoogleSSO", "Signed in with Google: $email")
+                                }
+
+                                // Account exists but not linked
+                                !signInMethods.signInMethods.isNullOrEmpty() -> {
+                                    _errorMessage.value =
+                                        "This email is already registered. Please log in with your password first to link Google."
+                                    Log.w("GoogleSSO", "Account exists but not linked: $email")
+                                }
+
+                                // No account found → auto-register with Google
+                                else -> {
+                                    _userData.value = UserData(
+                                        userId = firebaseUser.uid,
+                                        username = username,
+                                        email = email,
+                                        profilePictureUrl = photo
+                                    )
+                                    _signUpSuccess.value = true
+                                    Log.i("GoogleSSO", "New Google user created: $email")
+                                }
+                            }
+                            _isLoading.value = false
+                        }
+                        .addOnFailureListener { e ->
+                            _errorMessage.value = "Email verification failed: ${e.localizedMessage}"
+                            _isLoading.value = false
+                        }
+                }
+                .addOnFailureListener { e ->
+                    _errorMessage.value = "Google sign-in failed: ${e.localizedMessage}"
+                    _isLoading.value = false
+                }
         }
     }
 
-    /**
-     * Handle any errors from Google One Tap login.
-     */
+
     fun handleGoogleSignInError(message: String?) {
         _isLoading.value = false
         _errorMessage.value = message ?: "Google sign-in error"

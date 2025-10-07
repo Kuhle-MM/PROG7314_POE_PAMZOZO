@@ -42,7 +42,19 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
 
 
 
-        composable("home") { HomeScreen(navController = navController) }
+        composable("home") { HomeScreen(navController = navController,
+            onSignOut = {
+                try {
+                    authViewModel.signOut()
+                    Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
+                    navController.navigate("login") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                } catch (e: Exception) {
+                    Log.e(student.projects.jetpackpam.appNavigation.TAG, "Error signing out", e)
+                    Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }) }
         composable("chat") { ChatScreen() }
         composable("profile") {
             ProfileScreen(
