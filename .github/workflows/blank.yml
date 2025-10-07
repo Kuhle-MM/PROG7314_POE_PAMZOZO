@@ -36,31 +36,34 @@ jobs:
           cache: 'gradle'
 
       - name: Change wrapper permissions
+        working-directory: ./jetPackPam
         run: chmod +x ./gradlew
-
-      # Restore google-services.json from GitHub Secret
-      - name: Restore google-services.json
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
+      
       # Run Tests Build
       - name: Run gradle tests
+        working-directory: ./jetPackPam
         run: ./gradlew test
-
+      
       # Run Build Project
       - name: Build gradle project
+        working-directory: ./jetPackPam
         run: ./gradlew build
-
+      
       # Create APK Debug
       - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
+        working-directory: ./jetPackPam
         run: ./gradlew assembleDebug
-
+      
       # Create APK Release
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+        working-directory: ./jetPackPam
         run: ./gradlew assemble
-
+      
       # Create AAB Release
       - name: Build app bundle release (AAB) - ${{ env.main_project_module }} module
+        working-directory: ./jetPackPam
         run: ./gradlew ${{ env.main_project_module }}:bundleRelease
+
 
       # Upload Debug APK
       - name: Upload APK Debug - ${{ env.repository_name }}
