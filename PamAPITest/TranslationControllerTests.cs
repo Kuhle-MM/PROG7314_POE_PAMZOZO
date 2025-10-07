@@ -17,7 +17,7 @@ namespace PROG7314_POE.Tests
         [TestInitialize]
         public void Setup()
         {
-            _mockService = new Mock<TranslationService>(null, null); // nulls are fine since we’re mocking all calls
+            _mockService = new Mock<TranslationService>(null, null);
             _controller = new TranslationController(_mockService.Object);
         }
 
