@@ -5,7 +5,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace PROG7314_POE.Services
 {
-    public class GeminiService
+    public interface IGeminiService
+    {
+        Task<string> AskGeminiAsync(string prompt);
+    }
+
+    public class GeminiService : IGeminiService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;

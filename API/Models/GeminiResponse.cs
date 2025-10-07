@@ -1,7 +1,7 @@
 ﻿namespace PROG7314_POE.Models
 {
-    public class GeminiResponse
+    public class GeminiAnswerResponse
     {
-        public string Answer { get; set; }
+        public string answer { get; set; }
     }
 }

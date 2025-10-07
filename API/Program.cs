@@ -13,6 +13,8 @@ namespace PROG7314_POE
             // Add services to the container.
             builder.Services.AddHttpClient<GeminiService>();
             builder.Services.AddScoped<GeminiService>();
+            builder.Services.AddHttpClient<IGeminiService, GeminiService>();
+
             builder.Services.AddSingleton<NavigationService>();
 
             builder.Services.AddHttpClient<TranslationService>();
