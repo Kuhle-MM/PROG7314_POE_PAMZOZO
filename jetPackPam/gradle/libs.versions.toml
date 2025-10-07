@@ -11,6 +11,10 @@ okhttpLogging = "4.12.0"
 credentials = "1.3.0"
 googleid = "1.1.1"
 firebaseAuth = "24.0.1"
+firebaseDatabase = "22.0.1"
+foundation = "1.9.2"
+material3 = "1.4.0"
+material3WindowSizeClass = "1.4.0"
 
 [libraries]
 # --- Core Android ---
@@ -53,6 +57,10 @@ androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", vers
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-material3-window-size-class1 = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

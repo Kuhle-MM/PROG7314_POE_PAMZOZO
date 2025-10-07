@@ -9,9 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.screens.ProfileScreen
@@ -24,7 +26,7 @@ import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
 
-private const val TAG = "AppNavGraph"
+const val TAG = "AppNavGraph"
 
 @Composable
 fun AppNavGraph(
@@ -65,16 +67,6 @@ fun AppNavGraph(
         }
     )
 
-    // --- Navigation control based on authentication state ---
-    LaunchedEffect(userData) {
-        // If user logs in successfully → move to MainScreen
-        if (userData != null && navController.currentDestination?.route != "main") {
-            navController.navigate("main") {
-                popUpTo("login") { inclusive = true }
-            }
-        }
-    }
-
     // --- Navigation graph definition ---
     NavHost(
         navController = navController,
@@ -109,8 +101,6 @@ fun AppNavGraph(
 
         }
 
-
-
         // --- Profile screen (with manual sign-out) ---
         composable("profile") {
             ProfileScreen(
@@ -137,6 +127,17 @@ fun AppNavGraph(
                             val category = backStackEntry.arguments?.getString("category") ?: ""
                             PlayingGameScreen(navController, sessionId, category)
                         }
-                        composable("gameover") { GameOverScreen(navController) }
-                    }
+        composable(
+            route = "gameover?correct={correct}&skipped={skipped}",
+            arguments = listOf(
+                navArgument("correct") { type = NavType.StringType; defaultValue = "" },
+                navArgument("skipped") { type = NavType.StringType; defaultValue = "" }
+            )
+        ) { backStackEntry ->
+            val correct = backStackEntry.arguments?.getString("correct")
+            val skipped = backStackEntry.arguments?.getString("skipped")
+            GameOverScreen(navController = navController, correct = correct, skipped = skipped)
+        }
+
+    }
     }

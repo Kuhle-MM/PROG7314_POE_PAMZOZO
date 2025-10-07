@@ -81,6 +81,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation(libs.firebase.database)
+    implementation(libs.androidx.foundation)
+    implementation(libs.material3)
+    implementation(libs.androidx.material3.window.size.class1)
 
     // --- Testing ---
     testImplementation(libs.junit)
@@ -88,7 +92,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-//Nav Graph
+    //Nav Graph
     implementation("androidx.navigation:navigation-compose:2.7.3")
     implementation("androidx.activity:activity-compose:1.8.2")
 
