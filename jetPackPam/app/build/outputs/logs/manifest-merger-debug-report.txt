@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-30:12
-INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-30:12
-INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-30:12
-INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-30:12
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-31:12
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:2:1-31:12
 MERGED from [androidx.navigation:navigation-common:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\0c74715ae69db17681b445af2dd69870\transformed\navigation-common-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-runtime:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\402335d92549b6b995bca85944d0a255\transformed\navigation-runtime-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\7f45015ed26cb9a770203f98e9e085e6\transformed\navigation-common-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
@@ -134,9 +134,13 @@ uses-permission#android.permission.VIBRATE
 ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:5-66
 	android:name
 		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:6:22-63
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:5-71
+	android:name
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:7:22-68
 application
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:5-28:19
-INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:8:5-28:19
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:5-29:19
+INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:5-29:19
 MERGED from [com.google.firebase:firebase-auth-ktx:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\62694d11d06c3ad1b94f3d4be9f97ddb\transformed\firebase-auth-ktx-23.0.0\AndroidManifest.xml:7:5-15:19
 MERGED from [com.google.firebase:firebase-auth-ktx:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\62694d11d06c3ad1b94f3d4be9f97ddb\transformed\firebase-auth-ktx-23.0.0\AndroidManifest.xml:7:5-15:19
 MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\cd86caa1460f45d927b2ad8fe30ea4d8\transformed\firebase-auth-23.0.0\AndroidManifest.xml:28:5-73:19
@@ -190,41 +194,41 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\lab_services_stude
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\53c5ca46995102a0d58f6ab5498e6740\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:9-35
 	android:label
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-41
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-54
 	android:roundIcon
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:14:9-54
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:15:9-54
 	android:icon
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:12:9-43
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:13:9-43
 	android:allowBackup
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:9:9-35
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:16:9-48
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:9-48
 	android:dataExtractionRules
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:10:9-65
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:11:9-65
 activity#student.projects.jetpackpam.MainActivity
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:17:9-27:20
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:9-28:20
 	android:label
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:13-45
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:21:13-45
 	android:exported
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-36
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:20:13-36
 	android:theme
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:21:13-52
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:13-52
 	android:name
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:18:13-41
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:19:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:22:13-26:29
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:23:13-27:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:23:17-69
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:23:25-66
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:25:17-77
+ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:25:27-74
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml:26:27-74
 uses-sdk
 INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE\jetPackPam\app\src\main\AndroidManifest.xml

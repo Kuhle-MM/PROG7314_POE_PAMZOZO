@@ -1,5 +1,6 @@
 package student.projects.jetpackpam.appNavigation
 
+import VideoScreen
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -22,7 +23,7 @@ import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.ProfileScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.GamesScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
-import student.projects.jetpackpam.screens.bottomnavscreen.VideoScreen
+//import student.projects.jetpackpam.screens.bottomnavscreen.VideoScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
