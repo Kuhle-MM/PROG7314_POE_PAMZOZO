@@ -1395,7 +1395,7 @@
             "outputFile": "student.projects.jetpackpam.app-debug-69:/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -1409,6 +1409,23 @@
                         "startOffsets": "5085",
                         "endColumns": "45",
                         "endOffsets": "5126"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,717",
+                        "endColumns": "143,81,103,108,119,102,71",
+                        "endOffsets": "194,276,380,489,609,712,784"
+                    },
+                    "to": {
+                        "startLines": "215,220,221,222,223,224,293",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "13020,13437,13519,13623,13732,13852,18763",
+                        "endColumns": "143,81,103,108,119,102,71",
+                        "endOffsets": "13159,13514,13618,13727,13847,13950,18830"
                     }
                 },
                 {
@@ -1571,6 +1588,25 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,66",
+                        "endLines": "1,4",
+                        "endColumns": "47,13",
+                        "endOffsets": "60,202"
+                    },
+                    "to": {
+                        "startLines": "184,225",
+                        "startColumns": "4,4",
+                        "startOffsets": "9774,13955",
+                        "endLines": "184,227",
+                        "endColumns": "47,13",
+                        "endOffsets": "9817,14089"
+                    }
+                },
+                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\6c546c3d120d358a2659f5b577e7be1a\\transformed\\startup-runtime-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -1585,23 +1621,6 @@
                         "startOffsets": "9691",
                         "endColumns": "82",
                         "endOffsets": "9769"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,717",
-                        "endColumns": "143,81,103,108,119,102,71",
-                        "endOffsets": "194,276,380,489,609,712,784"
-                    },
-                    "to": {
-                        "startLines": "215,220,221,222,223,224,293",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "13020,13437,13519,13623,13732,13852,18763",
-                        "endColumns": "143,81,103,108,119,102,71",
-                        "endOffsets": "13159,13514,13618,13727,13847,13950,18830"
                     }
                 },
                 {
@@ -1677,42 +1696,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "1,2",
-                        "startColumns": "4,4",
-                        "startOffsets": "17,66",
-                        "endLines": "1,4",
-                        "endColumns": "47,13",
-                        "endOffsets": "60,202"
-                    },
-                    "to": {
-                        "startLines": "184,225",
-                        "startColumns": "4,4",
-                        "startOffsets": "9774,13955",
-                        "endLines": "184,227",
-                        "endColumns": "47,13",
-                        "endOffsets": "9817,14089"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "7,2,3,4,5,6,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "293,57,105,153,201,247,336",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "330,99,147,195,241,287,373"
-                    },
-                    "to": {
-                        "startLines": "57,74,75,76,77,78,79",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "1978,3203,3250,3297,3344,3389,3434",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "2015,3245,3292,3339,3384,3429,3471"
-                    }
-                },
-                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\bcaa2304f2e3c2c4aaebfca11b795b00\\transformed\\foundation-release\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3",
@@ -1727,23 +1710,6 @@
                         "startOffsets": "19357,19413",
                         "endColumns": "55,54",
                         "endOffsets": "19408,19463"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "59",
-                        "endColumns": "87",
-                        "endOffsets": "142"
-                    },
-                    "to": {
-                        "startLines": "344",
-                        "startColumns": "4",
-                        "startOffsets": "21735",
-                        "endColumns": "86",
-                        "endOffsets": "21817"
                     }
                 },
                 {
@@ -1873,6 +1839,40 @@
                         "startOffsets": "9525,9607",
                         "endColumns": "81,83",
                         "endOffsets": "9602,9686"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,2,3,4,5,6,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "293,57,105,153,201,247,336",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "330,99,147,195,241,287,373"
+                    },
+                    "to": {
+                        "startLines": "57,74,75,76,77,78,79",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "1978,3203,3250,3297,3344,3389,3434",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "2015,3245,3292,3339,3384,3429,3471"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endColumns": "87",
+                        "endOffsets": "142"
+                    },
+                    "to": {
+                        "startLines": "344",
+                        "startColumns": "4",
+                        "startOffsets": "21735",
+                        "endColumns": "86",
+                        "endOffsets": "21817"
                     }
                 }
             ]
