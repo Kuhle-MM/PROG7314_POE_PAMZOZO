@@ -318,6 +318,7 @@ int layout notification_template_part_chronometer 0x7f0a0009
 int layout notification_template_part_time 0x7f0a000a
 int mipmap ic_launcher 0x7f0b0000
 int mipmap ic_launcher_round 0x7f0b0001
+int mipmap pamicon 0x7f0b0002
 int raw firebase_common_keep 0x7f0c0000
 int string android_credentials_TYPE_PASSWORD_CREDENTIAL 0x7f0d0000
 int string androidx_credentials_TYPE_PUBLIC_KEY_CREDENTIAL 0x7f0d0001
