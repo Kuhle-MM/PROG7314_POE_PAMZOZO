@@ -1,7 +1,9 @@
 
 using PROG7314_POE.Controllers;
 using PROG7314_POE.Services;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace PROG7314_POE
 {
     public class Program
@@ -31,6 +33,22 @@ namespace PROG7314_POE
             builder.Services.AddSingleton<PROG7314_POE.Repository.InMemoryRepository>();
             builder.Services.AddSingleton<PROG7314_POE.Services.IGameService, PROG7314_POE.Services.GameService>();
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "MyApi",             // change to your issuer
+                        ValidAudience = "MyDevices",       // change to your audience
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes("super_secret_key_123!")) // store safely
+                    };
+                });
+
             var app = builder.Build();
             // Enable swagger in all environments
             app.UseSwagger();
@@ -47,6 +65,7 @@ namespace PROG7314_POE
             //}
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
