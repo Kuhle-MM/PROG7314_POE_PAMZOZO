@@ -8,9 +8,9 @@ namespace PROG7314_POE.Controllers
     [ApiController]
     public class TranslationController : ControllerBase
     {
-        private readonly TranslationService _service;
+        private readonly ITranslationService _service;
 
-        public TranslationController(TranslationService service)
+        public TranslationController(ITranslationService service)
         {
             _service = service;
         }
