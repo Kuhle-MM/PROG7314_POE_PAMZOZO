@@ -1,12 +1,14 @@
 package student.projects.jetpackpam.screens.mainapp
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -17,12 +19,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import student.projects.jetpackpam.appNavigation.BottomBarScreen
 import student.projects.jetpackpam.appNavigation.BottomNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.sidenavscreen.SideNav
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     authViewModel: AuthorizationModelViewModel,
@@ -33,9 +37,11 @@ fun MainScreen(
     val activity = LocalContext.current as Activity
     val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity)
     val isExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     if (isExpanded) {
-        // Tablet / Large Screen Layout → Side Navigation
+        // 🔹 Tablet / Large Screen Layout → Side Navigation
         Row(modifier = Modifier.fillMaxSize()) {
             SideBar(navController = bottomNavController)
             Box(modifier = Modifier.weight(1f)) {
@@ -48,20 +54,81 @@ fun MainScreen(
             }
         }
     } else {
-        // Phone / Portrait → Bottom Navigation
-        Scaffold(
-            bottomBar = { BottomBar(navController = bottomNavController) }
-        ) { innerPadding ->
-            BottomNavGraph(
-                navController = bottomNavController,
-                paddingValues = innerPadding,
-                googleAuthClient = googleAuthClient,
-                authViewModel = authViewModel
-            )
+        // 🔹 Phone / Portrait → Bottom Navigation + Drawer on Home tab
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                SideNav(
+                    currentRoute = getCurrentRoute(bottomNavController),
+                    onItemSelected = { route ->
+                        bottomNavController.navigate(route) {
+                            launchSingleTop = true
+                        }
+                        scope.launch { drawerState.close() }
+                    },
+                    onLogout = {
+                        try {
+                            authViewModel.signOut()
+                            Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
+                            rootNavController.navigate("login") {
+                                popUpTo("main") { inclusive = true }
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                        scope.launch { drawerState.close() }
+                    }
+                )
+            }
+        ) {
+            Scaffold(
+                topBar = {
+                    val currentRoute = getCurrentRoute(bottomNavController)
+                    val title = when (currentRoute) {
+                        "home" -> "Home"
+                        "video" -> "Video"
+                        "games" -> "Games"
+                        "language" -> "Language"
+                        "fontSize" -> "Font Size"
+                        "pamTheme" -> "Pam Theme"
+                        "personality" -> "Personality"
+                        else -> "App"
+                    }
+
+                    TopAppBar(
+                        title = { Text(title) },
+
+                        navigationIcon = {
+                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                Icon(Icons.Default.Menu, contentDescription = "Open menu")
+                            }
+                        }
+                    )
+                }
+                ,
+                bottomBar = { BottomBar(navController = bottomNavController) }
+            ) { innerPadding ->
+                BottomNavGraph(
+                    navController = bottomNavController,
+                    paddingValues = innerPadding,
+                    googleAuthClient = googleAuthClient,
+                    authViewModel = authViewModel
+                )
+            }
         }
     }
 }
 
+/** 🔹 Helper to get current route **/
+@Composable
+private fun getCurrentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
+}
+
+/** 🔹 Bottom Navigation **/
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
@@ -79,6 +146,7 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
+/** 🔹 Individual Nav Items **/
 @Composable
 fun RowScope.AddItem(
     screen: BottomBarScreen,
@@ -103,6 +171,7 @@ fun RowScope.AddItem(
     )
 }
 
+/** 🔹 Tablet Side Rail **/
 @Composable
 fun SideBar(navController: NavHostController) {
     val screens = listOf(
