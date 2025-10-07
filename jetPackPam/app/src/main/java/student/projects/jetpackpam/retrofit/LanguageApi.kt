@@ -8,4 +8,8 @@ import retrofit2.http.POST
 interface LanguageApi {
     @POST("api/Translation/convert")
     suspend fun translate(@Body request: LanguageRequest): LanguageResponse
+    @POST("/api/Gemini/ask")
+    suspend fun askGemini(
+        @Body request: AskRequest
+    ): AskResponse
 }
