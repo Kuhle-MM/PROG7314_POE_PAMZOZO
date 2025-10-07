@@ -835,23 +835,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "59",
-                        "endColumns": "87",
-                        "endOffsets": "142"
-                    },
-                    "to": {
-                        "startLines": "355",
-                        "startColumns": "4",
-                        "startOffsets": "22574",
-                        "endColumns": "86",
-                        "endOffsets": "22656"
-                    }
-                },
-                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\ba87908a9b63ba980be20901036c967c\\transformed\\lifecycle-runtime-release\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -917,6 +900,23 @@
                         "startOffsets": "7388",
                         "endColumns": "49",
                         "endOffsets": "7433"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,717",
+                        "endColumns": "143,81,103,108,119,102,71",
+                        "endOffsets": "194,276,380,489,609,712,784"
+                    },
+                    "to": {
+                        "startLines": "218,223,224,225,226,227,305",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "13165,13582,13664,13768,13877,13997,19609",
+                        "endColumns": "143,81,103,108,119,102,71",
+                        "endOffsets": "13304,13659,13763,13872,13992,14095,19676"
                     }
                 },
                 {
@@ -992,20 +992,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\build\\generated\\res\\processDebugGoogleServices\\values\\values.xml",
+                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,717",
-                        "endColumns": "143,81,103,108,119,102,71",
-                        "endOffsets": "194,276,380,489,609,712,784"
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "46",
+                        "endOffsets": "99"
                     },
                     "to": {
-                        "startLines": "218,223,224,225,226,227,305",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "13165,13582,13664,13768,13877,13997,19609",
-                        "endColumns": "143,81,103,108,119,102,71",
-                        "endOffsets": "13304,13659,13763,13872,13992,14095,19676"
+                        "startLines": "104",
+                        "startColumns": "4",
+                        "startOffsets": "5085",
+                        "endColumns": "45",
+                        "endOffsets": "5126"
                     }
                 },
                 {
@@ -1102,23 +1102,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "7,2,3,4,5,6,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "293,57,105,153,201,247,336",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "330,99,147,195,241,287,373"
-                    },
-                    "to": {
-                        "startLines": "57,74,75,76,77,78,79",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "1978,3203,3250,3297,3344,3389,3434",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "2015,3245,3292,3339,3384,3429,3471"
-                    }
-                },
-                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\28953d60dd2fa82e3a555dc40431a9dc\\transformed\\core-viewtree-1.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -1150,23 +1133,6 @@
                         "startOffsets": "9413,11637",
                         "endColumns": "67,166",
                         "endOffsets": "9476,11799"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\refs.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endColumns": "46",
-                        "endOffsets": "99"
-                    },
-                    "to": {
-                        "startLines": "104",
-                        "startColumns": "4",
-                        "startOffsets": "5085",
-                        "endColumns": "45",
-                        "endOffsets": "5126"
                     }
                 },
                 {
@@ -1204,6 +1170,42 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,2,3,4,5,6,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "293,57,105,153,201,247,336",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "330,99,147,195,241,287,373"
+                    },
+                    "to": {
+                        "startLines": "57,74,75,76,77,78,79",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "1978,3203,3250,3297,3344,3389,3434",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "2015,3245,3292,3339,3384,3429,3471"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,66",
+                        "endLines": "1,4",
+                        "endColumns": "47,13",
+                        "endOffsets": "60,202"
+                    },
+                    "to": {
+                        "startLines": "186,228",
+                        "startColumns": "4,4",
+                        "startOffsets": "9873,14100",
+                        "endLines": "186,230",
+                        "endColumns": "47,13",
+                        "endOffsets": "9916,14234"
+                    }
+                },
+                {
                     "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\2b3f553868f71def482bea278b70412b\\transformed\\navigation-runtime-2.8.3\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,10,13",
@@ -1223,22 +1225,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE\\jetPackPam\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "C:\\Users\\lab_services_student\\Documents\\Git\\PROG7314_POE_PAMZOZO\\jetPackPam\\app\\src\\main\\res\\values\\themes.xml",
                     "from": {
-                        "startLines": "1,2",
-                        "startColumns": "4,4",
-                        "startOffsets": "17,66",
-                        "endLines": "1,4",
-                        "endColumns": "47,13",
-                        "endOffsets": "60,202"
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endColumns": "87",
+                        "endOffsets": "142"
                     },
                     "to": {
-                        "startLines": "186,228",
-                        "startColumns": "4,4",
-                        "startOffsets": "9873,14100",
-                        "endLines": "186,230",
-                        "endColumns": "47,13",
-                        "endOffsets": "9916,14234"
+                        "startLines": "355",
+                        "startColumns": "4",
+                        "startOffsets": "22574",
+                        "endColumns": "86",
+                        "endOffsets": "22656"
                     }
                 },
                 {
