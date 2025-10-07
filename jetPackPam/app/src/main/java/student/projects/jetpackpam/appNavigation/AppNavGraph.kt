@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.ProfileScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
@@ -25,6 +26,9 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import androidx.compose.runtime.CompositionLocalProvider
+import student.projects.jetpackpam.localization.LocalLanguageViewModel
+
 
 const val TAG = "AppNavGraph"
 
@@ -32,7 +36,8 @@ const val TAG = "AppNavGraph"
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
     googleAuthClient: GoogleAuthClient,
-    authViewModel: AuthorizationModelViewModel
+    authViewModel: AuthorizationModelViewModel,
+    languageViewModel: LanguageViewModel
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -68,76 +73,66 @@ fun AppNavGraph(
     )
 
     // --- Navigation graph definition ---
-    NavHost(
-        navController = navController,
-        startDestination = if (userData == null) "login" else "main"
-    ) {
-
-        // --- Login screen (Email + Google SSO) ---
-        composable("login") {
-            LoginScreen(
-                navController = navController,
-                authViewModel = authViewModel,
-                googleAuthClient = googleAuthClient,
-                googleSignInLauncher = googleSignInLauncher
-            )
-        }
-
-        // --- Sign Up screen ---
-        composable("signUp") {
-            SignUpScreen(
-                navController = navController,
-                authViewModel = authViewModel
-            )
-        }
-
-        // --- Main screen (post-login home) ---
-        composable("main") {
-            MainScreen(
-                authViewModel = authViewModel,
-                rootNavController = navController,
-                googleAuthClient = googleAuthClient
-            )
-
-        }
-
-        // --- Profile screen (with manual sign-out) ---
-        composable("profile") {
-            ProfileScreen(
-                userData = userData,
-                onSignOut = {
-                    try {
-                        authViewModel.signOut()
-                        Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
-                        navController.navigate("login") {
-                            popUpTo("main") { inclusive = true }
+    CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
+        NavHost(
+            navController = navController,
+            startDestination = if (userData == null) "login" else "main"
+        ) {
+            composable("login") {
+                LoginScreen(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    googleAuthClient = googleAuthClient,
+                    googleSignInLauncher = googleSignInLauncher
+                )
+            }
+            composable("signUp") {
+                SignUpScreen(navController, authViewModel)
+            }
+            composable("main") {
+                MainScreen(
+                    authViewModel = authViewModel,
+                    rootNavController = navController,
+                    googleAuthClient = googleAuthClient,
+                    languageViewModel = languageViewModel
+                )
+            }
+            composable("profile") {
+                ProfileScreen(
+                    userData = userData,
+                    onSignOut = {
+                        try {
+                            authViewModel.signOut()
+                            Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
+                            navController.navigate("login") {
+                                popUpTo("main") { inclusive = true }
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error signing out", e)
+                            Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
                         }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error signing out", e)
-                        Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
                     }
-                }
-            )
+                )
+            }
+            composable("startup") { StartUpScreen(navController) }
+            composable("category") { CategorySelectionScreen(navController) }
+            composable("playing/{sessionId}/{category}") { backStackEntry ->
+                val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
+                val category = backStackEntry.arguments?.getString("category") ?: ""
+                PlayingGameScreen(navController, sessionId, category)
+            }
+            composable(
+                route = "gameover?correct={correct}&skipped={skipped}",
+                arguments = listOf(
+                    navArgument("correct") { type = NavType.StringType; defaultValue = "" },
+                    navArgument("skipped") { type = NavType.StringType; defaultValue = "" }
+                )
+            ) { backStackEntry ->
+                val correct = backStackEntry.arguments?.getString("correct")
+                val skipped = backStackEntry.arguments?.getString("skipped")
+                GameOverScreen(navController, correct, skipped)
+            }
         }
-
-                        composable("startup") { StartUpScreen(navController) }
-                        composable("category") { CategorySelectionScreen(navController) }
-                        composable("playing/{sessionId}/{category}") { backStackEntry ->
-                            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
-                            val category = backStackEntry.arguments?.getString("category") ?: ""
-                            PlayingGameScreen(navController, sessionId, category)
-                        }
-        composable(
-            route = "gameover?correct={correct}&skipped={skipped}",
-            arguments = listOf(
-                navArgument("correct") { type = NavType.StringType; defaultValue = "" },
-                navArgument("skipped") { type = NavType.StringType; defaultValue = "" }
-            )
-        ) { backStackEntry ->
-            val correct = backStackEntry.arguments?.getString("correct")
-            val skipped = backStackEntry.arguments?.getString("skipped")
-            GameOverScreen(navController = navController, correct = correct, skipped = skipped)
-        }
-
     }
-    }
+
+}
