@@ -2,8 +2,10 @@ package student.projects.jetpackpam.screens
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.RecognitionListener
@@ -42,7 +44,6 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.design_system.MessageTextField
 import student.projects.jetpackpam.design_system.PrimaryIconButton
 import student.projects.jetpackpam.models.Message
-import student.projects.jetpackpam.retrofit.AskRequest
 import student.projects.jetpackpam.retrofit.languageApi
 import student.projects.jetpackpam.util.DeviceConfiguration
 
@@ -188,14 +189,34 @@ fun ChatScreen() {
                 onMicRelease = { stopListening() },
                 isListening = isListening.value,
                 onSpotifyClick = {
-                    val spotifyIntent = context.packageManager.getLaunchIntentForPackage("com.spotify.music")
-                    if (spotifyIntent != null) context.startActivity(spotifyIntent)
-                    else Toast.makeText(context, "Spotify not installed.", Toast.LENGTH_SHORT).show()
+                    try {
+                        val spotifyIntent = context.packageManager.getLaunchIntentForPackage("com.spotify.music")
+                        if (spotifyIntent != null) {
+                            spotifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(spotifyIntent)
+                        } else {
+                            // Try using ACTION_VIEW URI fallback
+                            val uriIntent = Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("spotify:")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            try {
+                                context.startActivity(uriIntent)
+                            } catch (e: ActivityNotFoundException) {
+                                // Final fallback: open Play Store page
+                                val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
+                                    data = Uri.parse("market://details?id=com.spotify.music")
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                                context.startActivity(playStoreIntent)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Could not open Spotify", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 onCallClick = {
-                    val callIntent = Intent(Intent.ACTION_DIAL).apply {
-                      //  data = android.net.Uri.parse("tel:+27632678431")
-                    }
+                    val callIntent = Intent(Intent.ACTION_DIAL)
                     context.startActivity(callIntent)
                 }
             )
@@ -205,7 +226,9 @@ fun ChatScreen() {
                     text = "🎙 Listening...",
                     color = Color.Red,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
                 )
             }
         }
@@ -241,13 +264,15 @@ fun MessageInput(
             icon = { Icon(Icons.Default.MusicNote, contentDescription = "Open Spotify") },
             onClick = onSpotifyClick
         )
+
         Spacer(modifier = Modifier.width(4.dp))
 
         // Phone Button
         PrimaryIconButton(
-            icon = { Icon(Icons.Default.Phone, contentDescription = "Call") },
+            icon = { Icon(Icons.Default.Phone, contentDescription = "Open Phone") },
             onClick = onCallClick
         )
+
         Spacer(modifier = Modifier.width(4.dp))
 
         // Mic button
@@ -351,8 +376,8 @@ fun sendMessageToApi(
 ) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val response = languageApi.askGemini(AskRequest(question = message))
-            onResponse(response.answer)
+            // val response = languageApi.askGemini(AskRequest(question = message))
+            // onResponse(response.answer)
         } catch (e: Exception) {
             onError(e.localizedMessage ?: "Unknown error")
         }

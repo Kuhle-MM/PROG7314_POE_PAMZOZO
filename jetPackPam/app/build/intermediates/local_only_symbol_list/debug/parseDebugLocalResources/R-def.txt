@@ -24,6 +24,7 @@ font inter_regular
 font space_grotesk_bold
 mipmap ic_launcher
 mipmap ic_launcher_round
+mipmap pamicon
 string app_name
 string default_web_client_id
 string gcm_defaultSenderId
