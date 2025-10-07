@@ -10,78 +10,65 @@ using System.Threading.Tasks;
 public class MotorController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private readonly string _piBaseUrl = "http://192.168.137.250:5000";
+    private readonly string _piBaseUrl = "http://192.168.137.250:5000/api/command"; // Your Pi endpoint
 
-    public MotorController(HttpClient httpClient)
+    public MotorController(IHttpClientFactory factory)
     {
-        _httpClient = httpClient;
+        _httpClient = factory.CreateClient();
     }
 
-    // POST method to calculate motor speeds and forward them to the Pi
-    [HttpPost("moveMotors")]
-    public async Task<IActionResult> MoveMotors([FromBody] Motor motorCommand)
+    // Move robot based on joystick or direction
+    [HttpPost("move")]
+    public async Task<IActionResult> MoveRobot([FromBody] MoveRequest request)
     {
-        // 1. Convert joystick vector (x,y) to motor PWM
-        double left = (motorCommand.y) + (motorCommand.x);
-        double right = (motorCommand.y) - (motorCommand.x);
-
-        // Normalize to -100 to 100 range
-        int leftPwm = (int)(Math.Clamp(left, -1, 1) * 100);
-        int rightPwm = (int)(Math.Clamp(right, -1, 1) * 100);
-
-        var response = new Motor
-        {
-            leftMotorSpeed = leftPwm,
-            rightMotorSpeed = rightPwm
-        };
-
-        // 2. Forward command to Raspberry Pi
-        var json = JsonSerializer.Serialize(response);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        if (string.IsNullOrEmpty(request.Cmd))
+            return BadRequest("Command is required (e.g., forward, backward, left, right, stop)");
 
         try
         {
-            var forwardResponse = await _httpClient.PostAsync($"{_piBaseUrl}/motor/move", content);
+            var response = await _httpClient.PostAsJsonAsync(_piBaseUrl, request);
 
-            if (!forwardResponse.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                return StatusCode((int)forwardResponse.StatusCode,
-                    $"Failed to forward command to Pi: {forwardResponse.ReasonPhrase}");
+                var msg = await response.Content.ReadAsStringAsync();
+                return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
+
+            return Ok(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException ex)
         {
-            return StatusCode(500, $"Error forwarding to Pi: {ex.Message}");
+            return StatusCode(500, $"Error reaching Raspberry Pi: {ex.Message}");
         }
-
-        // 3. Return response to app
-        return Ok(response);
     }
 
-    // POST method to stop both motors
-    [HttpPost("stopMotors")]
-    public async Task<IActionResult> StopMotors()
+    // Stop robot immediately
+    [HttpPost("stop")]
+    public async Task<IActionResult> StopRobot()
     {
-        var stopCommand = new Motor { leftMotorSpeed = 0, rightMotorSpeed = 0 };
-
-        var json = JsonSerializer.Serialize(stopCommand);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var stopCommand = new MoveRequest { Cmd = "stop", Speed = 0 };
 
         try
         {
-            var forwardResponse = await _httpClient.PostAsync($"{_piBaseUrl}/motor/stop", content);
-
-            if (!forwardResponse.IsSuccessStatusCode)
+            var response = await _httpClient.PostAsJsonAsync(_piBaseUrl, stopCommand);
+            if (!response.IsSuccessStatusCode)
             {
-                return StatusCode((int)forwardResponse.StatusCode,
-                    $"Failed to forward stop command to Pi: {forwardResponse.ReasonPhrase}");
+                var msg = await response.Content.ReadAsStringAsync();
+                return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
+
+            return Ok("Robot stopped successfully.");
         }
         catch (HttpRequestException ex)
         {
-            return StatusCode(500, $"Error forwarding stop command to Pi: {ex.Message}");
+            return StatusCode(500, $"Error sending stop command: {ex.Message}");
         }
-
-        return Ok(stopCommand);
     }
+}
+
+// DTO for communication
+public class MoveRequest
+{
+    public string Cmd { get; set; }   // forward, backward, left, right, stop
+    public int Speed { get; set; } = 50;
 }
