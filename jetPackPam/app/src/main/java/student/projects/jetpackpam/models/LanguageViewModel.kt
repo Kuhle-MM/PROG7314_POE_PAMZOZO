@@ -2,10 +2,13 @@ package student.projects.jetpackpam.models
 
 import android.app.Application
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.LanguageRequest
@@ -86,4 +89,43 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             currentLanguageCode = savedCode
         }
     }
+    fun fetchLanguageFromFirebase() {
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val uid = user.uid
+        val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("language")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            val name = snapshot.child("name").getValue(String::class.java) ?: "English"
+            val code = snapshot.child("code").getValue(String::class.java) ?: "en"
+            selectedLanguage = name
+            currentLanguageCode = code
+
+            // Update UI texts
+            translateAll(code) { newTexts ->
+                updateTexts(newTexts)
+            }
+        }
+    }
+
+    fun saveLanguageToFirebase(name: String, code: String) {
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val uid = user.uid
+        val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("language")
+        ref.setValue(mapOf("name" to name, "code" to code))
+    }
+    // 🔹 New: global font size in sp
+    var fontSize by mutableFloatStateOf(20f)
+        private set
+
+    // Function to update font size
+    fun updateFontSize(newSize: Float) {
+        fontSize = newSize.coerceIn(16f, 48f) // keep in valid range
+    }
+
+    // Function to update translations (if needed)
+    fun updateUiTexts(newTexts: Map<String, String>) {
+        uiTexts = newTexts as MutableMap<String, String>
+    }
+
+
 }
