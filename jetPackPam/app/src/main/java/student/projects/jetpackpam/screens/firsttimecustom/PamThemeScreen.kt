@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -106,7 +107,7 @@ fun PamThemeSelectionScreen() {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = if (isDarkMode) "Dark Mode" else "Light Mode",
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = if (isDarkMode) Color.White else Color.Black
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -154,7 +155,7 @@ fun PamThemeSelectionScreen() {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = if (isDarkMode) "Dark Mode" else "Light Mode",
-                                fontSize = 18.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -199,7 +200,7 @@ fun PamThemeSelectionScreen() {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = if (isDarkMode) "Dark Mode" else "Light Mode",
-                                fontSize = 24.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -241,7 +242,7 @@ fun PamThemeHeader(isDarkMode: Boolean) {
     Text(
         text = "Choose the best colour for me",
         fontStyle = FontStyle.Italic,
-        fontSize = 35.sp,
+        style = MaterialTheme.typography.bodyLarge,
         textAlign = TextAlign.Center,
         color = if (isDarkMode) Color.White else Color.Black
     )
