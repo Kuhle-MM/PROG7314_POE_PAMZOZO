@@ -4,13 +4,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -21,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import student.projects.jetpackpam.R
+import student.projects.jetpackpam.util.DeviceConfiguration
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -42,7 +50,6 @@ fun PamThemeSelectionScreen() {
         y = (gradientLength / 2f * (1 + sin(angleInRad))).toFloat()
     )
 
-    // Background brush
     val backgroundBrush = if (isDarkMode) {
         Brush.linearGradient(
             colors = listOf(Color(0xFF1B123D), Color(0xFF2F1982), Color(0xFF1B123D)),
@@ -53,7 +60,6 @@ fun PamThemeSelectionScreen() {
         Brush.linearGradient(listOf(Color.White, Color.White))
     }
 
-    // Images depending on mode
     val themeImages = if (isDarkMode) {
         listOf(
             R.drawable.darkpamog,
@@ -70,61 +76,165 @@ fun PamThemeSelectionScreen() {
 
     val scrollState = rememberScrollState()
 
-    Box(
-        modifier = Modifier
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.statusBars
+    ) { innerPadding ->
+
+        val rootModifier = Modifier
             .fillMaxSize()
+            .padding(innerPadding)
+            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
             .background(brush = backgroundBrush)
-            .padding(32.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .consumeWindowInsets(WindowInsets.navigationBars)
 
-            // Dark mode toggle
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = if (isDarkMode) "Dark Mode" else "Light Mode",
-                    fontSize = 20.sp,
-                    color = if (isDarkMode) Color.White else Color.Black
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Switch(
-                    checked = isDarkMode,
-                    onCheckedChange = { isDarkMode = it }
-                )
-            }
+        val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+        val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
-            Spacer(modifier = Modifier.height(32.dp))
+        when (deviceConfiguration) {
+            // 📱 MOBILE PORTRAIT
+            DeviceConfiguration.MOBILE_PORTRAIT -> {
+                Column(
+                    modifier = rootModifier
+                        .verticalScroll(scrollState),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Spacer(modifier = Modifier.height(16.dp))
 
-            // Header
-            PamThemeHeader(isDarkMode)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                            fontSize = 20.sp,
+                            color = if (isDarkMode) Color.White else Color.Black
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Switch(
+                            checked = isDarkMode,
+                            onCheckedChange = { isDarkMode = it }
+                        )
+                    }
 
-            Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
 
-            // Vertically aligned images
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                themeImages.forEachIndexed { index, imageRes ->
-                    ThemeImage(
-                        imageRes = imageRes,
-                        isSelected = selectedTheme == index + 1,
-                        onClick = { selectedTheme = index + 1 }
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
+                    PamThemeHeader(isDarkMode)
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        themeImages.forEachIndexed { index, imageRes ->
+                            ThemeImage(
+                                imageRes = imageRes,
+                                isSelected = selectedTheme == index + 1,
+                                onClick = { selectedTheme = index + 1 }
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
 
-            Spacer(modifier = Modifier.height(50.dp)) // Extra bottom spacing
+            // 🌄 MOBILE LANDSCAPE
+            DeviceConfiguration.MOBILE_LANDSCAPE -> {
+                Row(
+                    modifier = rootModifier,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                fontSize = 18.sp,
+                                color = if (isDarkMode) Color.White else Color.Black
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Switch(
+                                checked = isDarkMode,
+                                onCheckedChange = { isDarkMode = it }
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        PamThemeHeader(isDarkMode)
+                    }
+
+                    LazyRow(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        items(themeImages.size) { index ->
+                            ThemeImage(
+                                imageRes = themeImages[index],
+                                isSelected = selectedTheme == index + 1,
+                                onClick = { selectedTheme = index + 1 }
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 💻 TABLET / DESKTOP
+            else -> {
+                Row(
+                    modifier = rootModifier,
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(0.6f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                fontSize = 24.sp,
+                                color = if (isDarkMode) Color.White else Color.Black
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Switch(
+                                checked = isDarkMode,
+                                onCheckedChange = { isDarkMode = it }
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(32.dp))
+                        PamThemeHeader(isDarkMode)
+                    }
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 220.dp),
+                        horizontalArrangement = Arrangement.spacedBy(24.dp),
+                        verticalArrangement = Arrangement.spacedBy(24.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        items(themeImages.size) { index ->
+                            ThemeImage(
+                                imageRes = themeImages[index],
+                                isSelected = selectedTheme == index + 1,
+                                onClick = { selectedTheme = index + 1 }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
 
 @Composable
 fun PamThemeHeader(isDarkMode: Boolean) {

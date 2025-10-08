@@ -54,5 +54,6 @@ fun ProfileScreen(
         Button(onClick = onSignOut) {
             Text(text = "Sign out")
         }
+
     }
 }
