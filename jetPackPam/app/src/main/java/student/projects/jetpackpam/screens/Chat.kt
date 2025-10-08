@@ -44,7 +44,6 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.design_system.MessageTextField
 import student.projects.jetpackpam.design_system.PrimaryIconButton
 import student.projects.jetpackpam.models.Message
-import student.projects.jetpackpam.retrofit.languageApi
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
