@@ -27,16 +27,16 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/pamicon"
+        android:label="P.A.M"
+        android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.JetPackPam" >
         <activity
             android:name="student.projects.jetpackpam.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="P.A.M"
             android:theme="@style/Theme.JetPackPam" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

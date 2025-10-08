@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import student.projects.jetpackpam.screens.charades.GameOverScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +24,6 @@ import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
-import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
 import androidx.compose.runtime.CompositionLocalProvider
