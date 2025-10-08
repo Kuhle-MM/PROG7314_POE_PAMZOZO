@@ -1,9 +1,7 @@
 package student.projects.jetpackpam.screens
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -27,7 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +36,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -58,6 +60,40 @@ fun ChatScreen() {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var typingMessageIndex by remember { mutableStateOf<Int?>(null) }
+    var userPersonality by remember { mutableStateOf("Friendly") } // default
+
+    val user = FirebaseAuth.getInstance().currentUser
+    val uid = user?.uid
+
+    // --- Load user personality ---
+    LaunchedEffect(uid) {
+        uid?.let { userId ->
+            fetchUserPreferences { preferences ->
+                if (preferences.isNotEmpty()) {
+                    userPersonality = preferences[0]
+                }
+            }
+        }
+    }
+
+    // --- Load chat history ---
+    LaunchedEffect(uid) {
+        uid?.let { userId ->
+            val ref = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("messages")
+            ref.orderByChild("timestamp").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatHistory = snapshot.children.mapNotNull { child ->
+                        val text = child.child("text").getValue(String::class.java)
+                        val isFromMe = child.child("isFromMe").getValue(Boolean::class.java) ?: true
+                        text?.let { Message(it, isFromMe) }
+                    }
+                    messages.addAll(chatHistory.map { it to null })
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
+    }
 
     // --- Speech Recognition ---
     val speechRecognizer = remember { SpeechRecognizer.createSpeechRecognizer(context) }
@@ -144,23 +180,27 @@ fun ChatScreen() {
                 messageText = messageText,
                 onMessageTextChange = { messageText = it },
                 onSendClick = {
-                    if (messageText.isNotBlank()) {
+                    if (messageText.isNotBlank() && uid != null) {
                         val userMsg = Message(messageText, true)
                         messages.add(userMsg to null)
                         val index = messages.indexOfFirst { it.first == userMsg }
                         coroutineScope.launch { listState.animateScrollToItem(0) }
+                        val currentText = messageText
                         messageText = ""
 
-                        // Show typing indicator
                         typingMessageIndex = index
 
-                        // --- Launch API simulation in a coroutine ---
+                        // Save user message
+                        saveMessageToFirebase(uid, currentText, true)
+
+                        // Send to API
                         coroutineScope.launch {
                             delay(800)
                             try {
-                                sendMessageToApi(userMsg.text, { response ->
+                                sendMessageToApi(currentText, userPersonality, { response ->
                                     typingMessageIndex = null
                                     messages[index] = userMsg to Message(response, false)
+                                    saveMessageToFirebase(uid, response, false)
                                     coroutineScope.launch { listState.animateScrollToItem(0) }
                                 }, { error ->
                                     typingMessageIndex = null
@@ -191,7 +231,6 @@ fun ChatScreen() {
         }
     }
 }
-
 
 @Composable
 fun ChatBubble(message: Message, modifier: Modifier = Modifier) {
@@ -332,21 +371,55 @@ fun MessageInput(
 }
 
 
-fun sendMessageToApi(
-    message: String,
-    onResponse: (String) -> Unit,
-    onError: (String) -> Unit
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = languageApi.askGemini(AskRequest(question = message))
-                 onResponse(response.answer)
-            } catch (e: Exception) {
-                onError(e.localizedMessage ?: "Unknown error")
+fun fetchUserPreferences(onResult: (List<String>) -> Unit) {
+    val user = FirebaseAuth.getInstance().currentUser
+    if (user != null) {
+        val uid = user.uid
+        val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("preference")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val preferences = mutableListOf<String>()
+                for (child in snapshot.children) {
+                    val preferenceName = child.child("preferenceName").getValue(String::class.java)
+                    preferenceName?.let { preferences.add(it) }
+                }
+                onResult(preferences)
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                onResult(emptyList())
+            }
+        })
+    } else {
+        onResult(emptyList())
+    }
 }
 
+fun saveMessageToFirebase(uid: String, text: String, isFromMe: Boolean) {
+    val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("messages")
+    val messageId = ref.push().key ?: return
+    val timestamp = System.currentTimeMillis()
+    val messageData = mapOf(
+        "text" to text,
+        "isFromMe" to isFromMe,
+        "timestamp" to timestamp
+    )
+    ref.child(messageId).setValue(messageData)
+}
+
+// --- API Call ---
+fun sendMessageToApi(message: String, personality: String, onResponse: (String) -> Unit, onError: (String) -> Unit) {
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = languageApi.askGemini(AskRequest(question = "$personality style: $message"))
+            onResponse(response.answer)
+        } catch (e: Exception) {
+            onError(e.localizedMessage ?: "Unknown error")
+        }
+    }
+}
+
+// --- Helpers to open Spotify and Dialer ---
 fun openSpotify(context: android.content.Context) {
     try {
         val intent = context.packageManager.getLaunchIntentForPackage("com.spotify.music")
@@ -359,3 +432,4 @@ fun openDialer(context: android.content.Context) {
     val intent = Intent(Intent.ACTION_DIAL)
     context.startActivity(intent)
 }
+

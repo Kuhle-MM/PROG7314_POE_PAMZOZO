@@ -38,7 +38,10 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import student.projects.jetpackpam.util.DeviceConfiguration
+import java.util.UUID
 
 @Composable
 fun PersonalitySelectionScreen2() {
@@ -134,28 +137,59 @@ private fun PersonalityGridLayout(
             horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(personalities) { personality ->
-                OutlinedCard(
-                    onClick = {
-                        Toast.makeText(context, "Clicked on $personality", Toast.LENGTH_SHORT).show()
-                    },
-                    shape = RoundedCornerShape(30.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                    border = BorderStroke(7.dp, Color(0xFFF0A1F8)),
-                    modifier = Modifier.size(cardSize)
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = personality,
-                            textAlign = TextAlign.Center,
-                            fontSize = fontSize
-                        )
+                    items(personalities) { personality ->
+                        OutlinedCard(
+                            onClick = {
+                                // 1. Get current user UID
+                                val user = FirebaseAuth.getInstance().currentUser
+                                if (user != null) {
+                                    val uid = user.uid
+
+                                    // 2. Create a unique preference ID
+                                    val preferenceId = UUID.randomUUID().toString()
+
+                                    // 3. Build preference map
+                                    val preferenceData = mapOf(
+                                        "preferenceName" to personality,
+                                        "preferenceId" to preferenceId
+                                    )
+
+                                    // 4. Push to Firebase under /Users/uid/preference/preferenceId
+                                    val dbRef = FirebaseDatabase.getInstance()
+                                        .getReference("Users")
+                                        .child(uid)
+                                        .child("preference")
+                                        .child(preferenceId)
+
+                                    dbRef.setValue(preferenceData)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(context, "$personality saved!", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Toast.makeText(context, "Failed: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                                        }
+                                } else {
+                                    Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            shape = RoundedCornerShape(30.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                            border = BorderStroke(7.dp, Color(0xFFF0A1F8)),
+                            modifier = Modifier.size(cardSize)
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = personality,
+                                    textAlign = TextAlign.Center,
+                                    fontSize = fontSize
+                                )
+                            }
+                        }
                     }
-                }
-            }
+
         }
     }
 }
