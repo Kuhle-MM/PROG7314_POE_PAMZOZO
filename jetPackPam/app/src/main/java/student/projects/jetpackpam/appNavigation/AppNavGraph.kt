@@ -9,12 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
+import student.projects.jetpackpam.localization.LocalLanguageViewModel
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.ProfileScreen
@@ -22,15 +22,9 @@ import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
-import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
-import student.projects.jetpackpam.screens.charades.GameOverScreen
-import student.projects.jetpackpam.screens.charades.PlayingGameScreen
-import student.projects.jetpackpam.screens.charades.StartUpScreen
-import androidx.compose.runtime.CompositionLocalProvider
-import student.projects.jetpackpam.localization.LocalLanguageViewModel
+import student.projects.jetpackpam.screens.charades.*
 
-
-const val TAG = "AppNavGraph"
+private const val TAG = "AppNavGraph"
 
 @Composable
 fun AppNavGraph(
@@ -42,37 +36,37 @@ fun AppNavGraph(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    // --- Collect user data from ViewModel (null means not signed in) ---
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
 
-    // --- Google One Tap Launcher setup ---
+    // --- Google One Tap Launcher ---
     val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult(),
-        onResult = { result ->
-            Log.d("LoginScreen", "One Tap launcher callback triggered. Result code: ${result.resultCode}")
-            if (result.resultCode == Activity.RESULT_OK) {
-                coroutineScope.launch {
-                    try {
-                        val signInResult =
-                            googleAuthClient.signInWithIntent(result.data ?: return@launch)
-                        authViewModel.handleGoogleSignInResult(signInResult)
-                        navController.navigate("home") {
-                            popUpTo("login") { inclusive = true }
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error processing Google One Tap result", e)
-                        authViewModel.handleGoogleSignInError(e.localizedMessage)
-                        Toast.makeText(context, "Google sign-in failed: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
-                }
-            } else {
-                Log.d(TAG, "Google One Tap cancelled or failed")
-                Toast.makeText(context, "Google sign-in cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
-    )
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            coroutineScope.launch {
+                try {
+                    val signInResult = googleAuthClient.signInWithIntent(result.data ?: return@launch)
+                    authViewModel.handleGoogleSignInResult(signInResult)
 
-    // --- Navigation graph definition ---
+                    // Navigate safely to main
+                    navController.navigate("main") {
+                        launchSingleTop = true
+                        navController.graph.startDestinationRoute?.let { start ->
+                            popUpTo(start) { inclusive = true }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Google One Tap error", e)
+                    Toast.makeText(context, "Google sign-in failed: ${e.message}", Toast.LENGTH_LONG).show()
+                    authViewModel.handleGoogleSignInError(e.localizedMessage)
+                }
+            }
+        } else {
+            Toast.makeText(context, "Google sign-in cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // --- Navigation Graph ---
     CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
         NavHost(
             navController = navController,
@@ -87,7 +81,11 @@ fun AppNavGraph(
                 )
             }
             composable("signUp") {
-                SignUpScreen(navController, authViewModel)
+                SignUpScreen(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    googleSignInLauncher = googleSignInLauncher
+                )
             }
             composable("main") {
                 MainScreen(
@@ -104,14 +102,19 @@ fun AppNavGraph(
                         try {
                             authViewModel.signOut()
                             Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
+
+                            // Navigate safely to login
                             navController.navigate("login") {
-                                popUpTo("main") { inclusive = true }
+                                // Remove everything from backstack
+                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                launchSingleTop = true
                             }
                         } catch (e: Exception) {
                             Log.e(TAG, "Error signing out", e)
                             Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                     }
+
                 )
             }
             composable("startup") { StartUpScreen(navController) }
@@ -124,8 +127,8 @@ fun AppNavGraph(
             composable(
                 route = "gameover?correct={correct}&skipped={skipped}",
                 arguments = listOf(
-                    navArgument("correct") { type = NavType.StringType; defaultValue = "" },
-                    navArgument("skipped") { type = NavType.StringType; defaultValue = "" }
+                    navArgument("correct") { defaultValue = ""; type = androidx.navigation.NavType.StringType },
+                    navArgument("skipped") { defaultValue = ""; type = androidx.navigation.NavType.StringType }
                 )
             ) { backStackEntry ->
                 val correct = backStackEntry.arguments?.getString("correct")
@@ -134,5 +137,4 @@ fun AppNavGraph(
             }
         }
     }
-
 }

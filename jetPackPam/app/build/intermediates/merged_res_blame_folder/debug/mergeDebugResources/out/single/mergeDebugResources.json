@@ -1,5 +1,9 @@
 [
     {
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-hdpi_pamicon.png.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-hdpi/pamicon.png"
+    },
+    {
         "merged": "student.projects.jetpackpam.app-debug-62:/drawable_google_logo.png.flat",
         "source": "student.projects.jetpackpam.app-main-64:/drawable/google_logo.png"
     },
