@@ -1,5 +1,9 @@
 [
     {
+        "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-hdpi_pamicon.png.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/mipmap-hdpi/pamicon.png"
+    },
+    {
         "merged": "student.projects.jetpackpam.app-debug-62:/drawable_google_logo.png.flat",
         "source": "student.projects.jetpackpam.app-main-64:/drawable/google_logo.png"
     },
@@ -18,6 +22,10 @@
     {
         "merged": "student.projects.jetpackpam.app-debug-62:/mipmap-mdpi_ic_launcher.webp.flat",
         "source": "student.projects.jetpackpam.app-main-64:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_pam.jpg.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/drawable/pam.jpg"
     },
     {
         "merged": "student.projects.jetpackpam.app-debug-62:/font_inter_medium_lightitalic.ttf.flat",
