@@ -47,12 +47,12 @@
 28        android:extractNativeLibs="false"
 29        android:fullBackupContent="@xml/backup_rules"
 29-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:9-54
-30        android:icon="@mipmap/ic_launcher"
-30-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-43
-31        android:label="@string/app_name"
-31-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-41
-32        android:roundIcon="@mipmap/ic_launcher_round"
-32-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-54
+30        android:icon="@drawable/pamicon"
+30-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-41
+31        android:label="P.A.M"
+31-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-30
+32        android:roundIcon="@drawable/ic_launcher_foreground"
+32-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-61
 33        android:supportsRtl="true"
 33-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:9-35
 34        android:testOnly="true"
@@ -64,8 +64,8 @@
 37-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:13-41
 38            android:exported="true"
 38-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:13-36
-39            android:label="@string/app_name"
-39-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:13-45
+39            android:label="P.A.M"
+39-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:13-34
 40            android:theme="@style/Theme.JetPackPam" >
 40-->C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:22:13-52
 41            <intent-filter>

@@ -204,13 +204,13 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\lab_services_stude
 	android:supportsRtl
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:9-35
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-41
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-30
 	android:fullBackupContent
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:9-54
 	android:roundIcon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-54
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-61
 	android:icon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-43
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-41
 	android:allowBackup
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
@@ -220,7 +220,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\lab_services_stude
 activity#student.projects.jetpackpam.MainActivity
 ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:9-28:20
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:13-45
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:13-34
 	android:exported
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:13-36
 	android:theme
