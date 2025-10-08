@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 import student.projects.jetpackpam.R
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController,onSignOut: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,6 +30,9 @@ fun HomeScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
+        Button(onClick = onSignOut) {
+            Text(text = "Sign out")
+        }
         Image(
             painter = painterResource(id = R.drawable.pamicon),
             contentDescription = "PAM",

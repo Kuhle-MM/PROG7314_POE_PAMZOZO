@@ -38,7 +38,7 @@ fun LongButton(
             containerColor = MaterialTheme.colorScheme.primary )
     ) {
         Text(text = text,
-        style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall
         )
     }
 }
@@ -104,3 +104,4 @@ fun GoogleBtnPreview() {
         )
     }
 }
+
