@@ -1,22 +1,16 @@
 package student.projects.jetpackpam.screens.firsttimecustom
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,18 +21,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
-import student.projects.jetpackpam.data.LanguageRequest
-import student.projects.jetpackpam.models.LanguageViewModel
-import student.projects.jetpackpam.retrofit.languageApi
-import student.projects.jetpackpam.util.DeviceConfiguration
 import student.projects.jetpackpam.util.LanguagePrefs
+import student.projects.jetpackpam.models.LanguageViewModel
 
 @Composable
 fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } } // observes changes
+    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
 
     var selectedLanguage by remember { mutableStateOf(languageViewModel.selectedLanguage) }
     var currentLanguageCode by remember { mutableStateOf(languageViewModel.currentLanguageCode) }
@@ -65,10 +58,10 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(horizontal = 16.dp, vertical = 24.dp)
-            .consumeWindowInsets(WindowInsets.navigationBars)
+            .verticalScroll(rememberScrollState())
 
         Column(
-            modifier = rootModifier.verticalScroll(rememberScrollState()),
+            modifier = rootModifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -99,12 +92,13 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
                             selectedLanguage = language
                             currentLanguageCode = newCode
 
+                            // Save to Firebase
+                            languageViewModel.saveLanguageToFirebase(language, newCode)
+
+                            // Update texts globally
                             scope.launch {
                                 languageViewModel.translateAll(newCode) { newTexts ->
                                     languageViewModel.updateTexts(newTexts)
-                                    languageViewModel.setLanguage(newCode)
-                                    languageViewModel.selectedLanguage = language
-                                    LanguagePrefs.saveLanguage(context, language, newCode)
                                 }
                             }
                         },
@@ -117,7 +111,8 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
                         colors = CardDefaults.cardColors(
                             containerColor = if (isSelected) Color(0x22B48CFF) else Color.Transparent
                         )
-                    ) {
+                    )
+                    {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -132,7 +127,6 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
 
             Button(
                 onClick = {
-                    // 🔥 This triggers recomposition across the app
                     Toast.makeText(context, "Language updated globally!", Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB48CFF))

@@ -98,23 +98,7 @@ fun AppNavGraph(
             composable("profile") {
                 ProfileScreen(
                     userData = userData,
-                    onSignOut = {
-                        try {
-                            authViewModel.signOut()
-                            Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
-
-                            // Navigate safely to login
-                            navController.navigate("login") {
-                                // Remove everything from backstack
-                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                                launchSingleTop = true
-                            }
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Error signing out", e)
-                            Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
-                    }
-
+                    uiTexts = languageViewModel.uiTexts
                 )
             }
             composable("startup") { StartUpScreen(navController) }

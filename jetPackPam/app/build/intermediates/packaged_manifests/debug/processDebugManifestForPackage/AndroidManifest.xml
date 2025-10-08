@@ -153,6 +153,11 @@
             android:exported="false"
             android:initOrder="100" />
 
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:directBootAware="true"
+            android:exported="false" />
+
         <activity
             android:name="androidx.activity.ComponentActivity"
             android:exported="true"

@@ -10,12 +10,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material3.*
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -23,17 +22,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.delay
 import student.projects.jetpackpam.R
-import student.projects.jetpackpam.localization.t
 import student.projects.jetpackpam.util.DeviceConfiguration
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.delay
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
+fun HomeScreen(
+    navController: NavHostController,
+    uiTexts: Map<String, String>
+) {
 
     // --- Animation states ---
     var showLogo by remember { mutableStateOf(false) }
@@ -61,7 +61,6 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
     // --- Adaptive sizing ---
     val activity = LocalContext.current as ComponentActivity
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-
     val deviceConfig = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
     val logoSize = when (deviceConfig) {
@@ -116,7 +115,7 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
             ) {
                 Image(
                     painter = painterResource(R.drawable.pamicon),
-                    contentDescription = "PAM",
+                    contentDescription = uiTexts["appLogo"] ?: "PAM",
                     modifier = Modifier.size(logoSize).offset(y = floatAnim.dp)
                 )
             }
@@ -126,7 +125,7 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
                 enter = fadeIn(tween(1000)) + slideInVertically(tween(1000)) { it / 4 }
             ) {
                 Text(
-                    text = t("Welcome"),
+                    text = uiTexts["welcome"] ?: "Welcome",
                     fontSize = messageFont,
                     fontWeight = FontWeight.Medium,
                     color = Color.Black,
@@ -147,9 +146,9 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
                     horizontalArrangement = Arrangement.End
                 ) {
                     ElevatedButton(onClick = { navController.navigate("chat") }) {
-                        Icon(Icons.Default.ChatBubbleOutline, contentDescription = t("chat"))
+                        Icon(Icons.Default.ChatBubbleOutline, contentDescription = uiTexts["chat"] ?: "Chat")
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(t("chat"))
+                        Text(uiTexts["chat"] ?: "Chat")
                     }
                 }
             }
@@ -173,7 +172,7 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
                 ) {
                     Image(
                         painter = painterResource(R.drawable.pamicon),
-                        contentDescription = "PAM",
+                        contentDescription = uiTexts["appLogo"] ?: "PAM",
                         modifier = Modifier.size(logoSize).offset(y = floatAnim.dp)
                     )
                 }
@@ -183,7 +182,7 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
                     enter = fadeIn(tween(1000)) + slideInVertically(tween(1000)) { it / 4 }
                 ) {
                     Text(
-                        text = t("Welcome"),
+                        text = uiTexts["welcome"] ?: "Welcome",
                         fontSize = messageFont,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black,
@@ -202,9 +201,8 @@ fun HomeScreen(navController: NavHostController, onSignOut: () -> Unit) {
                     onClick = { navController.navigate("chat") },
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    Icon(Icons.Default.ChatBubbleOutline, contentDescription = t("chat"))
+                    Icon(Icons.Default.ChatBubbleOutline, contentDescription = uiTexts["chat"] ?: "Chat")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(t("chat"))
                 }
             }
         }
