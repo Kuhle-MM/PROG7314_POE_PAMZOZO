@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PamAPITest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c16fbb31b137f0716c9c33028a77f6bfc482bac8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+726027c2077ddd734458ce9b8dc7994bd710fc1a")]
 [assembly: System.Reflection.AssemblyProductAttribute("PamAPITest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PamAPITest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
