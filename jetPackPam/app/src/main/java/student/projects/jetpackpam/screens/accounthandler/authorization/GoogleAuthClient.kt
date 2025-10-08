@@ -57,7 +57,6 @@ class GoogleAuthClient(
         }
     }
 
-
     /** Classic Google Sign-In fallback intent */
     fun getSignInIntent(): Intent {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

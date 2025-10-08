@@ -1,7 +1,14 @@
 package student.projects.jetpackpam.screens.accounthandler
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,8 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.OffsetMapping.Companion.Identity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -24,11 +33,21 @@ import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.util.DeviceConfiguration
+//import com.google.android.gms.identity.client.Identity
 
+// SignUpScreen.kt
+// SignUpScreen.kt
 @Composable
-fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModelViewModel) {
-    val TAG = "SignUpDebug"
+fun SignUpScreen(
+    navController: NavController,
+    authViewModel: AuthorizationModelViewModel,
+    googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
+) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     // UI state
     var emailText by remember { mutableStateOf("") }
@@ -38,154 +57,82 @@ fun SignUpScreen(navController: NavController, authViewModel: AuthorizationModel
     var surnameText by remember { mutableStateOf("") }
     var phoneNumberText by remember { mutableStateOf("") }
 
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-
-    // Collect ViewModel state
     val isLoading by authViewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage by authViewModel.errorMessage.collectAsStateWithLifecycle()
     val signUpSuccess by authViewModel.signUpSuccess.collectAsStateWithLifecycle()
+    val user by authViewModel.userData.collectAsStateWithLifecycle()
 
-    // Navigate on success
+    // --- Navigate on sign-up success ---
     LaunchedEffect(signUpSuccess) {
         if (signUpSuccess) {
-            Log.d(TAG, "Sign-up success observed in Composable")
-            Toast.makeText(context, "Sign up successful!", Toast.LENGTH_LONG).show()
-            navController.navigate("login") {
-                popUpTo("login") { inclusive = false }
+            Toast.makeText(context, "Sign up successful!", Toast.LENGTH_SHORT).show()
+            navController.navigate("main") {
+                popUpTo("login") { inclusive = true }
                 launchSingleTop = true
             }
             authViewModel.resetSignUpState()
         }
     }
 
+    // --- Navigate on Google sign-in success ---
+    LaunchedEffect(user) {
+        user?.let {
+            Toast.makeText(context, "Welcome, ${it.username}", Toast.LENGTH_SHORT).show()
+            navController.navigate("main") {
+                popUpTo("login") { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars
-    ) { innerPadding ->
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SignUpHeader()
 
-        val rootModifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-            .padding(horizontal = 16.dp, vertical = 24.dp)
+            SignUpFormSection(
+                emailText = emailText,
+                onEmailTextChange = { emailText = it },
+                passwordText = passwordText,
+                onPasswordTextChange = { passwordText = it },
+                confirmPasswordText = confirmPasswordText,
+                onConfirmPasswordChange = { confirmPasswordText = it },
+                nameText = nameText,
+                onNameTextChange = { nameText = it },
+                surnameText = surnameText,
+                onSurnameTextChange = { surnameText = it },
+                phoneNumberText = phoneNumberText,
+                onPhoneNumberTextChange = { phoneNumberText = it },
+                navController = navController,
+                authViewModel = authViewModel,
+                isLoading = isLoading,
+                coroutineScope = coroutineScope,
+                context = context,
+                googleSignInLauncher = googleSignInLauncher
+            )
 
-        val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-        val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
-
-        when (deviceConfiguration) {
-
-            // --- MOBILE PORTRAIT ---
-            DeviceConfiguration.MOBILE_PORTRAIT -> {
-                Column(
-                    modifier = rootModifier.verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    SignUpHeader()
-
-                    SignUpFormSection(
-                        emailText, { emailText = it },
-                        passwordText, { passwordText = it },
-                        confirmPasswordText, { confirmPasswordText = it },
-                        nameText, { nameText = it },
-                        surnameText, { surnameText = it },
-                        phoneNumberText, { phoneNumberText = it },
-                        navController, authViewModel, isLoading,
-                        coroutineScope, context
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    errorMessage?.let { msg ->
-                        Text(
-                            text = msg,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
-                }
-            }
-
-            // --- MOBILE LANDSCAPE ---
-            DeviceConfiguration.MOBILE_LANDSCAPE -> {
-                Row(
-                    modifier = rootModifier.padding(horizontal = 32.dp),
-                    horizontalArrangement = Arrangement.spacedBy(32.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SignUpHeader()
-
-                        SignUpFormSection(
-                            emailText, { emailText = it },
-                            passwordText, { passwordText = it },
-                            confirmPasswordText, { confirmPasswordText = it },
-                            nameText, { nameText = it },
-                            surnameText, { surnameText = it },
-                            phoneNumberText, { phoneNumberText = it },
-                            navController, authViewModel, isLoading,
-                            coroutineScope, context
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        errorMessage?.let { msg ->
-                            Text(
-                                text = msg,
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            // --- TABLET OR OTHER DEVICES ---
-            else -> {
-                Column(
-                    modifier = rootModifier
-                        .padding(top = 48.dp)
-                        .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    SignUpHeader()
-
-                    SignUpFormSection(
-                        emailText, { emailText = it },
-                        passwordText, { passwordText = it },
-                        confirmPasswordText, { confirmPasswordText = it },
-                        nameText, { nameText = it },
-                        surnameText, { surnameText = it },
-                        phoneNumberText, { phoneNumberText = it },
-                        navController, authViewModel, isLoading,
-                        coroutineScope, context
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    errorMessage?.let { msg ->
-                        Text(
-                            text = msg,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
-                }
+            errorMessage?.let { msg ->
+                Text(
+                    text = msg,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }
 }
+
+
 
 @Composable
 fun SignUpHeader() {
@@ -198,6 +145,8 @@ fun SignUpHeader() {
     }
 }
 
+// SignUpFormSection.kt
+// SignUpFormSection.kt
 @Composable
 fun SignUpFormSection(
     emailText: String,
@@ -216,11 +165,16 @@ fun SignUpFormSection(
     authViewModel: AuthorizationModelViewModel,
     isLoading: Boolean,
     coroutineScope: CoroutineScope,
-    context: android.content.Context
+    context: Context,
+    googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        // Name & Surname
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             TextFieldLong(
                 text = nameText,
                 onValueChange = onNameTextChange,
@@ -239,6 +193,7 @@ fun SignUpFormSection(
             )
         }
 
+        // Email & Phone
         TextFieldLong(
             text = emailText,
             onValueChange = onEmailTextChange,
@@ -247,7 +202,6 @@ fun SignUpFormSection(
             isTextSecret = false,
             modifier = Modifier.fillMaxWidth()
         )
-
         TextFieldLong(
             text = phoneNumberText,
             onValueChange = onPhoneNumberTextChange,
@@ -257,6 +211,7 @@ fun SignUpFormSection(
             modifier = Modifier.fillMaxWidth()
         )
 
+        // Password & Confirm Password
         TextFieldLong(
             text = passwordText,
             onValueChange = onPasswordTextChange,
@@ -265,7 +220,6 @@ fun SignUpFormSection(
             isTextSecret = true,
             modifier = Modifier.fillMaxWidth()
         )
-
         TextFieldLong(
             text = confirmPasswordText,
             onValueChange = onConfirmPasswordChange,
@@ -275,43 +229,42 @@ fun SignUpFormSection(
             modifier = Modifier.fillMaxWidth()
         )
 
+        // Sign-Up Button
         LongButton(
             text = if (isLoading) "Signing up..." else "Sign Up",
             onClick = {
                 coroutineScope.launch {
-                    try {
-                        authViewModel.signUp(
-                            nameText,
-                            surnameText,
-                            emailText,
-                            passwordText,
-                            confirmPasswordText
-                        ) {
-                            Log.d("SignUpDebug", "onSuccess lambda triggered")
-                        }
-                    } catch (e: Exception) {
-                        Log.e("SignUpDebug", "Sign-up exception: ${e.localizedMessage}")
-                        Toast.makeText(
-                            context,
-                            "Sign up failed: ${e.localizedMessage}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                    authViewModel.signUp(
+                        nameText, surnameText, emailText, passwordText, confirmPasswordText
+                    ) {}
                 }
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         )
 
+        // Navigate to Login
         LinkButton(
             text = "You already have a profile?",
             onClick = { navController.navigate("login") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
+        // Google One Tap Button
         GoogleBtn(
-            text = "Log in Using Google",
-            onClick = { /* Implement Google SSO */ },
+            text = "Sign in with Google",
+            onClick = {
+                coroutineScope.launch {
+                    val intentSender = authViewModel.getGoogleSignInIntentSender()
+                    if (intentSender != null) {
+                        googleSignInLauncher.launch(
+                            IntentSenderRequest.Builder(intentSender).build()
+                        )
+                    } else {
+                        Toast.makeText(context, "Google Sign-In not available", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             imageRes = student.projects.jetpackpam.R.drawable.google_logo
         )

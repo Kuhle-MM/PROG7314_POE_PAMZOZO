@@ -28,7 +28,7 @@ import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAu
  * Automatically creates Realtime Database structure after successful sign-up.
  */
 class AuthorizationModelViewModel(
-    private val googleAuthClient: GoogleAuthClient
+    public val googleAuthClient: GoogleAuthClient
 ) : ViewModel() {
 
     private val _signUpSuccess = MutableStateFlow(false)
@@ -151,7 +151,7 @@ class AuthorizationModelViewModel(
         }
     }
 
-    // ✅ --- NEW: Create Realtime Database structure ---
+    // --- NEW: Create Realtime Database structure ---
     private fun createUserStructure(uid: String, name: String, surname: String, email: String, password: String) {
         val userRef = db.child("User").child(uid)
 
@@ -296,8 +296,6 @@ class AuthorizationModelViewModel(
     fun resetSignUpState() {
         _signUpSuccess.value = false
     }
-
-
 
     fun signOutSafely(
         context: Context,
