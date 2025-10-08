@@ -62,17 +62,32 @@ fun LoginScreen(
     ) { result ->
         coroutineScope.launch {
             Log.d("LoginScreen", "Classic launcher callback triggered. Result code: ${result.resultCode}")
+
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 try {
+                    // Step 1: Get SignInResult from Google
                     val signInResult = googleAuthClient.signInWithIntent(result.data!!)
 
+                    // Step 2: Handle sign-in via ViewModel
                     authViewModel.handleGoogleSignInResult(signInResult)
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
+
+                    // Step 3: Observe userData to navigate only when Firebase confirms sign-in
+                    authViewModel.userData.collect { user ->
+                        if (user != null) {
+                            Log.d("LoginScreen", "Google user signed in: ${user.email}")
+                            navController.navigate("home") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
                     }
+
                 } catch (e: Exception) {
                     Log.e("LoginScreen", "Classic Google sign-in failed", e)
-                    Toast.makeText(context, "Google Sign-In failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "Google Sign-In failed: ${e.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } else {
                 Log.d("LoginScreen", "Classic Google Sign-In cancelled or data is null: ${result.data}")
@@ -80,6 +95,18 @@ fun LoginScreen(
             }
         }
     }
+// Inside LoginScreen Composable
+    val userData by authViewModel.userData.collectAsState()
+
+    LaunchedEffect(userData) {
+        if (userData != null && navController.currentDestination?.route != "main") {
+            Log.d("LoginScreen", "Navigating to main because user is signed in: ${userData!!.email}")
+            navController.navigate("main") {
+                popUpTo("login") { inclusive = true }
+            }
+        }
+    }
+
 
     // --- Google Sign-In button click ---
     val onGoogleSignInClick: () -> Unit = {
