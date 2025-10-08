@@ -6,6 +6,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.*
 import androidx.compose.runtime.*
@@ -98,6 +99,7 @@ fun MainScreen(
                         "fontSize" -> "Font Size"
                         "pamTheme" -> "Pam Theme"
                         "personality" -> "Personality"
+                        "chat" -> "Chat"
                         else -> "Profile"
                     }
 
@@ -106,7 +108,7 @@ fun MainScreen(
 
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(Icons.Default.Menu, contentDescription = "Open menu")
+                                Icon(Icons.Default.Settings, contentDescription = "Settings")
                             }
                         }
                     )

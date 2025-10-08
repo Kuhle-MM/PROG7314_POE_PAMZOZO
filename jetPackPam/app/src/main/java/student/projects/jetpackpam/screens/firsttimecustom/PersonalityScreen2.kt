@@ -166,6 +166,6 @@ fun PersonalityHeader2(){
     Text(
         text = "Choose my personality",
         fontStyle = FontStyle.Italic,
-        fontSize = 35.sp
+        style = MaterialTheme.typography.titleLarge
     )
 }
