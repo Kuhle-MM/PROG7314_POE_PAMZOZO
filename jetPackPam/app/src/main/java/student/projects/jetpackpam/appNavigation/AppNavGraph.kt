@@ -23,6 +23,7 @@ import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.*
+import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
 
 private const val TAG = "AppNavGraph"
 
@@ -96,6 +97,11 @@ fun AppNavGraph(
                 )
             }
             composable("profile") {
+                PersonalitySelectionScreen2(
+                    languageViewModel = languageViewModel
+                )
+            }
+            composable("personality") {
                 ProfileScreen(
                     userData = userData,
                     uiTexts = languageViewModel.uiTexts
