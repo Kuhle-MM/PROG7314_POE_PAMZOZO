@@ -23,25 +23,29 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
             .fillMaxSize()
             .padding(innerPadding)
             .padding(horizontal = 16.dp, vertical = 24.dp)
+Column (rootModifier){
 
-        var fontSize = 0.0f
-        Slider(
-            value = fontSize,
-            onValueChange = { newValue ->
-                fontSize = newValue
-                languageViewModel.updateFontSize(newValue) // This updates Typography globally
-            },
-            valueRange = 16f..48f,
-            steps = 32
+    var fontSize = 0.0f
+    Slider(
+        value = fontSize,
+        onValueChange = { newValue ->
+            fontSize = newValue
+            languageViewModel.updateFontSize(newValue) // This updates Typography globally
+        },
+        valueRange = 16f..48f,
+        steps = 32
+    )
+Spacer(modifier = Modifier.height(10.dp))
+
+    // Preview text
+    Text(
+        text = uiTexts["fontPreview"] ?: "Font Preview",
+        fontSize = sliderValue.sp,
+
         )
 
+}
 
-        // Preview text
-        Text(
-            text = uiTexts["fontPreview"] ?: "Font Preview",
-            fontSize = sliderValue.sp,
-
-        )
     }
 }
 
