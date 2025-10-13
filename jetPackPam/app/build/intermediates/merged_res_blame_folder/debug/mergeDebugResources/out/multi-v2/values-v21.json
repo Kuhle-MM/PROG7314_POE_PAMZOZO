@@ -4,7 +4,7 @@
             "outputFile": "student.projects.jetpackpam.app-mergeDebugResources-60:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\c5b2dbc93449fe80ffbab61fd1649fd9\\transformed\\core-1.15.0\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\mihla\\.gradle\\caches\\8.13\\transforms\\c5b2dbc93449fe80ffbab61fd1649fd9\\transformed\\core-1.15.0\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\fad5b597cf56632c3da6cf3b896a9215\\transformed\\credentials-play-services-auth-1.3.0\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\mihla\\.gradle\\caches\\8.13\\transforms\\fad5b597cf56632c3da6cf3b896a9215\\transformed\\credentials-play-services-auth-1.3.0\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
