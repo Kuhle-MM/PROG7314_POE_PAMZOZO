@@ -73,12 +73,12 @@ class MainActivity : ComponentActivity() {
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
 
-                    AppNavGraph(
-                        googleAuthClient = googleAuthClient,
-                        authViewModel = authViewModel,
-                        languageViewModel = languageViewModel
-                    )
-
+//                    AppNavGraph(
+//                        googleAuthClient = googleAuthClient,
+//                        authViewModel = authViewModel,
+//                        languageViewModel = languageViewModel
+//                    )
+//
                     Surface(color = MaterialTheme.colorScheme.background) {
                         VideoScreen() // Directly open control screen
                     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROG7314_POE.Models;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 [ApiController]
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 public class MotorController : ControllerBase
 {
     private readonly HttpClient _httpClient;
+
+    // <-- Make sure this is the Pi's actual IP on your network
     private readonly string _piBaseUrl = "http://192.168.137.250:5000";
 
     public MotorController(IHttpClientFactory factory)
@@ -18,16 +21,18 @@ public class MotorController : ControllerBase
     [HttpPost("move")]
     public async Task<IActionResult> MoveRobot([FromBody] MoveRequest request)
     {
-        string endpoint = "/api/joystick"; // forward joystick-style input to Pi
+        var endpoint = "/api/joystick";
 
         try
         {
             var response = await _httpClient.PostAsJsonAsync($"{_piBaseUrl}{endpoint}", request);
+
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
                 return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
+
             return Ok(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException ex)
@@ -44,11 +49,13 @@ public class MotorController : ControllerBase
         try
         {
             var response = await _httpClient.PostAsJsonAsync($"{_piBaseUrl}/api/joystick", stopCommand);
+
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
                 return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
+
             return Ok("Robot stopped successfully.");
         }
         catch (HttpRequestException ex)

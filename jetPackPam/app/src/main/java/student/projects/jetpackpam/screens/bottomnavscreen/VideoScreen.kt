@@ -43,15 +43,15 @@ fun VideoScreen() {
     }
 
     val coroutineScope = rememberCoroutineScope()
-    var imageUrl by remember { mutableStateOf("http://192.168.137.1:7298/api/CameraCapturing/latest") }
+    var imageUrl by remember { mutableStateOf("http://192.168.137.1:5000/api/CameraCapturing/latest") }
     var hasFeed by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    // Refresh image periodically
+    // Refresh image every 300ms
     LaunchedEffect(Unit) {
         while (true) {
             imageUrl = "http://192.168.137.1:7298/api/CameraCapturing/latest?ts=${System.currentTimeMillis()}"
-            delay(500)
+            delay(300)
         }
     }
 
@@ -62,7 +62,7 @@ fun VideoScreen() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // -------- Left Joystick: Robot movement --------
+        // -------- Left: Joystick --------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -93,7 +93,7 @@ fun VideoScreen() {
             )
         }
 
-        // -------- Center: Video feed --------
+        // -------- Center: Video Feed --------
         Box(
             modifier = Modifier
                 .weight(3f)
@@ -104,7 +104,7 @@ fun VideoScreen() {
                 Image(
                     painter = rememberAsyncImagePainter(
                         model = imageUrl,
-                        onError = { hasFeed = false; errorMessage = "🚫 No live feed detected." }
+                        onError = { hasFeed = false; errorMessage = "🚫 No live feed." }
                     ),
                     contentDescription = "Camera Feed",
                     modifier = Modifier.fillMaxSize(),
@@ -133,7 +133,7 @@ fun VideoScreen() {
             }
         }
 
-        // -------- Right: Camera control --------
+        // -------- Right: Camera Controls --------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -164,8 +164,6 @@ fun VideoScreen() {
         }
     }
 }
-
-// ------------------- Joystick -------------------
 
 @Composable
 fun JoystickControl(
@@ -212,8 +210,6 @@ fun JoystickControl(
         }
     }
 }
-
-// ------------------- Camera Control -------------------
 
 @Composable
 fun CameraControl(

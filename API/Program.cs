@@ -19,8 +19,7 @@ namespace PROG7314_POE
 
             builder.WebHost.ConfigureKestrel(options =>
             {
-                // Listen on all LAN interfaces, port 7298
-                options.ListenAnyIP(7298);
+                options.ListenAnyIP(7298); // Listen on all LAN interfaces
             });
 
             // Services
@@ -33,6 +32,16 @@ namespace PROG7314_POE
             builder.Services.AddSingleton<PROG7314_POE.Repository.InMemoryRepository>();
             builder.Services.AddSingleton<PROG7314_POE.Services.IGameService, PROG7314_POE.Services.GameService>();
             builder.Services.AddSingleton<CameraService>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             // JWT Authentication
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -58,13 +67,16 @@ namespace PROG7314_POE
 
             var app = builder.Build();
 
-            // Enable Swagger
+            // Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PAM API v1");
                 c.RoutePrefix = "swagger";
             });
+
+            // Use CORS before auth
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();
