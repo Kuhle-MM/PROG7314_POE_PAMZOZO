@@ -79,6 +79,9 @@ class MainActivity : ComponentActivity() {
                         languageViewModel = languageViewModel
                     )
 
+                    Surface(color = MaterialTheme.colorScheme.background) {
+                        VideoScreen() // Directly open control screen
+                    }
                     //MainScreen()
                     //LoginScreen()
                     //LanguageSelectionScreen()

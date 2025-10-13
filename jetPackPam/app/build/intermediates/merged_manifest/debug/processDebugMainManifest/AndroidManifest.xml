@@ -31,7 +31,6 @@
         android:label="P.A.M"
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.JetPackPam" >
         <activity
             android:name="student.projects.jetpackpam.MainActivity"
