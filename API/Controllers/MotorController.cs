@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROG7314_POE.Models;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 [ApiController]
@@ -10,30 +8,26 @@ using System.Threading.Tasks;
 public class MotorController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private readonly string _piBaseUrl = "http://192.168.137.250:5000/api/command"; // Your Pi endpoint
+    private readonly string _piBaseUrl = "http://192.168.137.250:5000";
 
     public MotorController(IHttpClientFactory factory)
     {
         _httpClient = factory.CreateClient();
     }
 
-    // Move robot based on joystick or direction
     [HttpPost("move")]
     public async Task<IActionResult> MoveRobot([FromBody] MoveRequest request)
     {
-        if (string.IsNullOrEmpty(request.Cmd))
-            return BadRequest("Command is required (e.g., forward, backward, left, right, stop)");
+        string endpoint = "/api/joystick"; // forward joystick-style input to Pi
 
         try
         {
-            var response = await _httpClient.PostAsJsonAsync(_piBaseUrl, request);
-
+            var response = await _httpClient.PostAsJsonAsync($"{_piBaseUrl}{endpoint}", request);
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
                 return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
-
             return Ok(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException ex)
@@ -42,21 +36,19 @@ public class MotorController : ControllerBase
         }
     }
 
-    // Stop robot immediately
     [HttpPost("stop")]
     public async Task<IActionResult> StopRobot()
     {
-        var stopCommand = new MoveRequest { Cmd = "stop", Speed = 0 };
+        var stopCommand = new MoveRequest { X = 0, Y = 0, Speed = 0 };
 
         try
         {
-            var response = await _httpClient.PostAsJsonAsync(_piBaseUrl, stopCommand);
+            var response = await _httpClient.PostAsJsonAsync($"{_piBaseUrl}/api/joystick", stopCommand);
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
                 return StatusCode((int)response.StatusCode, $"Pi returned error: {msg}");
             }
-
             return Ok("Robot stopped successfully.");
         }
         catch (HttpRequestException ex)
@@ -66,9 +58,10 @@ public class MotorController : ControllerBase
     }
 }
 
-// DTO for communication
+// Updated DTO
 public class MoveRequest
 {
-    public string Cmd { get; set; }   // forward, backward, left, right, stop
+    public float X { get; set; } = 0;    // -1 to 1
+    public float Y { get; set; } = 0;    // -1 to 1
     public int Speed { get; set; } = 50;
 }
