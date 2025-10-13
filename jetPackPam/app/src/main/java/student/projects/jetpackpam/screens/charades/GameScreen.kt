@@ -463,15 +463,15 @@ fun GameOverScreen(navController: NavController, correct: String?, skipped: Stri
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(t("Game Over"), style = MaterialTheme.typography.headlineMedium.copy(color = Color.White))
+            Text(t("Game Over"), style = MaterialTheme.typography.headlineMedium.copy(color = Color.Black))
             Spacer(modifier = Modifier.height(24.dp))
             Text(t("Correct Words"), color = Color.Green, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            correctList.forEach { Text("• $it", color = Color.White, fontSize = 18.sp) }
+            correctList.forEach { Text("• $it", color = Color.Black, fontSize = 18.sp) }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(t("Skipped Words"), color = Color.Red, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            skippedList.forEach { Text("• $it", color = Color.White, fontSize = 18.sp) }
+            skippedList.forEach { Text("• $it", color = Color.Black, fontSize = 18.sp) }
 
             Spacer(modifier = Modifier.height(32.dp))
 
