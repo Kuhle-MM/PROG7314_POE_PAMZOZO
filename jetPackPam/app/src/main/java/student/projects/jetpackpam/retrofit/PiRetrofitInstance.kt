@@ -6,9 +6,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 object PiRetrofitInstance {
     private const val BASE_URL = "http://192.168.101.206:7298/"
 
-    val api: RobotApi = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(RobotApi::class.java)
+    val api: RobotApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RobotApi::class.java)
+    }
 }
