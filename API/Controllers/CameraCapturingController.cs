@@ -16,35 +16,65 @@ namespace PROG7314_POE.Controllers
             _cameraService = cameraService;
         }
 
+        //[HttpPost("upload")]
+        //[Authorize(Policy = "DeviceOnly")]
+        //public async Task<IActionResult> UploadImage([FromForm] IFormFile file)
+        //{
+        //    if (file == null || file.Length == 0)
+        //        return BadRequest("No file uploaded.");
+
+        //    if (!file.ContentType.StartsWith("image/"))
+        //        return BadRequest("Upload must be an image.");
+
+        //    using var ms = new MemoryStream();
+        //    await file.CopyToAsync(ms);
+        //    var imageBytes = ms.ToArray();
+
+        //    _cameraService.SetLatestImage(imageBytes);
+
+        //    return Ok(new { message = "Image uploaded", size = imageBytes.Length });
+        //}
+
+        private static byte[] _latestFrame; // ✅ Stored in memory
+
+        // POST /api/CameraCapturing/upload
         [HttpPost("upload")]
-        [Authorize(Policy = "DeviceOnly")]
-        public async Task<IActionResult> UploadImage([FromForm] IFormFile file)
+        public IActionResult UploadFrame(IFormFile file)
         {
             if (file == null || file.Length == 0)
-                return BadRequest("No file uploaded.");
+                return BadRequest("No file uploaded");
 
-            if (!file.ContentType.StartsWith("image/"))
-                return BadRequest("Upload must be an image.");
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                _latestFrame = ms.ToArray(); // ✅ Update latest image
+            }
 
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-            var imageBytes = ms.ToArray();
-
-            _cameraService.SetLatestImage(imageBytes);
-
-            return Ok(new { message = "Image uploaded", size = imageBytes.Length });
+            return Ok("Frame received");
         }
 
+        // GET /api/CameraCapturing/latest
         [HttpGet("latest")]
-        [Authorize(Policy = "UserOnly")]  // only users should fetch frames (or AllowAnonymous if you want)
-        public IActionResult GetLatestImage()
+        public IActionResult GetLatestFrame()
         {
-            var img = _cameraService.GetLatestImage();
-            if (img == null || img.Length == 0)
-                return NotFound("No image available.");
+            if (_latestFrame == null)
+                return NotFound("No frame yet");
 
-            return File(img, "image/jpeg");
+            return File(_latestFrame, "image/jpeg");
         }
+    
+
+
+        //[HttpGet("latest")]
+        //[Authorize(Policy = "UserOnly")]  // only users should fetch frames (or AllowAnonymous if you want)
+        //public IActionResult GetLatestImage()
+        //{
+        //    var img = _cameraService.GetLatestImage();
+        //    if (img == null || img.Length == 0)
+        //        return NotFound("No image available.");
+
+        //    return File(img, "image/jpeg");
+        //}
 
         // optional: mjpeg stream - only for users
         [HttpGet("mjpeg")]

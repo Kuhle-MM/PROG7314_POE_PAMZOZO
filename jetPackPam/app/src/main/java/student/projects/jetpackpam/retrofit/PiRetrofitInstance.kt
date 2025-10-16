@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object PiRetrofitInstance {
 
-    // Use the hotspot IP of your PC/laptop running the API
+    // Use the hotspot IP of  PC/laptop running the API
     private const val BASE_URL = "http://192.168.137.1:7298/"
 
     val api: RobotApi by lazy {

@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {}
+    "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
+    "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
+        "projectUniqueName": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
         "projectName": "PROG7314_POE",
-        "projectPath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
+        "projectPath": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
         "packagesPath": "C:\\Users\\mihla\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\obj\\",
         "projectStyle": "PackageReference",
@@ -106,12 +106,12 @@
         }
       }
     },
-    "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {
+    "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
+        "projectUniqueName": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
         "projectName": "PamAPITest",
-        "projectPath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
+        "projectPath": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
         "packagesPath": "C:\\Users\\mihla\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\obj\\",
         "projectStyle": "PackageReference",
@@ -134,8 +134,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
-                "projectPath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj"
+              "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
+                "projectPath": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj"
               }
             }
           }

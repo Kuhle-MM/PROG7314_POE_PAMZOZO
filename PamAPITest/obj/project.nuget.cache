@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ps7D/7Z6YvY=",
+  "dgSpecHash": "phj4TocQLLo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\mihla\\Source\\Repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
+  "projectFilePath": "C:\\Users\\mihla\\source\\repos\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mihla\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\mihla\\.nuget\\packages\\google.apis\\1.71.0\\google.apis.1.71.0.nupkg.sha512",
