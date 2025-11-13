@@ -222,7 +222,7 @@ fun ChatScreen() {
 
             if (isListening.value) {
                 Text(
-                    text = "🎙 Listening...",
+                    text = " Listening...",
                     color = Color.Red,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth().padding(top = 4.dp)

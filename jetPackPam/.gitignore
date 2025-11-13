@@ -1,15 +1,86 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
+Standard Android Git Ignore File for Kotlin/Java Projects
+
+----------------------------------
+
+1. BUILD/OUTPUT ARTIFACTS
+
 /build
+/out
 /captures
 .externalNativeBuild
 .cxx
+/merged-not-compiled-resources
+/intermediates
+/generated
+/dexedLibs
+/apks/
+/aab/
+
+Output of gradlew dependencies
+
+dependencies.txt
+
+JVM and Class files
+
+*.jar
+*.class
+*.so
+*.o
+*.bin  # Explicitly ignoring all bin files as requested
+
+2. ANDROID STUDIO / IDE SPECIFIC
+
+Gradle
+
+.gradle
+gradle-app.setting
+
+Local configuration
+
 local.properties
+.tab # Explicitly ignoring all tab files as requested
+.DS_Store
+
+IntelliJ / Android Studio files
+
+*.iml
+*.iws
+*.ipr
+.idea/workspace.xml
+.idea/libraries
+.idea/modules.xml
+.idea/assetWizardSettings.xml
+.idea/navEditor.xml
+.idea/caches/
+.idea/codeStyles/
+
+Exclude the entire .idea folder except for files you want to share (e.g., code styles)
+
+If you want to share specific .idea files, uncomment them below:
+
+.idea/inspectionProfiles/
+
+.idea/vcs.xml
+
+3. KOTLIN SPECIFIC
+
+Kotlin annotation processing (kapt) output
+
+/kapt
+/ksp
+
+4. TESTING AND COVERAGE
+
+Unit test coverage reports
+
+/coverage
+/jacoco
+
+5. MERGER FILES (Requested by User)
+
+Merger outputs are usually in the build directory, but this ensures they are ignored globally
+
+*merger.xml
+*merger.json
+*merger.txt
+merger
