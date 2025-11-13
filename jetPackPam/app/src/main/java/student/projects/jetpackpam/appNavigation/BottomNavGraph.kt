@@ -14,12 +14,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import student.projects.jetpackpam.VideoScreen
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.ProfileScreen
-import student.projects.jetpackpam.screens.bottomnavscreen.GamesScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
-import student.projects.jetpackpam.screens.bottomnavscreen.VideoScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
@@ -36,12 +36,13 @@ fun BottomNavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
     googleAuthClient: GoogleAuthClient,
-    authViewModel: AuthorizationModelViewModel
+    authViewModel: AuthorizationModelViewModel,
+    languageViewModel: LanguageViewModel
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
-
+    val languageViewModel = languageViewModel
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
@@ -54,23 +55,17 @@ fun BottomNavGraph(
         composable("home") {
             when (deviceConfiguration) {
                 DeviceConfiguration.MOBILE_PORTRAIT -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
 
                 DeviceConfiguration.MOBILE_LANDSCAPE,
                 DeviceConfiguration.TABLET_PORTRAIT -> {
                     // Maybe show wider layout / side panel
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
 
                 else -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
             }
         }
@@ -83,13 +78,9 @@ fun BottomNavGraph(
             when (deviceConfiguration) {
                 DeviceConfiguration.MOBILE_PORTRAIT -> ProfileScreen(
                     userData = userData,
-                    onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    uiTexts = languageViewModel.uiTexts)
 
-                else -> ProfileScreen(userData = userData, onSignOut = {
-                    authViewModel.signOutSafely(context, navController, authViewModel)
-                })
+                else -> ProfileScreen(userData = userData, uiTexts = languageViewModel.uiTexts)
             }
         }
 
@@ -116,9 +107,9 @@ fun BottomNavGraph(
             val skipped = backStackEntry.arguments?.getString("skipped")
             GameOverScreen(navController = navController, correct = correct, skipped = skipped)
         }
-        composable("language") { LanguageSelectionScreen() }
-        composable("fontSize") { FontSelectionScreen() }
-        composable("pamTheme") { PamThemeSelectionScreen() }
-        composable("personality") { PersonalitySelectionScreen2() }
+        composable("language") { LanguageSelectionScreen(languageViewModel = languageViewModel) }
+        composable("fontSize") { FontSelectionScreen(languageViewModel = languageViewModel) }
+        composable("pamTheme") { PamThemeSelectionScreen(languageViewModel = languageViewModel) }
+        composable("personality") { PersonalitySelectionScreen2(languageViewModel = languageViewModel) }
     }
 }
