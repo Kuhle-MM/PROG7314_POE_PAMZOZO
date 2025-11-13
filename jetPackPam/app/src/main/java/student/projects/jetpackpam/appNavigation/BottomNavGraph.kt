@@ -55,23 +55,17 @@ fun BottomNavGraph(
         composable("home") {
             when (deviceConfiguration) {
                 DeviceConfiguration.MOBILE_PORTRAIT -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
 
                 DeviceConfiguration.MOBILE_LANDSCAPE,
                 DeviceConfiguration.TABLET_PORTRAIT -> {
                     // Maybe show wider layout / side panel
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
 
                 else -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    HomeScreen(navController = navController, uiTexts = languageViewModel.uiTexts)
                 }
             }
         }
@@ -84,13 +78,9 @@ fun BottomNavGraph(
             when (deviceConfiguration) {
                 DeviceConfiguration.MOBILE_PORTRAIT -> ProfileScreen(
                     userData = userData,
-                    onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
+                    uiTexts = languageViewModel.uiTexts)
 
-                else -> ProfileScreen(userData = userData, onSignOut = {
-                    authViewModel.signOutSafely(context, navController, authViewModel)
-                })
+                else -> ProfileScreen(userData = userData, uiTexts = languageViewModel.uiTexts)
             }
         }
 
@@ -118,8 +108,8 @@ fun BottomNavGraph(
             GameOverScreen(navController = navController, correct = correct, skipped = skipped)
         }
         composable("language") { LanguageSelectionScreen(languageViewModel = languageViewModel) }
-        composable("fontSize") { FontSelectionScreen() }
-        composable("pamTheme") { PamThemeSelectionScreen() }
-        composable("personality") { PersonalitySelectionScreen2() }
+        composable("fontSize") { FontSelectionScreen(languageViewModel = languageViewModel) }
+        composable("pamTheme") { PamThemeSelectionScreen(languageViewModel = languageViewModel) }
+        composable("personality") { PersonalitySelectionScreen2(languageViewModel = languageViewModel) }
     }
 }

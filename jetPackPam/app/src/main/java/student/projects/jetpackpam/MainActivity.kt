@@ -70,24 +70,16 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 languageViewModel.loadLanguage()
             }
-            JetPackPamTheme {
+            JetPackPamTheme(languageViewModel = languageViewModel) {
                 Surface(color = MaterialTheme.colorScheme.background) {
-
                     AppNavGraph(
                         googleAuthClient = googleAuthClient,
                         authViewModel = authViewModel,
                         languageViewModel = languageViewModel
                     )
-
-                    //MainScreen()
-                    //LoginScreen()
-                    //LanguageSelectionScreen()
-                    //PersonalitySelectionScreen()
-                    //PersonalitySelectionScreen2()
-                    //FontSelectionScreen()
-                    // PamThemeSelectionScreen()
                 }
             }
+
         }
 
     }
