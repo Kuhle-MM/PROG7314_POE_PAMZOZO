@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "student.projects.jetpackpam.app-mergeDebugResources-61:/values-v30/values-v30.xml",
+            "outputFile": "student.projects.jetpackpam.app-mergeDebugResources-62:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\4fd35de82d0e3fd3ed23ead11793851b\\transformed\\material3\\res\\values-v30\\values-v30.xml",
+                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\8.13\\transforms\\ed4330280daad7fb5178102ffb2f6590\\transformed\\material3\\res\\values-v30\\values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
