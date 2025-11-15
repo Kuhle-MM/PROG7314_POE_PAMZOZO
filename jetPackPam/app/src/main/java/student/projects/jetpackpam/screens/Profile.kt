@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,39 +24,36 @@ import student.projects.jetpackpam.models.UserData
 @Composable
 fun ProfileScreen(
     userData: UserData?,
-    uiTexts: Map<String, String>
+    onSignOut: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Profile Picture
-        AsyncImage(
-            model = userData?.profilePictureUrl ?: "https://via.placeholder.com/150",
-            contentDescription = uiTexts["profilePicture"] ?: "Profile picture",
-            modifier = Modifier
-                .size(150.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        if(userData?.profilePictureUrl != null) {
+            AsyncImage(
+                model = userData.profilePictureUrl,
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        if(userData?.username != null) {
+            Text(
+                text = userData.username,
+                textAlign = TextAlign.Center,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        Button(onClick = onSignOut) {
+            Text(text = "Sign out")
+        }
 
-        // Username
-        Text(
-            text = userData?.username ?: uiTexts["guest"] ?: "Guest",
-            textAlign = TextAlign.Center,
-            fontSize = 36.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Optional title or subtitle
-        Text(
-            text = uiTexts["profile"] ?: "Profile",
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium
-        )
     }
 }

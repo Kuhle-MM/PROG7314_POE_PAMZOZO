@@ -86,7 +86,6 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(libs.material3)
     implementation(libs.androidx.material3.window.size.class1)
-    implementation(libs.androidx.room.ktx)
 
     // --- Testing ---
     testImplementation(libs.junit)

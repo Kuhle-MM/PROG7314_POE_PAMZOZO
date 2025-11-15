@@ -10,15 +10,15 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/pamicon"
-        android:label="P.A.M"
-        android:roundIcon="@drawable/ic_launcher_foreground"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JetPackPam">
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="P.A.M"
+            android:label="@string/app_name"
             android:theme="@style/Theme.JetPackPam">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

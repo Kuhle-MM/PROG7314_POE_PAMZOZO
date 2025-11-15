@@ -1,10 +1,8 @@
 package student.projects.jetpackpam.screens.firsttimecustom
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,50 +10,54 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import student.projects.jetpackpam.R
-import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
-@Composable
-fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
-    var isDarkMode by remember { mutableStateOf(false) }
-    var selectedTheme by remember { mutableIntStateOf(1) }
+import kotlin.math.cos
+import kotlin.math.sin
 
-    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
+
+@Composable
+fun PamThemeSelectionScreen() {
+    var isDarkMode by remember { mutableStateOf(false) }
+    var selectedTheme by remember { mutableStateOf(1) }
 
     // Gradient setup for dark mode
     val angleInRad = -55 * (Math.PI / 180)
     val gradientLength = 1000f
-    val start = androidx.compose.ui.geometry.Offset(
-        x = (gradientLength / 2f * (1 - kotlin.math.cos(angleInRad))).toFloat(),
-        y = (gradientLength / 2f * (1 - kotlin.math.sin(angleInRad))).toFloat()
+    val start = Offset(
+        x = (gradientLength / 2f * (1 - cos(angleInRad))).toFloat(),
+        y = (gradientLength / 2f * (1 - sin(angleInRad))).toFloat()
     )
-    val end = androidx.compose.ui.geometry.Offset(
-        x = (gradientLength / 2f * (1 + kotlin.math.cos(angleInRad))).toFloat(),
-        y = (gradientLength / 2f * (1 + kotlin.math.sin(angleInRad))).toFloat()
+    val end = Offset(
+        x = (gradientLength / 2f * (1 + cos(angleInRad))).toFloat(),
+        y = (gradientLength / 2f * (1 + sin(angleInRad))).toFloat()
     )
 
     val backgroundBrush = if (isDarkMode) {
-        androidx.compose.ui.graphics.Brush.linearGradient(
+        Brush.linearGradient(
             colors = listOf(Color(0xFF1B123D), Color(0xFF2F1982), Color(0xFF1B123D)),
             start = start,
             end = end
         )
     } else {
-        androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color.White, Color.White))
+        Brush.linearGradient(listOf(Color.White, Color.White))
     }
 
     val themeImages = if (isDarkMode) {
@@ -87,13 +89,11 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
             .padding(horizontal = 16.dp, vertical = 24.dp)
             .consumeWindowInsets(WindowInsets.navigationBars)
 
-        val windowSizeClass = androidx.compose.material3.adaptive.currentWindowAdaptiveInfo().windowSizeClass
+        val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
-        val darkModeText = if (isDarkMode) uiTexts["darkMode"] ?: "Dark Mode"
-        else uiTexts["lightMode"] ?: "Light Mode"
-
         when (deviceConfiguration) {
+            // 📱 MOBILE PORTRAIT
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column(
                     modifier = rootModifier
@@ -105,8 +105,8 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = darkModeText,
-                            style = MaterialTheme.typography.bodyMedium,
+                            text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                            fontSize = 20.sp,
                             color = if (isDarkMode) Color.White else Color.Black
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -118,7 +118,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    PamThemeHeader(isDarkMode, uiTexts)
+                    PamThemeHeader(isDarkMode)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -140,7 +140,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                 }
             }
 
-            // MOBILE LANDSCAPE
+            // 🌄 MOBILE LANDSCAPE
             DeviceConfiguration.MOBILE_LANDSCAPE -> {
                 Row(
                     modifier = rootModifier,
@@ -153,8 +153,8 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = darkModeText,
-                                style = MaterialTheme.typography.bodyMedium,
+                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                fontSize = 18.sp,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -164,7 +164,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                             )
                         }
                         Spacer(modifier = Modifier.height(20.dp))
-                        PamThemeHeader(isDarkMode, uiTexts)
+                        PamThemeHeader(isDarkMode)
                     }
 
                     LazyRow(
@@ -185,7 +185,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                 }
             }
 
-            // TABLET / DESKTOP
+            // 💻 TABLET / DESKTOP
             else -> {
                 Row(
                     modifier = rootModifier,
@@ -198,8 +198,8 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = darkModeText,
-                                style = MaterialTheme.typography.bodyMedium,
+                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                fontSize = 24.sp,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -210,7 +210,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                         }
 
                         Spacer(modifier = Modifier.height(32.dp))
-                        PamThemeHeader(isDarkMode, uiTexts)
+                        PamThemeHeader(isDarkMode)
                     }
 
                     LazyVerticalGrid(
@@ -235,28 +235,32 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
     }
 }
 
+
 @Composable
-fun PamThemeHeader(isDarkMode: Boolean, uiTexts: Map<String, String>) {
+fun PamThemeHeader(isDarkMode: Boolean) {
     Text(
-        text = uiTexts["themeHeader"] ?: "Choose the best colour for me",
+        text = "Choose the best colour for me",
         fontStyle = FontStyle.Italic,
-        style = MaterialTheme.typography.bodyLarge,
+        fontSize = 35.sp,
         textAlign = TextAlign.Center,
         color = if (isDarkMode) Color.White else Color.Black
     )
 }
+
 @Composable
-fun ThemeImage(imageRes: Int, isSelected: Boolean, onClick: () -> Unit)
-{
-    Box( modifier = Modifier
-    .fillMaxWidth()
-    .height(600.dp)
-    .clickable { onClick() }
-    .padding(horizontal = 10.dp) )
-{
-        Image( painter = painterResource(id = imageRes),
-    contentDescription = "Theme preview",
-    contentScale = ContentScale.FillWidth,
-    modifier = Modifier.fillMaxWidth())
+fun ThemeImage(imageRes: Int, isSelected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(600.dp)
+            .clickable { onClick() }
+            .padding(horizontal = 10.dp)
+    ) {
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = "Theme preview",
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

@@ -24,7 +24,7 @@ fun SideNav(
         SideNavItem("language", "Language", Icons.Default.Language),
         SideNavItem("fontSize", "Font Size", Icons.Default.FormatSize),
         SideNavItem("pamTheme", "Pam Theme", Icons.Default.Palette),
-       // SideNavItem("personality", "Personality", Icons.Default.Person)
+        SideNavItem("personality", "Personality", Icons.Default.Person)
     )
 
     ModalDrawerSheet(
@@ -52,7 +52,7 @@ fun SideNav(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Logout option at the bottom
+        // 🔹 Logout option at the bottom
         NavigationDrawerItem(
             label = { Text("Logout") },
             selected = false,
