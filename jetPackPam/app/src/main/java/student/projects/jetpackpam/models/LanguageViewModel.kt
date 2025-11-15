@@ -14,76 +14,90 @@ import student.projects.jetpackpam.retrofit.languageApi
 class LanguageViewModel(application: Application) : AndroidViewModel(application) {
 
     var selectedLanguage by mutableStateOf("English")
+        private set
+
     var currentLanguageCode by mutableStateOf("en")
         private set
 
     var uiTexts by mutableStateOf(
-        mutableMapOf(
+        mapOf(
             "header" to "Select preferred language",
             "description" to "Choose the language you prefer for the app",
-            "buttonNext" to "Next",
-            "footer" to "Powered by Pam"
+            "buttonNext" to "Set",
+            "footer" to "Powered by Pam",
+            "signOut" to "Sign out",
+            "welcomeMessage" to "I’m ready to help you with anything.\nJust type below or say the word",
+            "chatButton" to "Chat"
         )
     )
         private set
 
     private val prefs = application.getSharedPreferences("app_prefs", 0)
 
-    init {
-        // Load saved language from SharedPreferences
-        val savedCode = prefs.getString("languageCode", "en") ?: "en"
-        currentLanguageCode = savedCode
-    }
-
-    fun setLanguage(languageCode: String) {
-        currentLanguageCode = languageCode
-        prefs.edit().putString("languageCode", languageCode).apply()
+    fun setLanguage(language: String, code: String, texts: Map<String, String>) {
+        selectedLanguage = language
+        currentLanguageCode = code
+        uiTexts = texts
+        save(language, code)
     }
 
     fun updateTexts(newTexts: Map<String, String>) {
-        uiTexts = newTexts.toMutableMap()
+        uiTexts = newTexts
     }
 
-    fun translateAll(newCode: String, onComplete: (Map<String, String>) -> Unit) {
+    fun translateAll(
+        newCode: String,
+        onComplete: (Map<String, String>) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val newTexts = mutableMapOf<String, String>()
-                for ((key, text) in uiTexts) {
+                val translated = mutableMapOf<String, String>()
+
+                for ((key, value) in uiTexts) {
                     if (newCode == "en") {
-                        newTexts[key] = when (key) {
+                        translated[key] = when (key) {
                             "header" -> "Select preferred language"
                             "description" -> "Choose the language you prefer for the app"
-                            "buttonNext" -> "Next"
+                            "buttonNext" -> "Set"
                             "footer" -> "Powered by Pam"
-                            else -> text
+                            "signOut" -> "Sign out"
+                            "welcomeMessage" -> "I’m ready to help you with anything.\nJust type below or say the word"
+                            "chatButton" -> "Chat"
+                            else -> value
                         }
                         continue
                     }
 
                     val response = languageApi.translate(
                         LanguageRequest(
-                            text = text,
+                            text = value,
                             from = currentLanguageCode,
                             to = newCode,
                             userId = "2"
                         )
                     )
-                    newTexts[key] = response.translated?.ifBlank { text } ?: text
+
+                    translated[key] = response.translated ?: value
                 }
-                onComplete(newTexts)
+
+                onComplete(translated)
+
             } catch (e: Exception) {
                 onComplete(uiTexts)
             }
         }
     }
 
-    fun loadLanguage() {
-        val savedName = prefs.getString("languageName", "English")
-        val savedCode = prefs.getString("languageCode", "en")
-
-        if (savedName != null && savedCode != null) {
-            selectedLanguage = savedName
-            currentLanguageCode = savedCode
+    private fun save(name: String, code: String) {
+        prefs.edit().apply {
+            putString("languageName", name)
+            putString("languageCode", code)
+            apply()
         }
+    }
+
+    fun loadLanguage() {
+        selectedLanguage = prefs.getString("languageName", "English") ?: "English"
+        currentLanguageCode = prefs.getString("languageCode", "en") ?: "en"
     }
 }

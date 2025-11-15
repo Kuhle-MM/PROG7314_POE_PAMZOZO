@@ -42,7 +42,7 @@ fun BottomNavGraph(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
-    val languageViewModel = languageViewModel
+
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
@@ -53,59 +53,42 @@ fun BottomNavGraph(
     ) {
 
         composable("home") {
-            when (deviceConfiguration) {
-                DeviceConfiguration.MOBILE_PORTRAIT -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
-                }
-
-                DeviceConfiguration.MOBILE_LANDSCAPE,
-                DeviceConfiguration.TABLET_PORTRAIT -> {
-                    // Maybe show wider layout / side panel
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
-                }
-
-                else -> {
-                    HomeScreen(navController = navController, onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
-                }
-            }
+            HomeScreen(
+                navController = navController,
+                authViewModel = authViewModel,
+                languageViewModel = languageViewModel
+            )
         }
 
+
+
         composable("chat") {
-            ChatScreen() // Add adaptive layout inside ChatScreen if needed
+            ChatScreen()
         }
 
         composable("profile") {
-            when (deviceConfiguration) {
-                DeviceConfiguration.MOBILE_PORTRAIT -> ProfileScreen(
-                    userData = userData,
-                    onSignOut = {
-                        authViewModel.signOutSafely(context, navController, authViewModel)
-                    })
-
-                else -> ProfileScreen(userData = userData, onSignOut = {
+            ProfileScreen(
+                userData = userData,
+                onSignOut = {
                     authViewModel.signOutSafely(context, navController, authViewModel)
-                })
-            }
+                }
+            )
         }
 
         composable("video") {
-            VideoScreen() // Adaptive adjustments can be added inside VideoScreen
+            VideoScreen()
         }
 
         composable("games") { StartUpScreen(navController) }
         composable("start") { StartUpScreen(navController) }
         composable("category") { CategorySelectionScreen(navController) }
+
         composable("playing/{sessionId}/{category}") { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
             val category = backStackEntry.arguments?.getString("category") ?: ""
             PlayingGameScreen(navController, sessionId, category)
         }
+
         composable(
             route = "gameover?correct={correct}&skipped={skipped}",
             arguments = listOf(
@@ -117,7 +100,11 @@ fun BottomNavGraph(
             val skipped = backStackEntry.arguments?.getString("skipped")
             GameOverScreen(navController = navController, correct = correct, skipped = skipped)
         }
-        composable("language") { LanguageSelectionScreen(languageViewModel = languageViewModel) }
+
+        composable("language") {
+            LanguageSelectionScreen(languageViewModel = languageViewModel)
+        }
+
         composable("fontSize") { FontSelectionScreen() }
         composable("pamTheme") { PamThemeSelectionScreen() }
         composable("personality") { PersonalitySelectionScreen2() }
