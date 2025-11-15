@@ -20,8 +20,9 @@ class GoogleAuthClient(
     private val context: Context,
     private val oneTapClient: SignInClient
 ) {
-
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    // 🔴 ANR FIX: Initialize FirebaseAuth lazily. This prevents the blocking I/O
+    // associated with getInstance() from running synchronously on the main thread during startup.
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     /** Launch One Tap sign-in and return IntentSender, null if unavailable */
     suspend fun signIn(): IntentSender? = try {
@@ -59,6 +60,7 @@ class GoogleAuthClient(
 
     /** Classic Google Sign-In fallback intent */
     fun getSignInIntent(): Intent {
+        // Use the Web Client ID resource for consistency
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.google_web_client_id))
             .requestEmail()
@@ -92,4 +94,6 @@ class GoogleAuthClient(
             Log.e(TAG, "Sign out failed", e)
         }
     }
+
+
 }

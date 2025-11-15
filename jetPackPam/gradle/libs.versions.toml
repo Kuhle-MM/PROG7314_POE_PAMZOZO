@@ -17,6 +17,7 @@ material3 = "1.4.0"
 material3WindowSizeClass = "1.4.0"
 roomKtx = "2.8.1"
 firebaseMessaging = "25.0.1"
+firebaseInappmessagingDisplay = "22.0.2"
 
 [libraries]
 # --- Core Android ---
@@ -65,6 +66,7 @@ material3 = { group = "androidx.compose.material3", name = "material3", version.
 androidx-material3-window-size-class1 = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+firebase-inappmessaging-display = { group = "com.google.firebase", name = "firebase-inappmessaging-display", version.ref = "firebaseInappmessagingDisplay" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

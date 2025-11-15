@@ -1,6 +1,3 @@
-import org.gradle.kotlin.dsl.androidTestImplementation
-import org.gradle.kotlin.dsl.debugImplementation
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -31,19 +28,25 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
+    // --- OneSignal Push Notifications ---
+    implementation("com.onesignal:OneSignal:[5.4.0, 5.4.99]") // latest stable version
+
     // --- Core Android ---
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -54,12 +57,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    //implementation(libs.ads.mobile.sdk)
     implementation(libs.androidx.compose.material)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation(libs.material3.adaptive)
     implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
@@ -67,6 +68,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-inappmessaging-display-ktx")
 
     // --- Google Sign-In & Credentials API ---
     implementation(libs.androidx.credentials)
@@ -87,7 +90,10 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.material3.window.size.class1)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.firebase.messaging)
+
+    // --- Navigation ---
+    implementation("androidx.navigation:navigation-compose:2.7.3")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
     // --- Testing ---
     testImplementation(libs.junit)
@@ -95,11 +101,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    //Nav Graph
-    implementation("androidx.navigation:navigation-compose:2.7.3")
-    implementation("androidx.activity:activity-compose:1.8.2")
 
     // --- Debug ---
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+// Apply Google Services plugin
+apply(plugin = "com.google.gms.google-services")

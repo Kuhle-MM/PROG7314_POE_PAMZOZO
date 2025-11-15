@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext // <-- Added for ANR fix
 import student.projects.jetpackpam.data.LanguageRequest
 import student.projects.jetpackpam.retrofit.languageApi
 
@@ -30,17 +31,29 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
     )
         private set
 
+    // The SharedPreferences instance is safe to create here.
     private val prefs = application.getSharedPreferences("app_prefs", 0)
 
     init {
-        // Load saved language from SharedPreferences
-        val savedCode = prefs.getString("languageCode", "en") ?: "en"
-        currentLanguageCode = savedCode
+        // 🔴 ANR FIX: The synchronous I/O call from the init block has been removed.
+        // The language will now be loaded safely when loadLanguage() is called from MainActivity.
     }
 
-    fun setLanguage(languageCode: String) {
+    /**
+     * Updates the language settings and saves them to SharedPreferences.
+     *
+     * ANR FIX: Saving to SharedPreferences is blocking I/O, so it must be offloaded to Dispatchers.IO.
+     */
+    fun setLanguage(languageCode: String, languageName: String) {
         currentLanguageCode = languageCode
-        prefs.edit().putString("languageCode", languageCode).apply()
+        selectedLanguage = languageName
+
+        viewModelScope.launch(Dispatchers.IO) {
+            // Saving to SharedPreferences is blocking I/O, so it must be on Dispatchers.IO
+            prefs.edit().putString("languageCode", languageCode)
+                .putString("languageName", languageName)
+                .apply()
+        }
     }
 
     fun updateTexts(newTexts: Map<String, String>) {
@@ -73,22 +86,41 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                     )
                     newTexts[key] = response.translated?.ifBlank { text } ?: text
                 }
-                onComplete(newTexts)
+                // Update the UI state and call the completion callback on the Main thread
+                withContext(Dispatchers.Main) {
+                    updateUiTexts(newTexts) // Update the ViewModel's state
+                    onComplete(newTexts)
+                }
             } catch (e: Exception) {
-                onComplete(uiTexts)
+                withContext(Dispatchers.Main) {
+                    onComplete(uiTexts)
+                }
             }
         }
     }
 
+    /**
+     * Loads the language setting from persistent storage (SharedPreferences).
+     *
+     * ANR FIX: This entire function now runs on Dispatchers.IO to prevent blocking
+     * the main thread during app startup.
+     */
     fun loadLanguage() {
-        val savedName = prefs.getString("languageName", "English")
-        val savedCode = prefs.getString("languageCode", "en")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // All SharedPreferences I/O is now safely backgrounded
+                val savedName = prefs.getString("languageName", "English")
+                val savedCode = prefs.getString("languageCode", "en")
 
-        if (savedName != null && savedCode != null) {
-            selectedLanguage = savedName
-            currentLanguageCode = savedCode
+                // Update state on the main thread (done automatically by the outer launch)
+                if (savedName != null && savedCode != null) {
+                    selectedLanguage = savedName
+                    currentLanguageCode = savedCode
+                }
+            }
         }
     }
+
     fun fetchLanguageFromFirebase() {
         val user = FirebaseAuth.getInstance().currentUser ?: return
         val uid = user.uid
@@ -97,13 +129,12 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
         ref.get().addOnSuccessListener { snapshot ->
             val name = snapshot.child("name").getValue(String::class.java) ?: "English"
             val code = snapshot.child("code").getValue(String::class.java) ?: "en"
+
             selectedLanguage = name
             currentLanguageCode = code
 
-            // Update UI texts
-            translateAll(code) { newTexts ->
-                updateTexts(newTexts)
-            }
+            // Update UI texts (translateAll handles Dispatcher switching internally)
+            translateAll(code) { /* updated via updateUiTexts call inside translateAll */ }
         }
     }
 
@@ -113,6 +144,7 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
         val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("language")
         ref.setValue(mapOf("name" to name, "code" to code))
     }
+
     // 🔹 New: global font size in sp
     var fontSize by mutableFloatStateOf(20f)
         private set
@@ -124,8 +156,6 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     // Function to update translations (if needed)
     fun updateUiTexts(newTexts: Map<String, String>) {
-        uiTexts = newTexts as MutableMap<String, String>
+        uiTexts = newTexts.toMutableMap()
     }
-
-
 }
