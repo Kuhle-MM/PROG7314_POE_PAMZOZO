@@ -43,6 +43,9 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "home" to "Home",
             "video" to "Video",
             "games" to "Games",
+            //profile
+            "profile" to "Profile",
+            "signOut" to "Sign out",
             //fontsize screen
             "fontHeader" to "Select your font size for our chat",
             "preview" to "Preview text",
@@ -146,6 +149,9 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                             "home" -> "Home"
                             "video" -> "Video"
                             "games" -> "Games"
+                            //profile
+                            "profile" -> "Profile"
+                            "signOut" -> "Sign out"
                                 //fontsize screen
                             "fontHeader" -> "Select your font size for our chat"
                             "preview" -> "Preview text"

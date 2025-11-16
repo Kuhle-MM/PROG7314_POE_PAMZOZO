@@ -49,12 +49,21 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
 fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
-    val uiTexts by languageViewModel.uiTexts
-
+    val uiTexts = languageViewModel.uiTexts
     val context = LocalContext.current
+
+    // Use uiTexts for personality options
     val personalities = listOf(
-        "Sarcastic", "Friendly", "Gen Z", "Never in the mood", "Motivational Coach",
-        "Wise Elder", "Cheerful Optimist", "Storyteller", "Shakespearean", "Tech Geek"
+        uiTexts["sarcastic"] ?: "Sarcastic",
+        uiTexts["friendly"] ?: "Friendly",
+        uiTexts["genz"] ?: "Gen Z",
+        uiTexts["neverInTheMood"] ?: "Never in the mood",
+        uiTexts["motivationalCoach"] ?: "Motivational Coach",
+        uiTexts["wiseElder"] ?: "Wise Elder",
+        uiTexts["cheerfulOptimist"] ?: "Cheerful Optimist",
+        uiTexts["storyTeller"] ?: "Storyteller",
+        uiTexts["shakespearean"] ?: "Shakespearean",
+        uiTexts["techGeek"] ?: "Tech Geek"
     )
 
     Scaffold(
@@ -73,7 +82,6 @@ fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
-        // --- Adaptive UI layout ---
         when (deviceConfiguration) {
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 PersonalityGridLayout(
@@ -84,7 +92,8 @@ fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
                     cardSize = 160.dp,
                     fontSize = 20.sp,
                     horizontalSpacing = 16.dp,
-                    verticalSpacing = 16.dp
+                    verticalSpacing = 16.dp,
+                    headerText = uiTexts["personalityHeader"] ?: "Choose my personality"
                 )
             }
 
@@ -97,7 +106,8 @@ fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
                     cardSize = 140.dp,
                     fontSize = 18.sp,
                     horizontalSpacing = 12.dp,
-                    verticalSpacing = 12.dp
+                    verticalSpacing = 12.dp,
+                    headerText = uiTexts["personalityHeader"] ?: "Choose my personality"
                 )
             }
 
@@ -110,7 +120,8 @@ fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
                     cardSize = 200.dp,
                     fontSize = 24.sp,
                     horizontalSpacing = 20.dp,
-                    verticalSpacing = 20.dp
+                    verticalSpacing = 20.dp,
+                    headerText = uiTexts["personalityHeader"] ?: "Choose my personality"
                 )
             }
         }
@@ -126,17 +137,17 @@ private fun PersonalityGridLayout(
     cardSize: Dp,
     fontSize: TextUnit,
     horizontalSpacing: Dp,
-    verticalSpacing: Dp
+    verticalSpacing: Dp,
+    headerText: String
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header
-        PersonalityHeader2()
+        // Header with language-aware text
+        PersonalityHeader2(headerText)
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Adaptive Grid
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
             verticalArrangement = Arrangement.spacedBy(verticalSpacing),
@@ -146,7 +157,7 @@ private fun PersonalityGridLayout(
             items(personalities) { personality ->
                 OutlinedCard(
                     onClick = {
-                        Toast.makeText(context, "Clicked on $personality", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, personality, Toast.LENGTH_SHORT).show()
                     },
                     shape = RoundedCornerShape(30.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
@@ -169,11 +180,10 @@ private fun PersonalityGridLayout(
     }
 }
 
-
 @Composable
-fun PersonalityHeader2(){
+fun PersonalityHeader2(headerText: String) {
     Text(
-        text = "Choose my personality",
+        text = headerText,
         fontStyle = FontStyle.Italic,
         fontSize = 35.sp
     )

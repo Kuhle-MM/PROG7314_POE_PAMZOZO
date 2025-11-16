@@ -10,10 +10,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,17 +30,18 @@ fun ProfileScreen(
     languageViewModel: LanguageViewModel,
     onSignOut: () -> Unit
 ) {
-    val uiTexts by languageViewModel.uiTexts
+    // Use the same approach as HomeScreen
+    val uiTexts = languageViewModel.uiTexts
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if(userData?.profilePictureUrl != null) {
+        if (userData?.profilePictureUrl != null) {
             AsyncImage(
                 model = userData.profilePictureUrl,
-                contentDescription = "Profile picture",
+                contentDescription = uiTexts["profilePicture"] ?: "Profile picture",
                 modifier = Modifier
                     .size(150.dp)
                     .clip(CircleShape),
@@ -46,7 +49,8 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        if(userData?.username != null) {
+
+        if (userData?.username != null) {
             Text(
                 text = userData.username,
                 textAlign = TextAlign.Center,
@@ -55,9 +59,10 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        Button(onClick = onSignOut) {
-            Text(text = "Sign out")
-        }
 
+        Button(onClick = onSignOut) {
+            // Use uiTexts map to get language-specific "Sign out"
+            Text(text = uiTexts["signOut"] ?: "Sign out")
+        }
     }
 }

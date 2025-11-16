@@ -40,7 +40,7 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
 fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
-    val uiTexts by languageViewModel.uiTexts
+    val uiTexts = languageViewModel.uiTexts
 
     var fontSize by remember { mutableStateOf(20f) } // default size in sp
 
@@ -63,19 +63,17 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
         // --- Adaptive UI layout ---
         when (deviceConfiguration) {
             DeviceConfiguration.MOBILE_PORTRAIT -> {
-                Box(
-                    modifier = rootModifier
-                ) {
+                Box(modifier = rootModifier) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(top = 50.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        FontHeader()
+                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
                         Spacer(modifier = Modifier.height(40.dp))
                         Text(
-                            text = "Preview Text",
+                            text = uiTexts["preview"] ?: "Preview Text",
                             fontSize = fontSize.sp,
                             textAlign = TextAlign.Center
                         )
@@ -104,10 +102,10 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        FontHeader()
+                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
                         Spacer(modifier = Modifier.height(20.dp))
                         Text(
-                            text = "Preview Text",
+                            text = uiTexts["preview"] ?: "Preview Text",
                             fontSize = fontSize.sp,
                             textAlign = TextAlign.Center
                         )
@@ -128,7 +126,7 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
             }
 
             else -> {
-                // Tablet or Desktop layout — more spacious layout
+                // Tablet or Desktop layout
                 Row(
                     modifier = rootModifier,
                     verticalAlignment = Alignment.CenterVertically,
@@ -138,10 +136,10 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        FontHeader()
+                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
                         Spacer(modifier = Modifier.height(32.dp))
                         Text(
-                            text = "Preview Text",
+                            text = uiTexts["preview"] ?: "Preview Text",
                             fontSize = fontSize.sp,
                             textAlign = TextAlign.Center
                         )
@@ -164,11 +162,10 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
     }
 }
 
-
 @Composable
-fun FontHeader() {
+fun FontHeader(headerText: String) {
     Text(
-        text = "Select your font size for our chat",
+        text = headerText,
         fontStyle = FontStyle.Italic,
         fontSize = 35.sp
     )
