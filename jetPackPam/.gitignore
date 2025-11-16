@@ -1,9 +1,6 @@
-Standard Android Git Ignore File for Kotlin/Java Projects
-
-----------------------------------
-
-1. BUILD/OUTPUT ARTIFACTS
-
+############################################
+# 1. BUILD / OUTPUT ARTIFACTS
+############################################
 /build
 /out
 /captures
@@ -15,37 +12,31 @@ Standard Android Git Ignore File for Kotlin/Java Projects
 /dexedLibs
 /apks/
 /aab/
-
-Output of gradlew dependencies
-
 dependencies.txt
 
-JVM and Class files
-
+# JVM & object files
 *.jar
 *.class
 *.so
 *.o
-*.bin  # Explicitly ignoring all bin files as requested
+*.bin     # Requested: ignore all .bin files
 
-2. ANDROID STUDIO / IDE SPECIFIC
-
-Gradle
-
+############################################
+# 2. IDE / ANDROID STUDIO SPECIFIC
+############################################
 .gradle
 gradle-app.setting
 
-Local configuration
-
+# Local config
 local.properties
-.tab # Explicitly ignoring all tab files as requested
 .DS_Store
+*.tab     # Requested: ignore all .tab files
 
-IntelliJ / Android Studio files
-
+# IntelliJ / Android Studio project files
 *.iml
 *.iws
 *.ipr
+
 .idea/workspace.xml
 .idea/libraries
 .idea/modules.xml
@@ -54,38 +45,45 @@ IntelliJ / Android Studio files
 .idea/caches/
 .idea/codeStyles/
 
-Exclude the entire .idea folder except for files you want to share (e.g., code styles)
+# To share specific .idea configs, uncomment:
+# .idea/inspectionProfiles/
+# .idea/vcs.xml
 
-If you want to share specific .idea files, uncomment them below:
-
-.idea/inspectionProfiles/
-
-.idea/vcs.xml
-
-3. KOTLIN SPECIFIC
-
-Kotlin annotation processing (kapt) output
-
+############################################
+# 3. KOTLIN BUILD GENERATED
+############################################
 /kapt
 /ksp
 
-4. TESTING AND COVERAGE
-
-Unit test coverage reports
-
+############################################
+# 4. TESTING / COVERAGE
+############################################
 /coverage
 /jacoco
 
-5. MERGER FILES (Requested by User)
-
-Merger outputs are usually in the build directory, but this ensures they are ignored globally
-
+############################################
+# 5. MERGER FILES (Requested)
+############################################
 *merger.xml
 *merger.json
 *merger.txt
 merger
-# Firebase Service Account
+
+############################################
+# 6. FIREBASE / SECRETS
+############################################
+# Ignore all JSON keys so secrets never leak
 *.json
-!app/src/main/assets/allowed.json   # if you ever need a JSON
-jetPackPam/app/*firebase*.json
+
+# EXCEPT → Allow assets if needed
+!app/src/main/assets/allowed.json
+
+# Block Firebase service account keys
 **/serviceAccountKey.json
+jetPackPam/app/*firebase*.json
+
+############################################
+# 7. APK / BUNDLES (GitHub rejects large files anyway)
+############################################
+*.apk
+*.aab
