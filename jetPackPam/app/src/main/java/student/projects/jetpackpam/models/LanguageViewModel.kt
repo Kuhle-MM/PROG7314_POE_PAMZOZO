@@ -21,6 +21,23 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     var uiTexts by mutableStateOf(
         mapOf(
+            //login
+            "login_title" to "Log in",
+            "login_subtitle" to "Log in to get started",
+            "email_label" to "Email",
+            "email_hint" to "example@example.com",
+            "password_label" to "Password",
+            "password_hint" to "Password",
+            "login_button" to "Log in",
+            "logging_in" to "Logging in...",
+            "signup_prompt" to "Don't have an account?",
+            "google_login" to "Log in Using Google",
+            "login_success_toast" to "Welcome back!",
+            "login_failed_toast" to "Login failed: ",
+            "google_signin_failed" to "Google Sign-In failed",
+            "google_signin_cancelled" to "Google Sign-In cancelled",
+            //sign out
+            "signedOut" to "Signed out successfully",
             //language screen
             "header" to "Select preferred language",
             "heading" to "Language",
@@ -129,6 +146,23 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                 for ((key, value) in uiTexts) {
                     if (newCode == "en") {
                         translated[key] = when (key) {
+                            //login
+                            "login_title" -> "Log in"
+                            "login_subtitle" -> "Log in to get started"
+                            "email_label" -> "Email"
+                            "email_hint" -> "example@example.com"
+                            "password_label" -> "Password"
+                            "password_hint" -> "Password"
+                            "login_button" -> "Log in"
+                            "logging_in" -> "Logging in..."
+                            "signup_prompt" -> "Don't have an account?"
+                            "google_login" -> "Log in Using Google"
+                            "login_success_toast" -> "Welcome back!"
+                            "login_failed_toast" -> "Login failed: "
+                            "google_signin_failed" -> "Google Sign-In failed"
+                            "google_signin_cancelled" -> "Google Sign-In cancelled"
+                            //sign out
+                            "signedOut" -> "Signed out successfully"
                             //language screen
                             "header" -> "Select preferred language"
                             "description" -> "Choose the language you prefer for the app"

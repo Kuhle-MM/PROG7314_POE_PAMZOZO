@@ -33,13 +33,11 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 import kotlin.math.cos
 import kotlin.math.sin
 
-
 @Composable
 fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
     var isDarkMode by remember { mutableStateOf(false) }
     var selectedTheme by remember { mutableStateOf(1) }
-    val uiTexts by languageViewModel.uiTexts
-
+    val uiTexts = languageViewModel.uiTexts
 
     // Gradient setup for dark mode
     val angleInRad = -55 * (Math.PI / 180)
@@ -95,12 +93,14 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
+        val lightModeText = uiTexts["lightMode"] ?: "Light mode"
+        val darkModeText = uiTexts["darkMode"] ?: "Dark mode"
+        val themeHeaderText = uiTexts["themeHeader"] ?: "Choose the best colour for me"
+
         when (deviceConfiguration) {
-            // 📱 MOBILE PORTRAIT
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column(
-                    modifier = rootModifier
-                        .verticalScroll(scrollState),
+                    modifier = rootModifier.verticalScroll(scrollState),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
@@ -108,7 +108,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                            text = if (isDarkMode) darkModeText else lightModeText,
                             fontSize = 20.sp,
                             color = if (isDarkMode) Color.White else Color.Black
                         )
@@ -121,7 +121,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    PamThemeHeader(isDarkMode)
+                    PamThemeHeader(themeHeaderText, isDarkMode)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -155,7 +155,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                text = if (isDarkMode) darkModeText else lightModeText,
                                 fontSize = 18.sp,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
@@ -166,7 +166,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                             )
                         }
                         Spacer(modifier = Modifier.height(20.dp))
-                        PamThemeHeader(isDarkMode)
+                        PamThemeHeader(themeHeaderText, isDarkMode)
                     }
 
                     LazyRow(
@@ -199,7 +199,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                text = if (isDarkMode) darkModeText else lightModeText,
                                 fontSize = 24.sp,
                                 color = if (isDarkMode) Color.White else Color.Black
                             )
@@ -211,7 +211,7 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
                         }
 
                         Spacer(modifier = Modifier.height(32.dp))
-                        PamThemeHeader(isDarkMode)
+                        PamThemeHeader(themeHeaderText, isDarkMode)
                     }
 
                     LazyVerticalGrid(
@@ -236,11 +236,10 @@ fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
     }
 }
 
-
 @Composable
-fun PamThemeHeader(isDarkMode: Boolean) {
+fun PamThemeHeader(headerText: String, isDarkMode: Boolean) {
     Text(
-        text = "Choose the best colour for me",
+        text = headerText,
         fontStyle = FontStyle.Italic,
         fontSize = 35.sp,
         textAlign = TextAlign.Center,
