@@ -61,7 +61,8 @@ fun AppNavGraph(
                     navController = navController,
                     authViewModel = authViewModel,
                     googleAuthClient = googleAuthClient,
-                    googleSignInLauncher = googleSignInLauncher
+                    googleSignInLauncher = googleSignInLauncher,
+                    languageViewModel = languageViewModel
                 )
             }
 
@@ -69,7 +70,8 @@ fun AppNavGraph(
                 SignUpScreen(
                     navController = navController,
                     authViewModel = authViewModel,
-                    googleSignInLauncher = googleSignInLauncher
+                    googleSignInLauncher = googleSignInLauncher,
+                    languageViewModel = languageViewModel
                 )
             }
 
@@ -85,6 +87,7 @@ fun AppNavGraph(
             composable("profile") {
                 ProfileScreen(
                     userData = userData,
+                    languageViewModel = languageViewModel,
                     onSignOut = {
                         authViewModel.signOut()
                         navController.navigate("login") {

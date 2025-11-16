@@ -35,10 +35,13 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
-fun FontSelectionScreen() {
+fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
+    val uiTexts by languageViewModel.uiTexts
+
     var fontSize by remember { mutableStateOf(20f) } // default size in sp
 
     Scaffold(

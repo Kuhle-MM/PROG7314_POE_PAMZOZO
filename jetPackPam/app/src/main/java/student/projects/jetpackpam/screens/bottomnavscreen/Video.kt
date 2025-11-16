@@ -52,11 +52,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.CameraRequest
 import student.projects.jetpackpam.data.MotorRequest
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.retrofit.PiRetrofitInstance
 import kotlin.math.hypot
 
 @Composable
-fun VideoScreen() {
+fun VideoScreen(languageViewModel: LanguageViewModel) {
+    val uiTexts by languageViewModel.uiTexts
+
     val context = LocalContext.current
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE

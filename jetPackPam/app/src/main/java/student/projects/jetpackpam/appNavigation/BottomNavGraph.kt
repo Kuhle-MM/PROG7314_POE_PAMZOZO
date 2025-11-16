@@ -63,12 +63,13 @@ fun BottomNavGraph(
 
 
         composable("chat") {
-            ChatScreen()
+            ChatScreen(languageViewModel= languageViewModel)
         }
 
         composable("profile") {
             ProfileScreen(
                 userData = userData,
+                languageViewModel= languageViewModel,
                 onSignOut = {
                     authViewModel.signOutSafely(context, navController, authViewModel)
                 }
@@ -76,7 +77,7 @@ fun BottomNavGraph(
         }
 
         composable("video") {
-            VideoScreen()
+            VideoScreen(languageViewModel= languageViewModel)
         }
 
         composable("games") { StartUpScreen(navController) }
@@ -105,8 +106,8 @@ fun BottomNavGraph(
             LanguageSelectionScreen(languageViewModel = languageViewModel)
         }
 
-        composable("fontSize") { FontSelectionScreen() }
-        composable("pamTheme") { PamThemeSelectionScreen() }
-        composable("personality") { PersonalitySelectionScreen2() }
+        composable("fontSize") { FontSelectionScreen(languageViewModel= languageViewModel) }
+        composable("pamTheme") { PamThemeSelectionScreen(languageViewModel= languageViewModel) }
+        composable("personality") { PersonalitySelectionScreen2(languageViewModel= languageViewModel) }
     }
 }

@@ -19,13 +19,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.models.UserData
 
 @Composable
 fun ProfileScreen(
     userData: UserData?,
+    languageViewModel: LanguageViewModel,
     onSignOut: () -> Unit
 ) {
+    val uiTexts by languageViewModel.uiTexts
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

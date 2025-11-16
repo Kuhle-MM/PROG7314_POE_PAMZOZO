@@ -35,6 +35,8 @@ fun MainScreen(
     googleAuthClient: GoogleAuthClient,
     languageViewModel: LanguageViewModel
 ) {
+    val uiTexts by languageViewModel.uiTexts
+
     val bottomNavController = rememberNavController()
     val activity = LocalContext.current as Activity
     val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity)
@@ -66,6 +68,7 @@ fun MainScreen(
             drawerContent = {
                 SideNav(
                     currentRoute = getCurrentRoute(bottomNavController),
+                    languageViewModel= languageViewModel,
                     onItemSelected = { route ->
                         bottomNavController.navigate(route) {
                             launchSingleTop = true

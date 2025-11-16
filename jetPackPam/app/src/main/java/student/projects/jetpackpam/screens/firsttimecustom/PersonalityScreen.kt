@@ -41,10 +41,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
-fun PersonalitySelectionScreen() {
+fun PersonalitySelectionScreen(languageViewModel: LanguageViewModel
+) {
+    val uiTexts by languageViewModel.uiTexts
+
     val context = LocalContext.current
     val personalities = listOf(
         "Sarcastic", "Friendly", "Gen Z", "Never in the mood", "Motivational Coach",

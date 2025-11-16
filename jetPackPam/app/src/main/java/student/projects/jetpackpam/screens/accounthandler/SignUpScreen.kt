@@ -33,6 +33,7 @@ import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.util.DeviceConfiguration
@@ -44,8 +45,11 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 fun SignUpScreen(
     navController: NavController,
     authViewModel: AuthorizationModelViewModel,
+    languageViewModel: LanguageViewModel,
     googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
+    val uiTexts by languageViewModel.uiTexts
+
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 

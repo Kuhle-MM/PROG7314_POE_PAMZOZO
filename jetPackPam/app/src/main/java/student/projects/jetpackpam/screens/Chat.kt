@@ -3,80 +3,80 @@ package student.projects.jetpackpam.screens
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.speech.RecognizerIntent
 import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import student.projects.jetpackpam.design_system.MessageTextField
-import student.projects.jetpackpam.design_system.PrimaryIconButton
-import student.projects.jetpackpam.models.Message
-import student.projects.jetpackpam.retrofit.languageApi
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import kotlinx.coroutines.withContext
+import student.projects.jetpackpam.retrofit.AskRequest
+import student.projects.jetpackpam.retrofit.languageApi
 
+// Simple message model
+data class Message(val text: String, val isFromMe: Boolean)
+
+// Public ChatScreen to use in your NavGraph
 @Composable
-fun ChatScreen() {
+fun ChatScreen(languageViewModel: LanguageViewModel) {
+    // Read ui texts snapshot (like your Home screen)
+    val uiTexts = languageViewModel.uiTexts
     val context = LocalContext.current
-    val activity = context as Activity
+    val activity = context as? Activity
+
     var messageText by remember { mutableStateOf("") }
     val messages = remember { mutableStateListOf<Message>() }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var isTyping by remember { mutableStateOf(false) }
 
-    // --- Speech Recognition ---
+    // Speech recognition
     val speechRecognizer = remember { SpeechRecognizer.createSpeechRecognizer(context) }
     val isListening = remember { mutableStateOf(false) }
 
     val speechIntent = remember {
         Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-UK")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, uiTexts["listening"] ?: "Listening...")
         }
     }
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            Toast.makeText(context, "Microphone permission is required for speech input", Toast.LENGTH_SHORT).show()
-        }
-    }
-
+    // Permission launcher replacement: we assume calling screen has requested RECORD_AUDIO or will ask; still check here
     DisposableEffect(Unit) {
         val listener = object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) { isListening.value = true }
@@ -84,17 +84,15 @@ fun ChatScreen() {
             override fun onRmsChanged(rmsdB: Float) {}
             override fun onBufferReceived(buffer: ByteArray?) {}
             override fun onEndOfSpeech() { isListening.value = false }
-
             override fun onError(error: Int) {
                 isListening.value = false
                 val message = when (error) {
-                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech detected."
-                    SpeechRecognizer.ERROR_NO_MATCH -> "Didn’t catch that. Try again."
-                    else -> "Speech recognition error: $error"
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> uiTexts["no_speech"] ?: "No speech detected."
+                    SpeechRecognizer.ERROR_NO_MATCH -> uiTexts["no_match"] ?: "Didn’t catch that. Try again."
+                    else -> uiTexts["speech_error"] ?: "Speech recognition error: $error"
                 }
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
-
             override fun onResults(results: Bundle?) {
                 isListening.value = false
                 val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
@@ -102,7 +100,6 @@ fun ChatScreen() {
                     messageText = recognizedText
                 }
             }
-
             override fun onPartialResults(partialResults: Bundle?) {}
             override fun onEvent(eventType: Int, params: Bundle?) {}
         }
@@ -112,14 +109,14 @@ fun ChatScreen() {
 
     fun startListening() {
         if (!SpeechRecognizer.isRecognitionAvailable(context)) {
-            Toast.makeText(context, "No speech recognition service found.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, uiTexts["no_speech_service"] ?: "No speech recognition service found.", Toast.LENGTH_LONG).show()
             return
         }
         val permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        if (permissionCheck == android.content.pm.PackageManager.PERMISSION_GRANTED) {
             speechRecognizer.startListening(speechIntent)
         } else {
-            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            Toast.makeText(context, uiTexts["mic_permission_needed"] ?: "Microphone permission is required.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -139,50 +136,49 @@ fun ChatScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .padding(12.dp)
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            // Chat messages list
+            // Messages
             LazyColumn(
                 state = listState,
                 modifier = Modifier.weight(1f),
                 reverseLayout = true,
                 verticalArrangement = Arrangement.Bottom,
-                contentPadding = PaddingValues(bottom = 8.dp, top = 8.dp)
+                contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(messages) { message ->
                     ChatBubble(message = message, modifier = Modifier.fillMaxWidth())
                 }
                 if (isTyping) {
-                    item { ChatBubble(message = Message("__typing__", false)) }
+                    item { ChatBubble(message = Message(uiTexts["typing"] ?: "Typing...", false)) }
                 }
             }
 
-            // Message input row
+            // Input
             MessageInput(
                 messageText = messageText,
                 onMessageTextChange = { messageText = it },
                 onSendClick = {
                     if (messageText.isNotBlank()) {
                         val userMessage = messageText
-                        messages.add(Message(userMessage, true))
+                        messages.add(0, Message(userMessage, true))
                         messageText = ""
                         coroutineScope.launch { listState.animateScrollToItem(0) }
 
                         isTyping = true
-
-                        sendMessageToApi(
-                            message = userMessage,
-                            onResponse = { response ->
-                                isTyping = false
-                                messages.add(Message(response, false))
-                                coroutineScope.launch { listState.animateScrollToItem(0) }
-                            },
-                            onError = { error ->
-                                isTyping = false
-                                messages.add(Message("Error: $error", false))
-                            }
-                        )
+                        coroutineScope.launch {
+                            sendMessageToApi(userMessage,
+                                onResponse = { response ->
+                                    isTyping = false
+                                    messages.add(0, Message(response, false))
+                                    coroutineScope.launch { listState.animateScrollToItem(0) }
+                                },
+                                onError = { err ->
+                                    isTyping = false
+                                    messages.add(0, Message(uiTexts["api_error"] ?: "Error: $err", false))
+                                })
+                        }
                     }
                 },
                 onMicHold = { startListening() },
@@ -195,35 +191,30 @@ fun ChatScreen() {
                             spotifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             context.startActivity(spotifyIntent)
                         } else {
-                            // Try using ACTION_VIEW URI fallback
-                            val uriIntent = Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("spotify:")
+                            // Play Store fallback
+                            val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("market://details?id=com.spotify.music")
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             }
-                            try {
-                                context.startActivity(uriIntent)
-                            } catch (e: ActivityNotFoundException) {
-                                // Final fallback: open Play Store page
-                                val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
-                                    data = Uri.parse("market://details?id=com.spotify.music")
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }
-                                context.startActivity(playStoreIntent)
-                            }
+                            context.startActivity(playStoreIntent)
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Could not open Spotify", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, uiTexts["open_spotify_failed"] ?: "Could not open Spotify", Toast.LENGTH_SHORT).show()
                     }
                 },
                 onCallClick = {
-                    val callIntent = Intent(Intent.ACTION_DIAL)
-                    context.startActivity(callIntent)
+                    try {
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        context.startActivity(callIntent)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, uiTexts["open_dial_failed"] ?: "Could not open dialer", Toast.LENGTH_SHORT).show()
+                    }
                 }
             )
 
             if (isListening.value) {
                 Text(
-                    text = "🎙 Listening...",
+                    text = uiTexts["listening"] ?: "Listening...",
                     color = Color.Red,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -235,6 +226,7 @@ fun ChatScreen() {
     }
 }
 
+/** Input row — uses dynamic labels from uiTexts via parent */
 @Composable
 fun MessageInput(
     messageText: String,
@@ -246,36 +238,28 @@ fun MessageInput(
     onSpotifyClick: () -> Unit,
     onCallClick: () -> Unit
 ) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 1f, targetValue = 1.3f,
-        animationSpec = infiniteRepeatable(tween(600, easing = LinearEasing), RepeatMode.Reverse)
-    )
-
     Row(
         modifier = Modifier
             .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surfaceDim, shape = MaterialTheme.shapes.medium)
-            .padding(4.dp),
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.medium)
+            .padding(6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Spotify Button
-        PrimaryIconButton(
-            icon = { Icon(Icons.Default.MusicNote, contentDescription = "Open Spotify") },
-            onClick = onSpotifyClick
-        )
+        // Spotify button
+        IconButton(onClick = onSpotifyClick) {
+            Icon(Icons.Default.MusicNote, contentDescription = "Open Spotify")
+        }
 
         Spacer(modifier = Modifier.width(4.dp))
 
-        // Phone Button
-        PrimaryIconButton(
-            icon = { Icon(Icons.Default.Phone, contentDescription = "Open Phone") },
-            onClick = onCallClick
-        )
+        // Phone button
+        IconButton(onClick = onCallClick) {
+            Icon(Icons.Default.Phone, contentDescription = "Open Phone")
+        }
 
         Spacer(modifier = Modifier.width(4.dp))
 
-        // Mic button
+        // Hold-to-talk mic button (long press)
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -290,12 +274,18 @@ fun MessageInput(
                 },
             contentAlignment = Alignment.Center
         ) {
+            val infiniteTransition = rememberInfiniteTransition()
+            val scale by infiniteTransition.animateFloat(
+                initialValue = 1f,
+                targetValue = 1.15f,
+                animationSpec = infiniteRepeatable(tween(600), RepeatMode.Reverse)
+            )
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .scale(if (isListening) scale else 1f)
                     .clip(CircleShape)
-                    .background(if (isListening) Color.Red.copy(alpha = 0.7f) else MaterialTheme.colorScheme.primary),
+                    .background(if (isListening) Color.Red.copy(alpha = 0.8f) else MaterialTheme.colorScheme.primary)
+                    .then(Modifier),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(Icons.Default.Mic, contentDescription = "Hold to talk", tint = Color.White)
@@ -304,20 +294,27 @@ fun MessageInput(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        MessageTextField(
-            modifier = Modifier.weight(1f),
-            text = messageText,
+        // Text field
+        OutlinedTextField(
+            value = messageText,
             onValueChange = onMessageTextChange,
-            label = "Message",
-            hint = if (isListening) "Listening..." else "Type a message..."
+            modifier = Modifier.weight(1f),
+            placeholder = { Text(text = "Type a message...") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Send
+            ),
+            keyboardActions = KeyboardActions(
+                onSend = { onSendClick() }
+            )
         )
+
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        PrimaryIconButton(
-            icon = { Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send") },
-            onClick = onSendClick
-        )
+        IconButton(onClick = onSendClick) {
+            Icon(Icons.Default.Send, contentDescription = "Send")
+        }
     }
 }
 
@@ -331,27 +328,20 @@ fun ChatBubble(message: Message, modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .widthIn(max = 540.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    if (isUserMe) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.surfaceVariant
-                )
+                .clip(MaterialTheme.shapes.medium)
+                .background(if (isUserMe) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
                 .padding(12.dp)
         ) {
-            if (message.text == "__typing__") {
-                TypingIndicator()
-            } else {
-                Text(
-                    text = message.text,
-                    color = if (isUserMe) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            Text(
+                text = message.text,
+                color = if (isUserMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
 
+/** Simple typing indicator */
 @Composable
 fun TypingIndicator() {
     val infiniteTransition = rememberInfiniteTransition()
@@ -369,15 +359,18 @@ fun TypingIndicator() {
     }
 }
 
-fun sendMessageToApi(
+suspend fun sendMessageToApi(
     message: String,
     onResponse: (String) -> Unit,
     onError: (String) -> Unit
 ) {
-    CoroutineScope(Dispatchers.IO).launch {
+    withContext(Dispatchers.IO) {
         try {
-            // val response = languageApi.askGemini(AskRequest(question = message))
-            // onResponse(response.answer)
+            // OLD FUNCTIONALITY RESTORED HERE
+            val response = languageApi.askGemini(
+                AskRequest(question = message)
+            )
+            onResponse(response.answer)
         } catch (e: Exception) {
             onError(e.localizedMessage ?: "Unknown error")
         }

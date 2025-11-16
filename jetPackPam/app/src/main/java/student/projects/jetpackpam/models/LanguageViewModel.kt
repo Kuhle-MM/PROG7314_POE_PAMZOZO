@@ -21,13 +21,83 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     var uiTexts by mutableStateOf(
         mapOf(
+            //language screen
             "header" to "Select preferred language",
+            "heading" to "Language",
             "description" to "Choose the language you prefer for the app",
             "buttonNext" to "Set",
             "footer" to "Powered by Pam",
+            //home screen
             "signOut" to "Sign out",
             "welcomeMessage" to "I’m ready to help you with anything.\nJust type below or say the word",
-            "chatButton" to "Chat"
+            "chatButton" to "Chat",
+            //Side nav
+            "settings" to "Settings",
+            "profile" to "Profile",
+            "language" to "Language",
+            "fontSize" to "Font Size",
+            "pamTheme" to "Theme",
+            "personality" to "Personality",
+            "logout" to "Logout",
+            //bottom nav
+            "home" to "Home",
+            "video" to "Video",
+            "games" to "Games",
+            //fontsize screen
+            "fontHeader" to "Select your font size for our chat",
+            "preview" to "Preview text",
+            //pamtheme screen
+            "lightMode" to "Light mode",
+            "darkMode" to "Dark mode",
+            "themeHeader" to "Choose the best colour for me",
+            //personality screen
+            "personalityHeader" to "Choose my personality",
+            "sarcastic" to "Sarcastic",
+            "friendly" to "Friendly",
+            "genz" to "Gen Z",
+            "neverInTheMood" to "Never in the mood",
+            "motivationalCoach" to "Motivational Coach",
+            "wiseElder" to "Wise Elder",
+            "cheerfulOptimist" to "Cheerful Optimist",
+            "storyTeller" to "Story Teller",
+            "shakespearean" to "Shakespearean",
+            "techGeek" to "Tech Geek",
+            //chat screen
+            "chatMessage" to "Type a message...",
+            "listening" to "Listening...",
+            "mic_permission_required" to "Microphone permission is required for speech input",
+            "no_speech_detected" to "No speech detected.",
+            "did_not_catch_that" to "Didn’t catch that. Try again.",
+            "speech_error" to "Speech recognition error",
+            "message_label" to "Message",
+            "message_hint" to "Type a message...",
+            "open_spotify" to "Open Spotify",
+            "open_phone" to "Open Phone",
+            "send" to "Send",
+            "spotify_error" to "Could not open Spotify",
+            "mic_hold" to "Hold to talk",
+            "songs" to "Songs",
+            "animals" to "Animals",
+            //video screen
+            "liveFeed" to "No live feed detected",
+            "cameraControl" to "Camera Control",
+            //games screen
+            //charades
+            "tapToPlay" to "TAP TO PLAY",
+            "selectACategory" to "Select a Category",
+            "actors" to "Actors",
+            "movies" to "Movies",
+            "songs" to "Songs",
+            "animals" to "Animals",
+            "food" to "Food",
+            "peopleYouKnow" to "People You Know",
+            "anime" to "Anime",
+            "sports" to "Sports",
+            "left" to "left",
+            "correctWords" to "Correct Words",
+            "skippedWords" to "Skipped Words",
+            "goHome" to "Go Home",
+            "gameOver" to "Game Over !"
         )
     )
         private set
@@ -56,13 +126,81 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                 for ((key, value) in uiTexts) {
                     if (newCode == "en") {
                         translated[key] = when (key) {
+                            //language screen
                             "header" -> "Select preferred language"
                             "description" -> "Choose the language you prefer for the app"
                             "buttonNext" -> "Set"
                             "footer" -> "Powered by Pam"
+                                //home screen
                             "signOut" -> "Sign out"
                             "welcomeMessage" -> "I’m ready to help you with anything.\nJust type below or say the word"
                             "chatButton" -> "Chat"
+                                //Side nav
+                            "settings" -> "Settings"
+                            "profile" -> "Profile"
+                            "language" -> "Language"
+                            "fontSize" -> "FontSize"
+                            "pamTheme" -> "Theme"
+                            "personality" -> "Personality"
+                            "logout" -> "Logout"
+                            "home" -> "Home"
+                            "video" -> "Video"
+                            "games" -> "Games"
+                                //fontsize screen
+                            "fontHeader" -> "Select your font size for our chat"
+                            "preview" -> "Preview text"
+                                //pamtheme screen
+                            "lightMode" -> "Light mode"
+                            "darkMode" -> "Dark mode"
+                            "themeHeader" -> "Choose the best colour for me"
+                                //personality screen
+                            "personalityHeader" -> "Choose my personality"
+                            "sarcastic" -> "Sarcastic"
+                            "friendly" -> "Friendly"
+                            "genz" -> "Gen Z"
+                            "neverInTheMood" -> "Never in the mood"
+                            "motivationalCoach" -> "Motivational Coach"
+                            "wiseElder" -> "Wise Elder"
+                            "cheerfulOptimist" -> "Cheerful Optimist"
+                            "storyTeller" -> "Story Teller"
+                            "shakespearean" -> "Shakespearean"
+                            "techGeek" -> "Tech Geek"
+                                //chat screen
+                            "chatMessage" -> "Type a message..."
+                            "listening" -> "Listening..."
+                            "mic_permission_required" -> "Microphone permission is required for speech input"
+                            "no_speech_detected" -> "No speech detected."
+                            "did_not_catch_that" -> "Didn’t catch that. Try again."
+                            "speech_error" -> "Speech recognition error"
+                            "message_label" -> "Message"
+                            "message_hint" -> "Type a message..."
+                            "open_spotify" -> "Open Spotify"
+                            "open_phone" -> "Open Phone"
+                            "send" -> "Send"
+                            "spotify_error" -> "Could not open Spotify"
+                            "mic_hold" -> "Hold to talk"
+                            "songs" -> "Songs"
+                            "animals" -> "Animals"
+                                //video screen
+                            "liveFeed" -> "No live feed detected"
+                            "cameraControl" -> "Camera Control"
+                                //games screen
+                                //charades
+                            "tapToPlay" -> "TAP TO PLAY"
+                            "selectACategory" -> "Select a Category"
+                            "actors" -> "Actors"
+                            "movies" -> "Movies"
+                            "songs" -> "Songs"
+                            "animals" -> "Animals"
+                            "food" -> "Food"
+                            "peopleYouKnow" -> "People You Know"
+                            "anime" -> "Anime"
+                            "sports" -> "Sports"
+                            "left" -> "left"
+                            "correctWords" -> "Correct Words"
+                            "skippedWords" -> "Skipped Words"
+                            "goHome" -> "Go Home"
+                            "gameOver" -> "Game Over !"
                             else -> value
                         }
                         continue

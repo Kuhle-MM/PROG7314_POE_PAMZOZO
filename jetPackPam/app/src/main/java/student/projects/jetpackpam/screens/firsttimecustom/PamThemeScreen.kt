@@ -28,15 +28,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import student.projects.jetpackpam.R
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 import kotlin.math.cos
 import kotlin.math.sin
 
 
 @Composable
-fun PamThemeSelectionScreen() {
+fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
     var isDarkMode by remember { mutableStateOf(false) }
     var selectedTheme by remember { mutableStateOf(1) }
+    val uiTexts by languageViewModel.uiTexts
+
 
     // Gradient setup for dark mode
     val angleInRad = -55 * (Math.PI / 180)
@@ -140,7 +143,6 @@ fun PamThemeSelectionScreen() {
                 }
             }
 
-            // 🌄 MOBILE LANDSCAPE
             DeviceConfiguration.MOBILE_LANDSCAPE -> {
                 Row(
                     modifier = rootModifier,
@@ -185,7 +187,6 @@ fun PamThemeSelectionScreen() {
                 }
             }
 
-            // 💻 TABLET / DESKTOP
             else -> {
                 Row(
                     modifier = rootModifier,
