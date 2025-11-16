@@ -84,3 +84,8 @@ Merger outputs are usually in the build directory, but this ensures they are ign
 *merger.json
 *merger.txt
 merger
+# Firebase Service Account
+*.json
+!app/src/main/assets/allowed.json   # if you ever need a JSON
+jetPackPam/app/*firebase*.json
+**/serviceAccountKey.json

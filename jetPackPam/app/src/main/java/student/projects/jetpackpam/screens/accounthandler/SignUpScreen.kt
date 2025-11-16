@@ -26,8 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import student.projects.jetpackpam.data.local.LocalDB
+import student.projects.jetpackpam.data.local.OfflineRepository
+import student.projects.jetpackpam.data.sync.FirebaseSyncManager
 import student.projects.jetpackpam.design_system.GoogleBtn
 import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
@@ -38,8 +42,7 @@ import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAu
 import student.projects.jetpackpam.util.DeviceConfiguration
 //import com.google.android.gms.identity.client.Identity
 
-// SignUpScreen.kt
-// SignUpScreen.kt
+
 @Composable
 fun SignUpScreen(
     navController: NavController,
@@ -48,6 +51,13 @@ fun SignUpScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+
+    val db = LocalDB.getInstance(context)
+    val repo = remember { OfflineRepository(db.offlineDao()) }
+    val sync = remember { FirebaseSyncManager(repo, FirebaseDatabase.getInstance().reference) }
+
+
+
 
     // UI state
     var emailText by remember { mutableStateOf("") }
@@ -83,6 +93,10 @@ fun SignUpScreen(
                 launchSingleTop = true
             }
         }
+    }
+
+    LaunchedEffect(true) {
+        authViewModel.setupOfflineSupport(repo, sync)
     }
 
     Scaffold(

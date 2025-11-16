@@ -18,15 +18,11 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import student.projects.jetpackpam.data.local.OfflineRepository
+import student.projects.jetpackpam.data.sync.FirebaseSyncManager
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.accounthandler.authorization.LocalUserData
 
-/**
- * ViewModel to handle authentication state for:
- * 1. Email/Password login & sign-up
- * 2. Google One Tap login
- *
- * Automatically creates Realtime Database structure after successful sign-up.
- */
 class AuthorizationModelViewModel(
     public val googleAuthClient: GoogleAuthClient
 ) : ViewModel() {
@@ -47,6 +43,18 @@ class AuthorizationModelViewModel(
     // Currently signed-in user
     private val _userData = MutableStateFlow<UserData?>(googleAuthClient.getSignedInUser())
     val userData: StateFlow<UserData?> = _userData.asStateFlow()
+    lateinit var offlineRepo: OfflineRepository
+    lateinit var syncManager: FirebaseSyncManager
+
+
+//--------------------------------------------------------------------------------------------------------------------------------
+
+    fun setupOfflineSupport(repo: OfflineRepository, sync: FirebaseSyncManager) {
+    this.offlineRepo = repo
+    this.syncManager = sync
+
+    }
+
 
     // --- EMAIL/PASSWORD LOGIN ---
     fun login(email: String, password: String, onSuccess: () -> Unit) {
@@ -116,12 +124,27 @@ class AuthorizationModelViewModel(
 
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
+
+
                         val profileUpdate = UserProfileChangeRequest.Builder()
                             .setDisplayName("$name $surname")
                             .build()
                         val user = auth.currentUser
                         if (user != null) {
                             Log.i("SignUpViewModel", "Sign-up successful for: $email")
+                            viewModelScope.launch {
+                                syncManager.sync(user.uid)
+                                offlineRepo.saveOffline(
+                                    uid = user.uid,
+                                    key = "profile",
+                                    data = LocalUserData(
+                                        name = name,
+                                        surname = surname,
+                                        email = email,
+                                        phone = password
+                                    )
+                                )
+                            }
 
                             // ✅ Create default user structure in Realtime Database
                             createUserStructure(

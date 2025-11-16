@@ -11,7 +11,6 @@ import com.onesignal.debug.LogLevel
 class JetPackPamApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
         // Enable verbose logging for debugging
         OneSignal.Debug.logLevel = LogLevel.VERBOSE
 
