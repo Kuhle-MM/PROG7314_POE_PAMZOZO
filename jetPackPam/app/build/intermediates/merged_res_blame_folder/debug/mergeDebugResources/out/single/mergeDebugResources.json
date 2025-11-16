@@ -20,12 +20,12 @@
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\pamicon.png"
     },
     {
-        "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-xhdpi\\ic_launcher.webp"
-    },
-    {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\font_inter_regular.ttf.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\font\\inter_regular.ttf"
+    },
+    {
+        "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_pamwordlogo.jpg.flat",

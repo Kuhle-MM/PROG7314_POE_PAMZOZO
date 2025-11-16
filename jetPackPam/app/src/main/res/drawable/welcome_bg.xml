@@ -6,20 +6,29 @@
 
     <!-- Top-right circle -->
     <path
-        android:strokeColor="#FF9BC9"
-        android:strokeWidth="12"
+        android:strokeColor="#F0A1F8"
+        android:strokeWidth="15"
         android:fillColor="@android:color/transparent"
-        android:pathData="M1400,-200
-                          A600,600 0 1,1 400,-200
-                          A600,600 0 1,1 1400,-200" />
+        android:pathData="M1080,0
+                          A250,250 0 1,1 780,0
+                          A250,250 0 1,1 1080,0" />
 
     <!-- Bottom-left circle -->
     <path
         android:strokeColor="#FF9BC9"
-        android:strokeWidth="10"
+        android:strokeWidth="15"
         android:fillColor="@android:color/transparent"
-        android:pathData="-300,2100
-                          A500,500 0 1,1 700,2100
-                          A500,500 0 1,1 -300,2100" />
+        android:pathData="M0,1920
+                          A450,450 0 1,1 300,1920
+                          A450,450 0 1,1 0,1920" />
+
+    <!-- Top-left circle -->
+    <path
+        android:strokeColor="#E34FF2"
+        android:strokeWidth="15"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M0,1920
+                          A110,110 0 1,1 150,0
+                          A110,110 0 1,1 0,0" />
 
 </vector>
