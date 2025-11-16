@@ -20,6 +20,7 @@ drawable lightpamog
 drawable nobgpamwordlogo
 drawable pamicon
 drawable pamwordlogo
+drawable welcome_bg
 font inter_medium
 font inter_medium_lightitalic
 font inter_regular

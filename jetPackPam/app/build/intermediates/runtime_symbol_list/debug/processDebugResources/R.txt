@@ -183,6 +183,7 @@ int drawable notification_tile_bg 0x7f060034
 int drawable notify_panel_notification_icon_bg 0x7f060035
 int drawable pamicon 0x7f060036
 int drawable pamwordlogo 0x7f060038
+int drawable welcome_bg 0x7f060039
 int font inter_medium 0x7f070000
 int font inter_medium_lightitalic 0x7f070001
 int font inter_regular 0x7f070002

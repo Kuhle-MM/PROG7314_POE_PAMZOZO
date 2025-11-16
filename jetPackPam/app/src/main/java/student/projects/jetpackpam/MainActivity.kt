@@ -93,12 +93,9 @@ class MainActivity : ComponentActivity() {
 
                         // WELCOME SCREEN
                         composable("welcome") {
-                            WelcomeScreen(navController = navController) {
-                                navController.navigate("main") {
-                                    popUpTo("welcome") { inclusive = true }
-                                }
-                            }
+                            WelcomeScreen(navController = navController)
                         }
+
 
                         // MAIN APP (YOUR EXISTING LOGIC)
                         composable("main") {

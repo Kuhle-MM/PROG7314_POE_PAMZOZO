@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj": {}
+    "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\PROG7314_POE.csproj": {
+    "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\PROG7314_POE.csproj",
+        "projectUniqueName": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
         "projectName": "PROG7314_POE",
-        "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\PROG7314_POE.csproj",
+        "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj",
         "packagesPath": "C:\\Users\\lab_services_student\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\obj\\",
+        "outputPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[1.69.0.3746, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.20, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[8.0.20, )"
@@ -65,6 +69,10 @@
             "Microsoft.Extensions.Http": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.14.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -98,14 +106,14 @@
         }
       }
     },
-    "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj": {
+    "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+        "projectUniqueName": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
         "projectName": "PamAPITest",
-        "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+        "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
         "packagesPath": "C:\\Users\\lab_services_student\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\obj\\",
+        "outputPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -126,8 +134,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\PROG7314_POE.csproj": {
-                "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\API\\PROG7314_POE.csproj"
+              "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj": {
+                "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\API\\PROG7314_POE.csproj"
               }
             }
           }

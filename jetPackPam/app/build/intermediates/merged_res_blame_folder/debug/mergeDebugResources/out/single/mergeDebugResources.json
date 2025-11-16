@@ -12,10 +12,6 @@
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_nobgpamwordlogo.png.flat",
-        "source": "student.projects.jetpackpam.app-main-64:/drawable/nobgpamwordlogo.png"
-    },
-    {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_ic_launcher_foreground.xml.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\ic_launcher_foreground.xml"
     },
@@ -30,6 +26,10 @@
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\font_inter_regular.ttf.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\font\\inter_regular.ttf"
+    },
+    {
+        "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_pamwordlogo.jpg.flat",
+        "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\pamwordlogo.jpg"
     },
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\mipmap-hdpi_pamicon.png.flat",
@@ -60,6 +60,10 @@
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-mdpi\\ic_launcher.webp"
     },
     {
+        "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_welcome_bg.xml.flat",
+        "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\welcome_bg.xml"
+    },
+    {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\mipmap-mdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
@@ -84,6 +88,10 @@
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\darkpamog.png"
     },
     {
+        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_welcome_bg.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-64:/drawable/welcome_bg.xml"
+    },
+    {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_baseline_play_circle_outline_24.xml.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\baseline_play_circle_outline_24.xml"
     },
@@ -98,10 +106,6 @@
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\mipmap-hdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "student.projects.jetpackpam.app-debug-62:/drawable_pamwordlogo.jpg.flat",
-        "source": "student.projects.jetpackpam.app-main-64:/drawable/pamwordlogo.jpg"
     },
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_darkpamblue.png.flat",
@@ -122,5 +126,9 @@
     {
         "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_darkpamgreen.png.flat",
         "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\darkpamgreen.png"
+    },
+    {
+        "merged": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-debug-62:\\drawable_nobgpamwordlogo.png.flat",
+        "source": "C:\\Users\\lab_services_student\\.gradle\\daemon\\8.13\\student.projects.jetpackpam.app-main-64:\\drawable\\nobgpamwordlogo.png"
     }
 ]
