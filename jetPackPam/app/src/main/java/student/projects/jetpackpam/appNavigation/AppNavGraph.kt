@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.localization.LocalLanguageViewModel
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
-import student.projects.jetpackpam.screens.ProfileScreen
+import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen

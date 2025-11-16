@@ -13,12 +13,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import student.projects.jetpackpam.appNavigation.AppNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.splash.SplashScreen
+import student.projects.jetpackpam.screens.splash.WelcomeScreen
 import student.projects.jetpackpam.ui.theme.JetPackPamTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,7 +38,8 @@ class MainActivity : ComponentActivity() {
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (!isGranted) {
-                    Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
@@ -44,22 +50,24 @@ class MainActivity : ComponentActivity() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // Already granted
             }
+
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
         }
 
-        // --- Initialize GoogleAuthClient ---
+        // Initialize GoogleAuthClient
         googleAuthClient = GoogleAuthClient(
             context = applicationContext,
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
 
-        // --- Initialize ViewModel using factory ---
+        // Initialize ViewModel using factory
         val factory = AuthorizationModelViewModelFactory(googleAuthClient)
-        authViewModel = ViewModelProvider(this, factory)[AuthorizationModelViewModel::class.java]
+        authViewModel =
+            ViewModelProvider(this, factory)[AuthorizationModelViewModel::class.java]
 
-        // --- Compose UI setup ---
+        // Compose UI Setup
         setContent {
             val languageViewModel: LanguageViewModel = viewModel()
 
@@ -70,11 +78,37 @@ class MainActivity : ComponentActivity() {
 
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AppNavGraph(
-                        googleAuthClient = googleAuthClient,
-                        authViewModel = authViewModel,
-                        languageViewModel = languageViewModel
-                    )
+
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "splash"
+                    ) {
+
+                        // SPLASH SCREEN
+                        composable("splash") {
+                            SplashScreen(navController = navController)
+                        }
+
+                        // WELCOME SCREEN
+                        composable("welcome") {
+                            WelcomeScreen(navController = navController) {
+                                navController.navigate("main") {
+                                    popUpTo("welcome") { inclusive = true }
+                                }
+                            }
+                        }
+
+                        // MAIN APP (YOUR EXISTING LOGIC)
+                        composable("main") {
+                            AppNavGraph(
+                                googleAuthClient = googleAuthClient,
+                                authViewModel = authViewModel,
+                                languageViewModel = languageViewModel
+                            )
+                        }
+                    }
                 }
             }
         }

@@ -18,7 +18,7 @@ import androidx.navigation.navArgument
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.ChatScreen
-import student.projects.jetpackpam.screens.ProfileScreen
+import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
