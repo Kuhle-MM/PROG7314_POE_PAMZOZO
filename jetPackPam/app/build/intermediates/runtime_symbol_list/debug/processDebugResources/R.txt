@@ -167,6 +167,7 @@ int drawable ic_password 0x7f060025
 int drawable lightpamblue 0x7f060026
 int drawable lightpamgreen 0x7f060027
 int drawable lightpamog 0x7f060028
+int drawable login_bg 0x7f06003a
 int drawable nobgpamwordlogo 0x7f060037
 int drawable notification_action_background 0x7f060029
 int drawable notification_bg 0x7f06002a
@@ -183,6 +184,7 @@ int drawable notification_tile_bg 0x7f060034
 int drawable notify_panel_notification_icon_bg 0x7f060035
 int drawable pamicon 0x7f060036
 int drawable pamwordlogo 0x7f060038
+int drawable signin_bg 0x7f06003b
 int drawable welcome_bg 0x7f060039
 int font inter_medium 0x7f070000
 int font inter_medium_lightitalic 0x7f070001

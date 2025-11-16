@@ -56,25 +56,25 @@ fun WelcomeScreen(navController: NavController) {
             Text(
                 text = "Welcome to",
                 //fontFamily = curlyFont,
-                fontSize = 32.sp,
+                fontSize = 60.sp,
                 color = Color.Black
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             Text(
                 text = "P.A.M",
                 fontSize = 56.sp,
                 color = Color.Black
             )
-
+            Spacer(modifier = Modifier.height(55.dp))
             Text(
                 text = "Personal Assistant with Mobility",
-                fontSize = 18.sp,
+                fontSize = 24.sp,
                 color = Color.DarkGray
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(75.dp))
 
             // Login Button
             Button(
@@ -87,7 +87,7 @@ fun WelcomeScreen(navController: NavController) {
                     .fillMaxWidth()
                     .height(55.dp)
             ) {
-                Text(text = "Login", fontSize = 18.sp, color = Color.White)
+                Text(text = "Login", fontSize = 28.sp, color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -103,7 +103,7 @@ fun WelcomeScreen(navController: NavController) {
                     .fillMaxWidth()
                     .height(55.dp)
             ) {
-                Text(text = "Sign Up", fontSize = 18.sp, color = Color.White)
+                Text(text = "Sign Up", fontSize = 28.sp, color = Color.White)
             }
         }
     }

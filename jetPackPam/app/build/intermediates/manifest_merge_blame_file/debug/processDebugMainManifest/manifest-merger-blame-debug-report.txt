@@ -47,11 +47,11 @@
 28        android:extractNativeLibs="false"
 29        android:fullBackupContent="@xml/backup_rules"
 29-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:9-54
-30        android:icon="@mipmap/ic_launcher"
-30-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-43
+30        android:icon="@drawable/nobgpamwordlogo"
+30-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-49
 31        android:label="@string/app_name"
 31-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-41
-32        android:roundIcon="@mipmap/ic_launcher_round"
+32        android:roundIcon="@drawable/nobgpamwordlogo"
 32-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-54
 33        android:supportsRtl="true"
 33-->C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:9-35

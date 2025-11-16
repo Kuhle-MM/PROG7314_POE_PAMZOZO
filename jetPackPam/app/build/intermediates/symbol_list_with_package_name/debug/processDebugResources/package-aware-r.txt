@@ -168,6 +168,7 @@ drawable ic_password
 drawable lightpamblue
 drawable lightpamgreen
 drawable lightpamog
+drawable login_bg
 drawable nobgpamwordlogo
 drawable notification_action_background
 drawable notification_bg
@@ -184,6 +185,7 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable pamicon
 drawable pamwordlogo
+drawable signin_bg
 drawable welcome_bg
 font inter_medium
 font inter_medium_lightitalic

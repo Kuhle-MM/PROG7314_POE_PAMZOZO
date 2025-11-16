@@ -23,12 +23,12 @@
                           A450,450 0 1,1 0,1920" />
 
     <!-- Top-left circle -->
-    <path
-        android:strokeColor="#E34FF2"
-        android:strokeWidth="15"
-        android:fillColor="@android:color/transparent"
-        android:pathData="M0,1920
-                          A110,110 0 1,1 150,0
-                          A110,110 0 1,1 0,0" />
+<!--    <path-->
+<!--        android:strokeColor="#E34FF2"-->
+<!--        android:strokeWidth="15"-->
+<!--        android:fillColor="@android:color/transparent"-->
+<!--        android:pathData="M0,1920-->
+<!--                          A110,110 0 1,1 150,0-->
+<!--                          A110,110 0 1,1 0,0" />-->
 
 </vector>

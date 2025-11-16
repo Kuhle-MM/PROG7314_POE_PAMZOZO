@@ -210,7 +210,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\lab_services_stude
 	android:roundIcon
 		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-54
 	android:icon
-		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-43
+		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-49
 	android:allowBackup
 		ADDED from C:\Users\lab_services_student\AndroidStudioProjects\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
