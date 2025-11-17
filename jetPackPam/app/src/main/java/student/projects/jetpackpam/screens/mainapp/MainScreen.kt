@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.*
 import androidx.compose.runtime.*
@@ -83,11 +83,7 @@ fun MainScreen(
                                 popUpTo("main") { inclusive = true }
                             }
                         } catch (e: Exception) {
-                            Toast.makeText(
-                                context,
-                                "${uiTexts["signOutFailed"] ?: "Sign-out failed"}: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                         scope.launch { drawerState.close() }
                     }
@@ -140,9 +136,13 @@ private fun getCurrentRoute(navController: NavHostController): String? {
     return navBackStackEntry?.destination?.route
 }
 
+/** 🔹 Bottom Navigation **/
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
+        BottomBarScreen.Home,
+        BottomBarScreen.Video,
+        BottomBarScreen.Games
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -150,9 +150,6 @@ fun BottomBar(navController: NavHostController) {
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         screens.forEach { screen ->
             AddItem(screen, currentDestination, navController)
-            val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
-            val animatedColor by animateColorAsState(
-                targetValue = if (selected) Color(0xFFB48CFF) else Color.Gray
         }
     }
 }
@@ -169,35 +166,32 @@ fun RowScope.AddItem(
         targetValue = if (selected) Color(0xFFB48CFF) else Color.Gray
     )
 
-            NavigationBarItem(
-                label = { Text(title, color = animatedColor) },
-                icon = { Icon(screen.icon, contentDescription = title, tint = animatedColor) },
-                selected = selected,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id)
-                        launchSingleTop = true
-                    }
-                }
-            )
+    NavigationBarItem(
+        label = { Text(screen.title, color = animatedColor) },
+        icon = { Icon(screen.icon, contentDescription = screen.title, tint = animatedColor) },
+        selected = selected,
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
         }
-    }
+    )
 }
 
 /** 🔹 Tablet Side Rail **/
 @Composable
-fun SideBar(navController: NavHostController, uiTexts: Map<String, String>) {
+fun SideBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Home to (uiTexts["home"] ?: "Home"),
-        BottomBarScreen.Video to (uiTexts["video"] ?: "Video"),
-        BottomBarScreen.Games to (uiTexts["games"] ?: "Games")
+        BottomBarScreen.Home,
+        BottomBarScreen.Video,
+        BottomBarScreen.Games
     )
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     NavigationRail(containerColor = MaterialTheme.colorScheme.background) {
-        screens.forEach { (screen, title) ->
+        screens.forEach { screen ->
             val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
             val animatedColor by animateColorAsState(
                 targetValue = if (selected) Color(0xFFB48CFF) else Color.Gray
@@ -211,8 +205,8 @@ fun SideBar(navController: NavHostController, uiTexts: Map<String, String>) {
                         launchSingleTop = true
                     }
                 },
-                icon = { Icon(screen.icon, contentDescription = title, tint = animatedColor) },
-                label = { Text(title, color = animatedColor) }
+                icon = { Icon(screen.icon, contentDescription = screen.title, tint = animatedColor) },
+                label = { Text(screen.title, color = animatedColor) }
             )
         }
     }

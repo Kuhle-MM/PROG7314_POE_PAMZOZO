@@ -21,48 +21,40 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
-import student.projects.jetpackpam.util.LanguagePrefs
 import student.projects.jetpackpam.models.LanguageViewModel
 
 @Composable
 fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
     val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
+
     var selectedLanguage by remember { mutableStateOf(languageViewModel.selectedLanguage) }
-    var currentLanguageCode by remember { mutableStateOf(languageViewModel.currentLanguageCode) }
 
     val languages = listOf("English", "Afrikaans", "isiZulu", "isiXhosa")
 
-    fun languageCode(language: String): String {
-        return when (language) {
-            "Afrikaans" -> "af"
-            "isiZulu" -> "zu"
-            "isiXhosa" -> "xh"
-            else -> "en"
-        }
+    fun languageCode(language: String) = when (language) {
+        "Afrikaans" -> "af"
+        "isiZulu" -> "zu"
+        "isiXhosa" -> "xh"
+        else -> "en"
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { padding ->
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
 
-        val rootModifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-            .padding(horizontal = 16.dp, vertical = 24.dp)
-            .verticalScroll(rememberScrollState())
-
         Column(
-            modifier = rootModifier,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -85,19 +77,20 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
             Spacer(modifier = Modifier.height(40.dp))
 
             LazyRow(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-                items(languages.size) { index ->
-                    val language = languages[index]
+                items(languages) { language ->
+
                     val isSelected = selectedLanguage == language
 
                     OutlinedCard(
                         onClick = {
-                            val newCode = languageCode(language)
+                            selectedLanguage = language
+                            val code = languageCode(language)
 
                             scope.launch {
-                                languageViewModel.translateAll(newCode) { translated ->
+                                languageViewModel.translateAll(code) { translated ->
                                     languageViewModel.setLanguage(
                                         language = language,
-                                        code = newCode,
+                                        code = code,
                                         texts = translated
                                     )
                                     languageViewModel.updateTexts(translated)

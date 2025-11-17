@@ -2,16 +2,12 @@ package student.projects.jetpackpam.models
 
 import android.app.Application
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext // <-- Added for ANR fix
 import student.projects.jetpackpam.data.LanguageRequest
 import student.projects.jetpackpam.retrofit.languageApi
 
@@ -25,7 +21,7 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     var uiTexts by mutableStateOf(
         mapOf(
-            //login
+            // login
             "login_title" to "Log in",
             "login_subtitle" to "Log in to get started",
             "email_label" to "Email",
@@ -40,16 +36,97 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "login_failed_toast" to "Login failed: ",
             "google_signin_failed" to "Google Sign-In failed",
             "google_signin_cancelled" to "Google Sign-In cancelled",
-            //sign out
+
+            // sign out
             "signedOut" to "Signed out successfully",
-            //language screen
+
+            // language screen
             "header" to "Select preferred language",
+            "heading" to "Language",
             "description" to "Choose the language you prefer for the app",
+            "buttonNext" to "Set",
+            "footer" to "Powered by Pam",
+
+            // home screen
+            "signOut" to "Sign out",
+            "welcomeMessage" to "I’m ready to help you with anything.\nJust type below or say the word",
+            "chatButton" to "Chat",
+
+            // side nav
+            "settings" to "Settings",
+            "profile" to "Profile",
+            "language" to "Language",
+            "fontSize" to "Font Size",
+            "pamTheme" to "Theme",
+            "personality" to "Personality",
+            "logout" to "Logout",
+
+            // bottom nav
+            "home" to "Home",
+            "video" to "Video",
+            "games" to "Games",
+
+            // font size screen
+            "fontHeader" to "Select your font size for our chat",
+            "preview" to "Preview text",
+
+            // pam theme screen
+            "lightMode" to "Light mode",
+            "darkMode" to "Dark mode",
+            "themeHeader" to "Choose the best colour for me",
+
+            // personality screen
+            "personalityHeader" to "Choose my personality",
+            "sarcastic" to "Sarcastic",
+            "friendly" to "Friendly",
+            "genz" to "Gen Z",
+            "neverInTheMood" to "Never in the mood",
+            "motivationalCoach" to "Motivational Coach",
+            "wiseElder" to "Wise Elder",
+            "cheerfulOptimist" to "Cheerful Optimist",
+            "storyTeller" to "Story Teller",
+            "shakespearean" to "Shakespearean",
+            "techGeek" to "Tech Geek",
+
+            // chat screen
+            "chatMessage" to "Type a message...",
+            "listening" to "Listening...",
+            "mic_permission_required" to "Microphone permission is required for speech input",
+            "no_speech_detected" to "No speech detected.",
+            "did_not_catch_that" to "Didn’t catch that. Try again.",
+            "speech_error" to "Speech recognition error",
+            "message_label" to "Message",
+            "message_hint" to "Type a message...",
+            "open_spotify" to "Open Spotify",
+            "open_phone" to "Open Phone",
+            "send" to "Send",
+            "spotify_error" to "Could not open Spotify",
+            "mic_hold" to "Hold to talk",
+            "songs" to "Songs",
+            "animals" to "Animals",
+
+            // video screen
+            "liveFeed" to "No live feed detected",
+            "cameraControl" to "Camera Control",
+
+            // games screen (charades)
+            "tapToPlay" to "TAP TO PLAY",
+            "selectACategory" to "Select a Category",
+            "actors" to "Actors",
+            "movies" to "Movies",
+            "food" to "Food",
+            "peopleYouKnow" to "People You Know",
+            "anime" to "Anime",
+            "sports" to "Sports",
+            "left" to "left",
+            "correctWords" to "Correct Words",
+            "skippedWords" to "Skipped Words",
+            "goHome" to "Go Home",
+            "gameOver" to "Game Over !"
         )
     )
         private set
 
-    // The SharedPreferences instance is safe to create here.
     private val prefs = application.getSharedPreferences("app_prefs", 0)
 
     fun setLanguage(language: String, code: String, texts: Map<String, String>) {
@@ -57,41 +134,18 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
         currentLanguageCode = code
         uiTexts = texts
         save(language, code)
-    init {
-        // 🔴 ANR FIX: The synchronous I/O call from the init block has been removed.
-        // The language will now be loaded safely when loadLanguage() is called from MainActivity.
-    }
-
-    /**
-     * Updates the language settings and saves them to SharedPreferences.
-     *
-     * ANR FIX: Saving to SharedPreferences is blocking I/O, so it must be offloaded to Dispatchers.IO.
-     */
-    fun setLanguage(languageCode: String, languageName: String) {
-        currentLanguageCode = languageCode
-        selectedLanguage = languageName
-
-        viewModelScope.launch(Dispatchers.IO) {
-            // Saving to SharedPreferences is blocking I/O, so it must be on Dispatchers.IO
-            prefs.edit().putString("languageCode", languageCode)
-                .putString("languageName", languageName)
-                .apply()
-        }
     }
 
     fun updateTexts(newTexts: Map<String, String>) {
-        uiTexts = newTexts.toMutableMap()
+        uiTexts = newTexts
     }
 
     fun translateAll(
         newCode: String,
         onComplete: (Map<String, String>) -> Unit
     ) {
-    fun translateAll(newCode: String, onComplete: (Map<String, String>) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val newTexts = mutableMapOf<String, String>()
-                for ((key, text) in uiTexts) {
                 val translated = mutableMapOf<String, String>()
 
                 for ((key, value) in uiTexts) {
@@ -119,11 +173,11 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                             "description" -> "Choose the language you prefer for the app"
                             "buttonNext" -> "Set"
                             "footer" -> "Powered by Pam"
-                                //home screen
+                            //home screen
                             "signOut" -> "Sign out"
                             "welcomeMessage" -> "I’m ready to help you with anything.\nJust type below or say the word"
                             "chatButton" -> "Chat"
-                                //Side nav
+                            //Side nav
                             "settings" -> "Settings"
                             "profile" -> "Profile"
                             "language" -> "Language"
@@ -137,14 +191,14 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                             //profile
                             "profile" -> "Profile"
                             "signOut" -> "Sign out"
-                                //fontsize screen
+                            //fontsize screen
                             "fontHeader" -> "Select your font size for our chat"
                             "preview" -> "Preview text"
-                                //pamtheme screen
+                            //pamtheme screen
                             "lightMode" -> "Light mode"
                             "darkMode" -> "Dark mode"
                             "themeHeader" -> "Choose the best colour for me"
-                                //personality screen
+                            //personality screen
                             "personalityHeader" -> "Choose my personality"
                             "sarcastic" -> "Sarcastic"
                             "friendly" -> "Friendly"
@@ -156,7 +210,7 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                             "storyTeller" -> "Story Teller"
                             "shakespearean" -> "Shakespearean"
                             "techGeek" -> "Tech Geek"
-                                //chat screen
+                            //chat screen
                             "chatMessage" -> "Type a message..."
                             "listening" -> "Listening..."
                             "mic_permission_required" -> "Microphone permission is required for speech input"
@@ -172,11 +226,11 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                             "mic_hold" -> "Hold to talk"
                             "songs" -> "Songs"
                             "animals" -> "Animals"
-                                //video screen
+                            //video screen
                             "liveFeed" -> "No live feed detected"
                             "cameraControl" -> "Camera Control"
-                                //games screen
-                                //charades
+                            //games screen
+                            //charades
                             "tapToPlay" -> "TAP TO PLAY"
                             "selectACategory" -> "Select a Category"
                             "actors" -> "Actors"
@@ -222,67 +276,11 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             putString("languageName", name)
             putString("languageCode", code)
             apply()
-                withContext(Dispatchers.Main) {
-                    onComplete(uiTexts)
-                }
-            }
         }
     }
 
     fun loadLanguage() {
         selectedLanguage = prefs.getString("languageName", "English") ?: "English"
         currentLanguageCode = prefs.getString("languageCode", "en") ?: "en"
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                // All SharedPreferences I/O is now safely backgrounded
-                val savedName = prefs.getString("languageName", "English")
-                val savedCode = prefs.getString("languageCode", "en")
-
-                // Update state on the main thread (done automatically by the outer launch)
-                if (savedName != null && savedCode != null) {
-                    selectedLanguage = savedName
-                    currentLanguageCode = savedCode
-                }
-            }
-        }
-    }
-
-    fun fetchLanguageFromFirebase() {
-        val user = FirebaseAuth.getInstance().currentUser ?: return
-        val uid = user.uid
-        val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("language")
-
-        ref.get().addOnSuccessListener { snapshot ->
-            val name = snapshot.child("name").getValue(String::class.java) ?: "English"
-            val code = snapshot.child("code").getValue(String::class.java) ?: "en"
-
-            selectedLanguage = name
-            currentLanguageCode = code
-
-            // Update UI texts (translateAll handles Dispatcher switching internally)
-            translateAll(code) { /* updated via updateUiTexts call inside translateAll */ }
-        }
-    }
-
-    fun saveLanguageToFirebase(name: String, code: String) {
-        val user = FirebaseAuth.getInstance().currentUser ?: return
-        val uid = user.uid
-        val ref = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("language")
-        ref.setValue(mapOf("name" to name, "code" to code))
-    }
-}
-
-    // 🔹 New: global font size in sp
-    var fontSize by mutableFloatStateOf(20f)
-        private set
-
-    // Function to update font size
-    fun updateFontSize(newSize: Float) {
-        fontSize = newSize.coerceIn(16f, 48f) // keep in valid range
-    }
-
-    // Function to update translations (if needed)
-    fun updateUiTexts(newTexts: Map<String, String>) {
-        uiTexts = newTexts.toMutableMap()
     }
 }

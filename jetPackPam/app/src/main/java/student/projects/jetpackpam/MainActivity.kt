@@ -2,6 +2,7 @@ package student.projects.jetpackpam
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -35,10 +36,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Request microphone permissions
+        //MICROPHONE PERMISSION
         val requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-                if (!isGranted) {
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                if (!granted) {
                     Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG)
                         .show()
                 }
@@ -55,56 +56,53 @@ class MainActivity : ComponentActivity() {
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED
-        ) micPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
 
-        // --- Request notification permission (Android 13+) ---
+        // NOTIFICATION PERMISSION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val notificationPermissionLauncher =
                 registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                     if (!granted) {
-                        Toast.makeText(this, "Notification permission required.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Notification permission required.", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED
-            ) notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
+            if (
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
 
-        // Initialize GoogleAuthClient
+        // GOOGLE AUTH CLIENT
         googleAuthClient = GoogleAuthClient(
             context = applicationContext,
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
 
-        // Initialize ViewModel using factory
         val factory = AuthorizationModelViewModelFactory(googleAuthClient)
         authViewModel = ViewModelProvider(this, factory)[AuthorizationModelViewModel::class.java]
 
-        // --- Firebase Messaging token ---
+        // FIREBASE TOKEN
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val token = task.result
-                android.util.Log.d("FCM", "Token: $token")
+                android.util.Log.d("FCM", "Token: ${task.result}")
             } else {
                 android.util.Log.e("FCM", "Failed to get token", task.exception)
             }
         }
 
-        // --- Compose UI setup ---
+        // COMPOSE UI
         setContent {
             val languageViewModel: LanguageViewModel = viewModel()
             LaunchedEffect(Unit) { languageViewModel.loadLanguage() }
 
-            // Load the saved language on startup
-            LaunchedEffect(Unit) {
-                languageViewModel.loadLanguage()
-            }
-
             JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-
                     val navController = rememberNavController()
 
                     NavHost(
@@ -112,12 +110,10 @@ class MainActivity : ComponentActivity() {
                         startDestination = "splash"
                     ) {
 
-                        // SPLASH SCREEN
                         composable("splash") {
                             SplashScreen(navController = navController)
                         }
 
-                        // WELCOME SCREEN
                         composable("welcome") {
                             WelcomeScreen(navController = navController) {
                                 navController.navigate("main") {
@@ -126,7 +122,6 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        // MAIN APP (YOUR EXISTING LOGIC)
                         composable("main") {
                             AppNavGraph(
                                 googleAuthClient = googleAuthClient,

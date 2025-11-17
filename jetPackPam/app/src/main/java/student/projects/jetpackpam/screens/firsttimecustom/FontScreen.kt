@@ -1,9 +1,5 @@
 package student.projects.jetpackpam.screens.firsttimecustom
 
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,12 +36,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import student.projects.jetpackpam.models.LanguageViewModel
+import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
 fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
-    var sliderValue by remember { mutableFloatStateOf(languageViewModel.fontSize) }
-    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
-
+    val uiTexts = languageViewModel.uiTexts
 
     var fontSize by remember { mutableStateOf(20f) } // default size in sp
 
@@ -54,12 +49,6 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
         contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp, vertical = 24.dp)
-        ) {
         val rootModifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -122,17 +111,6 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                         )
                     }
 
-            Slider(
-                value = sliderValue,
-                onValueChange = { newValue ->
-                    sliderValue = newValue                   // update UI state
-                    languageViewModel.updateFontSize(newValue) // update global font size
-                },
-                valueRange = 16f..48f,
-                steps = 32
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
                     Slider(
                         value = fontSize,
                         onValueChange = { fontSize = it },
@@ -147,10 +125,6 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                 }
             }
 
-            Text(
-                text = uiTexts["fontPreview"] ?: "Font Preview",
-                fontSize = sliderValue.sp
-            )
             else -> {
                 // Tablet or Desktop layout
                 Row(

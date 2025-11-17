@@ -56,8 +56,10 @@ fun BottomNavGraph(
             HomeScreen(
                 navController = navController,
                 authViewModel = authViewModel,
-                languageViewModel = languageViewModel
+                languageViewModel = languageViewModel,
+                uiTexts = languageViewModel.uiTexts
             )
+
         }
 
 
