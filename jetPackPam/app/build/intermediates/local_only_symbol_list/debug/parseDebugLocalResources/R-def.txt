@@ -17,8 +17,10 @@ drawable ic_launcher_foreground
 drawable lightpamblue
 drawable lightpamgreen
 drawable lightpamog
+drawable nobgpamwordlogo
 drawable pam
 drawable pamicon
+drawable pamwordlogo
 font inter_medium
 font inter_medium_lightitalic
 font inter_regular
