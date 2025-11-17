@@ -1,160 +1,267 @@
 package student.projects.jetpackpam.screens.livelogs
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.firebase.Timestamp
 import student.projects.jetpackpam.data.LogEntry
-import java.time.LocalDateTime
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.*
 
-// ---------------------------
-// Hardcoded LOGS LIST
-// ---------------------------
+/* -------------------------------------------------------
+   COLORS (LinkedIn-like Pale)
+-------------------------------------------------------- */
+val paleBackground = Color(0xFFF4F4F4)
+val paleCard = Color(0xFFFFFFFF)
+val palePrimary = Color(0xFF0077B5)
+val paleSecondary = Color(0xFFE8E8E8)
+
+/* -------------------------------------------------------
+   HARDCODED LOG ENTRIES
+-------------------------------------------------------- */
 val sampleLogs = listOf(
-    // Same date, different times
-    LogEntry(10, "turning", LocalDateTime.parse("2025-01-21T09:15")),
-    LogEntry(9, "turning", LocalDateTime.parse("2025-01-21T09:16")),
-    LogEntry(45, "going straight", LocalDateTime.parse("2025-01-21T10:00")),
-    LogEntry(42, "turning", LocalDateTime.parse("2025-01-21T12:45")),
-    LogEntry(45, "going straight", LocalDateTime.parse("2025-01-21T12:46")),
-    LogEntry(80, "going straight", LocalDateTime.parse("2025-01-20T18:00")),
-    LogEntry(30, "turning", LocalDateTime.parse("2025-01-19T16:20")),
-    LogEntry(95, "going straight", LocalDateTime.parse("2025-01-18T12:12")),
-    LogEntry(60, "turning", LocalDateTime.parse("2025-01-17T08:05"))
+    LogEntry(1, "Turning left at corner", Timestamp(Date(2025 - 1900, 10, 17, 9, 15))),
+    LogEntry(2, "Going straight for 50cm", Timestamp(Date(2025 - 1900, 10, 17, 9, 20))),
+    LogEntry(3, "Stopped briefly", Timestamp(Date(2025 - 1900, 10, 17, 10, 5))),
+    LogEntry(4, "Turning right at intersection", Timestamp(Date(2025 - 1900, 10, 17, 10, 30))),
+    LogEntry(5, "Going straight for 100cm", Timestamp(Date(2025 - 1900, 10, 16, 14, 40))),
+    LogEntry(6, "Turning left at T-junction", Timestamp(Date(2025 - 1900, 10, 16, 15, 10)))
 )
 
+/* -------------------------------------------------------
+   MAIN SCREEN
+-------------------------------------------------------- */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LiveLogsScreen(navController: NavController) {
 
-    // User filters
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
-    var startTime by remember { mutableStateOf("") }
-    var endTime by remember { mutableStateOf("") }
+    /* ---------------- FILTER STATE ---------------- */
+    var selectedDate: Date? by remember { mutableStateOf(null) }
+    var selectedTimeBlock: Int? by remember { mutableStateOf(null) }   // 10-min buckets
+    var selectedKeyword: String by remember { mutableStateOf("") }
 
-    // Formatters
-    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    /* Bottom sheets visibility */
+    var dateSheet by remember { mutableStateOf(false) }
+    var timeSheet by remember { mutableStateOf(false) }
+    var keywordSheet by remember { mutableStateOf(false) }
 
-    // Filtering logic
-    val filteredLogs = remember(startDate, endDate, startTime, endTime) {
+    val df = remember { SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()) }
 
-        val sorted = sampleLogs.sortedByDescending { it.dateTime } // newest first
+    /* ---------------- FILTER LOGIC ---------------- */
+    val filteredLogs = remember(selectedDate, selectedTimeBlock, selectedKeyword) {
+        sampleLogs.sortedByDescending { it.timestamp.seconds }.filter { entry ->
 
-        runCatching {
+            val entryDate = Date(entry.timestamp.seconds * 1000)
+            val cal = Calendar.getInstance().apply { time = entryDate }
 
-            // Parse dates
-            val startDateParsed = if (startDate.isNotBlank()) LocalDate.parse(startDate, dateFormatter) else null
-            val endDateParsed = if (endDate.isNotBlank()) LocalDate.parse(endDate, dateFormatter) else null
+            val dateMatch = selectedDate?.let {
+                val f = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                f.format(entryDate) == f.format(it)
+            } ?: true
 
-            // Parse times
-            val startTimeParsed = if (startTime.isNotBlank()) LocalTime.parse(startTime, timeFormatter) else null
-            val endTimeParsed = if (endTime.isNotBlank()) LocalTime.parse(endTime, timeFormatter) else null
+            val timeMatch = selectedTimeBlock?.let { block ->
+                (cal.get(Calendar.MINUTE) / 10) == block
+            } ?: true
 
-            sorted.filter { log ->
+            val keywordMatch = if (selectedKeyword.isBlank()) true
+            else entry.message.contains(selectedKeyword, ignoreCase = true)
 
-                val logDate = log.dateTime.toLocalDate()
-                val logTime = log.dateTime.toLocalTime()
-
-                val dateMatch =
-                    (startDateParsed == null || !logDate.isBefore(startDateParsed)) &&
-                            (endDateParsed == null || !logDate.isAfter(endDateParsed))
-
-                val timeMatch =
-                    (startTimeParsed == null || !logTime.isBefore(startTimeParsed)) &&
-                            (endTimeParsed == null || !logTime.isAfter(endTimeParsed))
-
-                dateMatch && timeMatch
-            }
-        }.getOrElse { sorted }
+            dateMatch && timeMatch && keywordMatch
+        }
     }
 
+    /* ---------------- UI LAYOUT ---------------- */
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(paleBackground)
+            .padding(12.dp)
     ) {
 
         Text(
-            text = "Live Logs",
+            "Live Logs",
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // -------------------------
-        // DATE FILTERS
-        // -------------------------
-        OutlinedTextField(
-            value = startDate,
-            onValueChange = { startDate = it },
-            label = { Text("Start Date (yyyy-MM-dd)") },
-            modifier = Modifier.fillMaxWidth()
+        /* ---------------- FILTER CHIPS ---------------- */
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = dateSheet,
+                onClick = { dateSheet = true },
+                label = { Text("Date") }
+            )
+
+            FilterChip(
+                selected = timeSheet,
+                onClick = { timeSheet = true },
+                label = { Text("Time") }
+            )
+
+            FilterChip(
+                selected = keywordSheet,
+                onClick = { keywordSheet = true },
+                label = { Text("Keyword") }
+            )
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        /* Reset Button */
+        OutlinedButton(
+            onClick = {
+                selectedDate = null
+                selectedTimeBlock = null
+                selectedKeyword = ""
+            }
+        ) { Text("Reset Filters") }
+
+        Spacer(Modifier.height(16.dp))
+
+        /* ---------------- LOG LIST ---------------- */
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(filteredLogs) { entry ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = paleCard)
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text(entry.message, fontWeight = FontWeight.Bold)
+                        Text(df.format(Date(entry.timestamp.seconds * 1000L)))
+                    }
+                }
+            }
+        }
+    }
+
+    /* ---------------- SHEETS ---------------- */
+
+    if (dateSheet) {
+        BottomSheetDialog(
+            title = "Filter by Date",
+            items = sampleLogs
+                .map { Date(it.timestamp.seconds * 1000) }
+                .distinctBy {
+                    SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(it)
+                }
+                .sortedByDescending { it }
+                .map {
+                    SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(it) to it
+                },
+            onSelect = { selectedDate = it },
+            onDismiss = { dateSheet = false }
         )
+    }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = endDate,
-            onValueChange = { endDate = it },
-            label = { Text("End Date (yyyy-MM-dd)") },
-            modifier = Modifier.fillMaxWidth()
+    if (timeSheet) {
+        BottomSheetDialog(
+            title = "Filter by Time (10-minute blocks)",
+            items = (0..5).map { block ->
+                val label = "${block * 10}–${block * 10 + 9} min"
+                label to block
+            },
+            onSelect = { selectedTimeBlock = it },
+            onDismiss = { timeSheet = false }
         )
+    }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // -------------------------
-        // TIME FILTERS
-        // -------------------------
-        OutlinedTextField(
-            value = startTime,
-            onValueChange = { startTime = it },
-            label = { Text("Start Time (HH:mm)") },
-            modifier = Modifier.fillMaxWidth()
+    if (keywordSheet) {
+        KeywordSheet(
+            currentValue = selectedKeyword,
+            onApply = { selectedKeyword = it },
+            onDismiss = { keywordSheet = false }
         )
+    }
+}
 
-        Spacer(modifier = Modifier.height(8.dp))
+/* -------------------------------------------------------
+   REUSABLE BOTTOM SHEET
+-------------------------------------------------------- */
+@Composable
+fun <T> BottomSheetDialog(
+    title: String,
+    items: List<Pair<String, T>>,
+    onSelect: (T) -> Unit,
+    onDismiss: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = paleSecondary
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
 
-        OutlinedTextField(
-            value = endTime,
-            onValueChange = { endTime = it },
-            label = { Text("End Time (HH:mm)") },
-            modifier = Modifier.fillMaxWidth()
-        )
+            Text(title, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(20.dp))
+            items.forEach { (label, value) ->
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onSelect(value); onDismiss() }
+                ) {
+                    Text(label)
+                }
+                Spacer(Modifier.height(8.dp))
+            }
 
-        // -------------------------
-        // LOG LIST
-        // -------------------------
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(filteredLogs) { log ->
-                LogCard(log)
+            OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = onDismiss) {
+                Text("Cancel")
             }
         }
     }
 }
 
+/* -------------------------------------------------------
+   KEYWORD ENTRY SHEET
+-------------------------------------------------------- */
 @Composable
-fun LogCard(log: LogEntry) {
-    Card(
+fun KeywordSheet(
+    currentValue: String,
+    onApply: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var text by remember { mutableStateOf(currentValue) }
+
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        color = paleSecondary
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text("Distance: ${log.distanceCm} cm", fontWeight = FontWeight.Bold)
-            Text("State: ${log.state}")
-            Text("DateTime: ${log.dateTime}")
+        Column(modifier = Modifier.padding(20.dp)) {
+
+            Text("Filter by Keyword", fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Enter keyword") }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { onApply(text); onDismiss() }
+            ) {
+                Text("Apply")
+            }
+
+            Spacer(Modifier.height(10.dp))
+
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onDismiss
+            ) {
+                Text("Cancel")
+            }
         }
     }
 }
