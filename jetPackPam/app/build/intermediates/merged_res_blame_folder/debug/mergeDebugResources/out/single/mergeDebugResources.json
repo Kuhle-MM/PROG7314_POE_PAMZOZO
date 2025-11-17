@@ -16,12 +16,20 @@
         "source": "student.projects.jetpackpam.app-main-83:/drawable/lightpamgreen.png"
     },
     {
+        "merged": "student.projects.jetpackpam.app-debug-81:/drawable_login_bg.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-83:/drawable/login_bg.xml"
+    },
+    {
         "merged": "student.projects.jetpackpam.app-debug-81:/drawable_nobgpamwordlogo.png.flat",
         "source": "student.projects.jetpackpam.app-main-83:/drawable/nobgpamwordlogo.png"
     },
     {
         "merged": "student.projects.jetpackpam.app-debug-81:/mipmap-anydpi_ic_launcher.xml.flat",
         "source": "student.projects.jetpackpam.app-main-83:/mipmap-anydpi/ic_launcher.xml"
+    },
+    {
+        "merged": "student.projects.jetpackpam.app-debug-81:/drawable_welcome_bg.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-83:/drawable/welcome_bg.xml"
     },
     {
         "merged": "student.projects.jetpackpam.app-debug-81:/mipmap-xhdpi_ic_launcher.webp.flat",
@@ -84,6 +92,10 @@
         "source": "student.projects.jetpackpam.app-main-83:/drawable/lightpamog.png"
     },
     {
+        "merged": "student.projects.jetpackpam.app-debug-81:/drawable_signin_bg.xml.flat",
+        "source": "student.projects.jetpackpam.app-main-83:/drawable/signin_bg.xml"
+    },
+    {
         "merged": "student.projects.jetpackpam.app-debug-81:/font_inter_regular.ttf.flat",
         "source": "student.projects.jetpackpam.app-main-83:/font/inter_regular.ttf"
     },
@@ -116,15 +128,15 @@
         "source": "student.projects.jetpackpam.app-main-83:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-81:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "student.projects.jetpackpam.app-main-83:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "student.projects.jetpackpam.app-debug-81:/drawable_lightpamblue.png.flat",
+        "source": "student.projects.jetpackpam.app-main-83:/drawable/lightpamblue.png"
     },
     {
         "merged": "student.projects.jetpackpam.app-debug-81:/xml_data_extraction_rules.xml.flat",
         "source": "student.projects.jetpackpam.app-main-83:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "student.projects.jetpackpam.app-debug-81:/drawable_lightpamblue.png.flat",
-        "source": "student.projects.jetpackpam.app-main-83:/drawable/lightpamblue.png"
+        "merged": "student.projects.jetpackpam.app-debug-81:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "student.projects.jetpackpam.app-main-83:/mipmap-xhdpi/ic_launcher_round.webp"
     }
 ]
