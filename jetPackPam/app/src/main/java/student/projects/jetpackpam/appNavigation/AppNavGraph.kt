@@ -21,6 +21,8 @@ import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.*
+import student.projects.jetpackpam.screens.splash.SplashScreen
+import student.projects.jetpackpam.screens.splash.WelcomeScreen
 
 @Composable
 fun AppNavGraph(
@@ -37,8 +39,7 @@ fun AppNavGraph(
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 scope.launch {
-                    val signInResult = googleAuthClient
-                        .signInWithIntent(result.data!!)
+                    val signInResult = googleAuthClient.signInWithIntent(result.data!!)
                     authViewModel.handleGoogleSignInResult(signInResult)
 
                     navController.navigate("main") {
@@ -52,21 +53,26 @@ fun AppNavGraph(
         }
 
     CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
+
+        // ⭐ Your app STARTS at the splash screen, NOT login/main
         NavHost(
             navController = navController,
-            startDestination = if (userData == null) "login" else "main"
+            startDestination = "login"
         ) {
+
+            // LOGIN
             composable("login") {
                 LoginScreen(
                     navController = navController,
-                    authViewModel = authViewModel,
                     googleAuthClient = googleAuthClient,
+                    authViewModel = authViewModel,
                     googleSignInLauncher = googleSignInLauncher,
                     languageViewModel = languageViewModel
                 )
             }
 
-            composable("signUp") {
+            // SIGNUP
+            composable("signup") {
                 SignUpScreen(
                     navController = navController,
                     authViewModel = authViewModel,
@@ -75,16 +81,18 @@ fun AppNavGraph(
                 )
             }
 
+            // MAIN APP (after successful login)
             composable("main") {
-                MainScreen(
-                    authViewModel = authViewModel,
-                    rootNavController = navController,
+                AppNavGraph(
                     googleAuthClient = googleAuthClient,
-                    languageViewModel = languageViewModel
+                    authViewModel = authViewModel,
+                    languageViewModel = languageViewModel,
+                    navController = navController
                 )
             }
 
-            composable("profile") {
+
+        composable("profile") {
                 ProfileScreen(
                     userData = userData,
                     languageViewModel = languageViewModel,

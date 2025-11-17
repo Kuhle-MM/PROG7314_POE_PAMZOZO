@@ -1,6 +1,6 @@
 package student.projects.jetpackpam.screens.splash
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,9 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -24,22 +24,36 @@ import student.projects.jetpackpam.R
 fun WelcomeScreen(navController: NavController) {
 
     // Your curly font
-    //val curlyFont = FontFamily(Font(R.font.cursivefont)) // change to your font name
+    // val curlyFont = FontFamily(Font(R.font.cursivefont)) // Replace with your font
 
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
 
         // -----------------------
-        // Background artwork
+        // Canvas background circles
         // -----------------------
-        Image(
-            painter = painterResource(id = R.drawable.welcome_bg),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 325f,
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 720f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }
 
         // -----------------------
         // Main Content
@@ -55,7 +69,7 @@ fun WelcomeScreen(navController: NavController) {
             // Welcome text
             Text(
                 text = "Welcome to",
-                //fontFamily = curlyFont,
+                // fontFamily = curlyFont,
                 fontSize = 60.sp,
                 color = Color.Black
             )
@@ -67,7 +81,9 @@ fun WelcomeScreen(navController: NavController) {
                 fontSize = 56.sp,
                 color = Color.Black
             )
+
             Spacer(modifier = Modifier.height(55.dp))
+
             Text(
                 text = "Personal Assistant with Mobility",
                 fontSize = 24.sp,
@@ -94,7 +110,7 @@ fun WelcomeScreen(navController: NavController) {
 
             // Sign Up Button
             Button(
-                onClick = { navController.navigate("signup") },
+                onClick = { navController.navigate("signUp") },
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFB764A8)
