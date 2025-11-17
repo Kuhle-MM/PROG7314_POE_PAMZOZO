@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,7 @@ fun SideNav(
     onItemSelected: (String) -> Unit,
     onLogout: () -> Unit
 ) {
-    // ✅ Correct usage (same style as HomeScreen)
+
     val uiTexts = languageViewModel.uiTexts
 
     val items = listOf(
@@ -30,7 +31,8 @@ fun SideNav(
         SideNavItem("language", "language", Icons.Default.Language),
         SideNavItem("fontSize", "fontSize", Icons.Default.FormatSize),
         SideNavItem("pamTheme", "pamTheme", Icons.Default.Palette),
-        SideNavItem("personality", "personality", Icons.Default.Person)
+        SideNavItem("personality", "personality", Icons.Default.Person),
+        SideNavItem("liveLogs", "liveLogs", Icons.Default.Receipt)
     )
 
     ModalDrawerSheet(

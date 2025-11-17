@@ -21,6 +21,7 @@ import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.*
+import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
 import student.projects.jetpackpam.screens.splash.WelcomeScreen
 
@@ -107,6 +108,7 @@ fun AppNavGraph(
 
             composable("startup") { StartUpScreen(navController) }
             composable("category") { CategorySelectionScreen(navController) }
+            composable("liveLogs") { LiveLogsScreen(navController) }
 
             composable("playing/{sessionId}/{category}") { backStackEntry ->
                 PlayingGameScreen(

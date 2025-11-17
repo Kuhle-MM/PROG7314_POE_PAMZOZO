@@ -39,6 +39,7 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
@@ -168,7 +169,7 @@ class MainActivity : ComponentActivity() {
 
                         composable("startup") { StartUpScreen(navController) }
                         composable("category") { CategorySelectionScreen(navController) }
-
+                        composable("liveLogs") { LiveLogsScreen(navController) }
                         composable("playing/{sessionId}/{category}") { backStackEntry ->
                             PlayingGameScreen(
                                 navController = navController,
