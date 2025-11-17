@@ -38,7 +38,7 @@ fun LongButton(
             containerColor = MaterialTheme.colorScheme.primary )
     ) {
         Text(text = text,
-        style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall
         )
     }
 }
@@ -46,19 +46,12 @@ fun LongButton(
 @Composable
 fun PrimaryIconButton(
     icon: @Composable () -> Unit,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit   // regular lambda, NOT @Composable
 ) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier,
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )
-    ) {
-        icon()
-    }
+    IconButton(onClick = onClick) { icon() }
 }
+
+
 
 @Composable
 fun GoogleBtn(
@@ -104,3 +97,4 @@ fun GoogleBtnPreview() {
         )
     }
 }
+

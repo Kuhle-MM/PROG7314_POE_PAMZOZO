@@ -1,47 +1,42 @@
 package student.projects.jetpackpam.screens.firsttimecustom
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
-import student.projects.jetpackpam.data.LanguageRequest
-import student.projects.jetpackpam.retrofit.languageApi
+import student.projects.jetpackpam.util.LanguagePrefs
+import student.projects.jetpackpam.models.LanguageViewModel
 
 @Composable
-fun LanguageSelectionScreen() {
+fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
+
+    var selectedLanguage by remember { mutableStateOf(languageViewModel.selectedLanguage) }
+    var currentLanguageCode by remember { mutableStateOf(languageViewModel.currentLanguageCode) }
 
     val languages = listOf("English", "Afrikaans", "isiZulu", "isiXhosa")
-
-    // Store both the displayed language and the language code
-    var selectedLanguage by remember { mutableStateOf("English") }
-    var currentLanguageCode by remember { mutableStateOf("en") }
-
-    var uiTexts by remember {
-        mutableStateOf(
-            mutableMapOf(
-                "header" to "Select preferred language",
-                "description" to "Choose the language you prefer for the app",
-                "buttonNext" to "Next",
-                "footer" to "Powered by Pam"
-            )
-        )
-    }
 
     fun languageCode(language: String): String {
         return when (language) {
@@ -52,105 +47,59 @@ fun LanguageSelectionScreen() {
         }
     }
 
-    Column(
-        modifier = Modifier
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.statusBars
+    ) { innerPadding ->
+
+        val rootModifier = Modifier
             .fillMaxSize()
-            .padding(top = 50.dp, start = 16.dp, end = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Header
-        Text(
-            text = uiTexts["header"] ?: "Select preferred language",
-            fontStyle = FontStyle.Italic,
-            fontSize = 32.sp,
-            textAlign = TextAlign.Center
-        )
+            .padding(innerPadding)
+            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .verticalScroll(rememberScrollState())
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Description
-        Text(
-            text = uiTexts["description"] ?: "Choose the language you prefer for the app",
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        // Language cards
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = rootModifier,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(22.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Text(
+                text = uiTexts["header"] ?: "Select preferred language",
+                fontStyle = FontStyle.Italic,
+                fontSize = 32.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = uiTexts["description"]
+                    ?: "Choose the language you prefer for the app",
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
                 items(languages) { language ->
                     val isSelected = selectedLanguage == language
 
                     OutlinedCard(
                         onClick = {
-                            if (selectedLanguage != language) {
-                                val newCode = languageCode(language)
+                            val newCode = languageCode(language)
+                            selectedLanguage = language
+                            currentLanguageCode = newCode
 
-                                scope.launch {
-                                    try {
-                                        val newTexts = mutableMapOf<String, String>()
+                            // Save to Firebase
+                            languageViewModel.saveLanguageToFirebase(language, newCode)
 
-                                        for ((key, text) in uiTexts) {
-                                            // If going back to English, just reset defaults
-                                            if (newCode == "en") {
-                                                newTexts[key] = when (key) {
-                                                    "header" -> "Select preferred language"
-                                                    "description" -> "Choose the language you prefer for the app"
-                                                    "buttonNext" -> "Next"
-                                                    "footer" -> "Powered by Pam"
-                                                    else -> text
-                                                }
-                                                continue
-                                            }
-
-                                            // Make API call translating from *previous language* to *new language*
-                                            val response = languageApi.translate(
-                                                LanguageRequest(
-                                                    text = text,
-                                                    from = currentLanguageCode,
-                                                    to = newCode,
-                                                    userId = "2"
-                                                )
-                                            )
-
-                                            // Use translated text or fallback
-                                            newTexts[key] = response.translated?.ifBlank { text } ?: text
-
-                                        }
-
-                                        // Update all states
-                                        uiTexts = newTexts
-                                        selectedLanguage = language
-                                        currentLanguageCode = newCode
-
-                                        Toast.makeText(
-                                            context,
-                                            "Language switched to $language",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } catch (e: Exception) {
-                                        Log.e("LanguageAPI", "Translation error: ${e.message}", e)
-                                        Toast.makeText(
-                                            context,
-                                            "Translation failed: ${e.message}",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+                            // Update texts globally
+                            scope.launch {
+                                languageViewModel.translateAll(newCode) { newTexts ->
+                                    languageViewModel.updateTexts(newTexts)
                                 }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Already using $language",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
                         },
                         modifier = Modifier.size(150.dp),
@@ -162,44 +111,39 @@ fun LanguageSelectionScreen() {
                         colors = CardDefaults.cardColors(
                             containerColor = if (isSelected) Color(0x22B48CFF) else Color.Transparent
                         )
-                    ) {
+                    )
+                    {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = language,
-                                textAlign = TextAlign.Center,
-                                fontSize = 22.sp
-                            )
+                            Text(text = language, fontSize = 22.sp)
                         }
                     }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-        // Example Button
-        Button(
-            onClick = {
-                Toast.makeText(context, uiTexts["buttonNext"], Toast.LENGTH_SHORT).show()
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB48CFF))
-        ) {
+            Button(
+                onClick = {
+                    Toast.makeText(context, "Language updated globally!", Toast.LENGTH_SHORT).show()
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB48CFF))
+            ) {
+                Text(
+                    text = uiTexts["buttonNext"] ?: "Next",
+                    fontSize = 18.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
-                text = uiTexts["buttonNext"] ?: "Next",
-                fontSize = 18.sp
+                text = uiTexts["footer"] ?: "Powered by Pam",
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
             )
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Footer
-        Text(
-            text = uiTexts["footer"] ?: "Powered by Pam",
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
     }
 }

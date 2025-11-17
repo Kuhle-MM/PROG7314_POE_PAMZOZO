@@ -14,27 +14,12 @@ import student.projects.jetpackpam.appNavigation.AppNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import student.projects.jetpackpam.screens.accounthandler.LoginScreen
-import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
-//import student.projects.jetpackpam.screens.charades.CharadesNavGraph
-import student.projects.jetpackpam.screens.charades.GameOverScreen
-import student.projects.jetpackpam.screens.charades.PlayingGameScreen
-import student.projects.jetpackpam.screens.charades.StartUpScreen
-import student.projects.jetpackpam.screens.firsttimecustom.FontSelectionScreen
-import student.projects.jetpackpam.screens.firsttimecustom.LanguageSelectionScreen
-import student.projects.jetpackpam.screens.firsttimecustom.PamThemeSelectionScreen
-import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen
-import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
-import student.projects.jetpackpam.screens.mainapp.MainScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.ui.theme.JetPackPamTheme
-import student.projects.jetpackpam.ui.theme.Surface
 
 class MainActivity : ComponentActivity() {
 
@@ -79,42 +64,22 @@ class MainActivity : ComponentActivity() {
 
         // --- Compose UI setup ---
         setContent {
+            val languageViewModel: LanguageViewModel = viewModel()
 
-
-
-            //Gaming section
-//                Surface {
-//                    val navController = rememberNavController()
-//                    NavHost(
-//                        navController = navController,
-//                        startDestination = "startup"
-//                    ) {
-//                        composable("startup") { StartUpScreen(navController) }
-//                        composable("category") { CategorySelectionScreen(navController) }
-//                        composable("playing/{sessionId}/{category}") { backStackEntry ->
-//                            val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
-//                            val category = backStackEntry.arguments?.getString("category") ?: ""
-//                            PlayingGameScreen(navController, sessionId, category)
-//                        }
-//                        composable("gameover") { GameOverScreen(navController) }
-//                    }
-//                }
-            JetPackPamTheme {
+            // Load saved language preference
+            LaunchedEffect(Unit) {
+                languageViewModel.loadLanguage()
+            }
+            JetPackPamTheme(languageViewModel = languageViewModel) {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     AppNavGraph(
                         googleAuthClient = googleAuthClient,
-                        authViewModel = authViewModel
+                        authViewModel = authViewModel,
+                        languageViewModel = languageViewModel
                     )
-
-                    //MainScreen()
-                    //LoginScreen()
-                    //LanguageSelectionScreen()
-                    //PersonalitySelectionScreen()
-                    //PersonalitySelectionScreen2()
-                    //FontSelectionScreen()
-                    // PamThemeSelectionScreen()
                 }
             }
+
         }
 
     }

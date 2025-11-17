@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.play.services.auth)
     implementation(libs.googleid)
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // --- Image Loading ---
     implementation(libs.coil.compose)
@@ -81,6 +82,12 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation(libs.firebase.database)
+    implementation(libs.androidx.foundation)
+    implementation(libs.material3)
+    implementation(libs.androidx.material3.window.size.class1)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.firebase.messaging)
 
     // --- Testing ---
     testImplementation(libs.junit)
@@ -88,7 +95,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-//Nav Graph
+    //Nav Graph
     implementation("androidx.navigation:navigation-compose:2.7.3")
     implementation("androidx.activity:activity-compose:1.8.2")
 
