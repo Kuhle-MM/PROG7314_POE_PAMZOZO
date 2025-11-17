@@ -1,34 +1,39 @@
 package student.projects.jetpackpam.screens.settings
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Fingerprint
-import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-// Keep theme consistent
-val paleBackground = Color(0xFFF4F4F4)
 val paleCard = Color(0xFFFFFFFF)
 
 @Composable
 fun SettingsScreen(navController: NavController) {
 
+    // Expansion states
+    var logsExpanded by remember { mutableStateOf(false) }
+    var motorPositionExpanded by remember { mutableStateOf(false) }
+    var motorSpeedExpanded by remember { mutableStateOf(false) }
+    var controllerSizeExpanded by remember { mutableStateOf(false) }
+    var biometricsExpanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            //.background(paleBackground)
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
@@ -39,53 +44,151 @@ fun SettingsScreen(navController: NavController) {
             modifier = Modifier.padding(bottom = 20.dp)
         )
 
-        // CATEGORY: Logs
-        SettingsCategory(title = "Logs")
+        // -------------------------
+        // Logs
+        // -------------------------
+        SettingsCategory("Logs")
 
-        SettingsItem(
+        ExpandableSettingsItem(
+            expanded = logsExpanded,
+            onExpandToggle = { logsExpanded = !logsExpanded },
             icon = Icons.Default.ListAlt,
             title = "Change Log Timed Options",
-            subtitle = "Adjust how frequently your logs can be filtered.",
-            onClick = { navController.navigate("settingsLogs") }
-        )
+            subtitle = "Adjust how frequently logs are filtered."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+                Text("Select Interval:", fontWeight = FontWeight.Bold)
 
-        Spacer(Modifier.height(28.dp))
+                val options = listOf("Every 10 min", "Every 30 min", "Hourly")
+                var selected by remember { mutableStateOf(options.first()) }
 
-        // CATEGORY: Motors
-        SettingsCategory(title = "Motors")
+                options.forEach { label ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                            .clickable { selected = label }
+                    ) {
+                        RadioButton(
+                            selected = selected == label,
+                            onClick = { selected = label }
+                        )
+                        Text(label, Modifier.padding(start = 8.dp))
+                    }
+                }
+            }
+        }
 
-        SettingsItem(
-            icon = Icons.Default.DirectionsCar,
+        Spacer(Modifier.height(24.dp))
+
+        // -------------------------
+        // Motors
+        // -------------------------
+        SettingsCategory("Motors")
+
+        // Motor position
+        ExpandableSettingsItem(
+            expanded = motorPositionExpanded,
+            onExpandToggle = { motorPositionExpanded = !motorPositionExpanded },
+            icon = Icons.Default.SettingsRemote,
             title = "Motor Controller Position",
-            subtitle = "Adjust the position of your motor controller.",
-            onClick = { navController.navigate("settingsMotorPosition") }
-        )
+            subtitle = "Adjust the position of your motor controller."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+                val positions = listOf("Front", "Middle", "Back")
+                var selected by remember { mutableStateOf(positions.first()) }
 
-        SettingsItem(
+                positions.forEach { pos ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                            .clickable { selected = pos }
+                    ) {
+                        RadioButton(
+                            selected = selected == pos,
+                            onClick = { selected = pos }
+                        )
+                        Text(pos, Modifier.padding(start = 8.dp))
+                    }
+                }
+            }
+        }
+
+        // Motor speed
+        ExpandableSettingsItem(
+            expanded = motorSpeedExpanded,
+            onExpandToggle = { motorSpeedExpanded = !motorSpeedExpanded },
             icon = Icons.Default.DirectionsCar,
             title = "Motor Speed Range",
-            subtitle = "Control the speed of P.A.M",
-            onClick = { navController.navigate("settingsMotorSpeed") }
-        )
+            subtitle = "Control the speed of P.A.M."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+                Text("Speed:", fontWeight = FontWeight.Bold)
+                var speed by remember { mutableStateOf(50f) }
 
-        SettingsItem(
+                Slider(
+                    value = speed,
+                    onValueChange = { speed = it },
+                    valueRange = 0f..100f
+                )
+                Text("${speed.toInt()}%")
+            }
+        }
+
+        // Controller size
+        ExpandableSettingsItem(
+            expanded = controllerSizeExpanded,
+            onExpandToggle = { controllerSizeExpanded = !controllerSizeExpanded },
             icon = Icons.Default.Build,
             title = "Controller Size",
-            subtitle = "Change the size of your controller.",
-            onClick = { navController.navigate("settingsControllerSize") }
-        )
+            subtitle = "Change the size of your controller."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+                var size by remember { mutableStateOf(1f) }
+                Text("Size:", fontWeight = FontWeight.Bold)
 
-        Spacer(Modifier.height(28.dp))
+                Slider(
+                    value = size,
+                    onValueChange = { size = it },
+                    valueRange = 0.5f..2f
+                )
+                Text(String.format("%.1fx", size))
+            }
+        }
 
-        // CATEGORY: Biometrics
-        SettingsCategory(title = "Biometrics")
+        Spacer(Modifier.height(24.dp))
 
-        SettingsItem(
+        // -------------------------
+        // Biometrics
+        // -------------------------
+        SettingsCategory("Biometrics")
+
+        ExpandableSettingsItem(
+            expanded = biometricsExpanded,
+            onExpandToggle = { biometricsExpanded = !biometricsExpanded },
             icon = Icons.Default.Fingerprint,
             title = "Enable Biometrics",
-            subtitle = "Enable or diable biometric authentication",
-            onClick = { navController.navigate("settingsBiometrics") }
-        )
+            subtitle = "Enable or disable biometric authentication."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+
+                var enabled by remember { mutableStateOf(false) }
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Biometrics Enabled")
+                    Switch(
+                        checked = enabled,
+                        onCheckedChange = { enabled = it }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -99,42 +202,54 @@ fun SettingsCategory(title: String) {
 }
 
 @Composable
-fun SettingsItem(
+fun ExpandableSettingsItem(
+    expanded: Boolean,
+    onExpandToggle: () -> Unit,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
     subtitle: String,
-    onClick: () -> Unit
+    content: @Composable () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onExpandToggle() }
             .padding(bottom = 12.dp),
         colors = CardDefaults.cardColors(containerColor = paleCard),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
-            )
-
-            Spacer(Modifier.width(16.dp))
-
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+        Column {
+            Row(
+                modifier = Modifier.padding(16.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
                 )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
-                )
+
+                Spacer(Modifier.width(16.dp))
+
+                Column {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                content()
             }
         }
     }
