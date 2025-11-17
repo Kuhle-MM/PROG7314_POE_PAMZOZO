@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,8 @@ fun SideNav(
         SideNavItem("fontSize", "fontSize", Icons.Default.FormatSize),
         SideNavItem("pamTheme", "pamTheme", Icons.Default.Palette),
         SideNavItem("personality", "personality", Icons.Default.Person),
-        SideNavItem("liveLogs", "liveLogs", Icons.Default.Receipt)
+        SideNavItem("liveLogs", "liveLogs", Icons.Default.Receipt),
+        SideNavItem("settings", "settings", Icons.Default.Settings)
     )
 
     ModalDrawerSheet(
@@ -42,7 +44,7 @@ fun SideNav(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = uiTexts["settings"] ?: "Settings",
+            text = uiTexts["P.A.M"] ?: "P.A.M",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(start = 16.dp, bottom = 24.dp)
         )

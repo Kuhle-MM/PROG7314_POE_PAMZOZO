@@ -102,6 +102,7 @@ fun MainScreen(
                         "pamTheme" -> "Pam Theme"
                         "personality" -> "Personality"
                         "liveLogs" -> "Live Logs"
+                        "settings" -> "Settings"
                         "chat" -> "Chat"
                         else -> "Profile"
                     }

@@ -30,6 +30,7 @@ import student.projects.jetpackpam.screens.firsttimecustom.LanguageSelectionScre
 import student.projects.jetpackpam.screens.firsttimecustom.PamThemeSelectionScreen
 import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
 import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
+import student.projects.jetpackpam.screens.settings.SettingsScreen
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
@@ -85,6 +86,7 @@ fun BottomNavGraph(
         composable("start") { StartUpScreen(navController) }
         composable("category") { CategorySelectionScreen(navController) }
         composable("liveLogs") { LiveLogsScreen(navController) }
+        composable("settings") { SettingsScreen(navController) }
         composable("playing/{sessionId}/{category}") { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
             val category = backStackEntry.arguments?.getString("category") ?: ""
