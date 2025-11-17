@@ -39,6 +39,7 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
 import student.projects.jetpackpam.screens.splash.WelcomeScreen
@@ -133,7 +134,6 @@ class MainActivity : ComponentActivity() {
                                 googleSignInLauncher = googleSignInLauncher
                             )
                         }
-
                         composable("signup") {
                             SignUpScreen(
                                 navController = navController,
@@ -144,14 +144,14 @@ class MainActivity : ComponentActivity() {
                         }
                         // MAIN APP (after successful login)
                         composable("main") {
-                            AppNavGraph(
+                            MainScreen(
                                 googleAuthClient = googleAuthClient,
                                 authViewModel = authViewModel,
                                 languageViewModel = languageViewModel,
-                                navController = navController
+                                //navController = navController
+                                rootNavController = navController
                             )
                         }
-
 
                         composable("profile") {
                             ProfileScreen(

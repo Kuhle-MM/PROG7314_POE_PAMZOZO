@@ -57,40 +57,40 @@ fun AppNavGraph(
         // ⭐ Your app STARTS at the splash screen, NOT login/main
         NavHost(
             navController = navController,
-            startDestination = "login"
+            startDestination = "main"
         ) {
-
-            // LOGIN
-            composable("login") {
-                LoginScreen(
-                    navController = navController,
-                    googleAuthClient = googleAuthClient,
-                    authViewModel = authViewModel,
-                    googleSignInLauncher = googleSignInLauncher,
-                    languageViewModel = languageViewModel
-                )
-            }
-
-            // SIGNUP
-            composable("signup") {
-                SignUpScreen(
-                    navController = navController,
-                    authViewModel = authViewModel,
-                    googleSignInLauncher = googleSignInLauncher,
-                    languageViewModel = languageViewModel
-                )
-            }
-
+//
+//            // LOGIN
+//            composable("login") {
+//                LoginScreen(
+//                    navController = navController,
+//                    googleAuthClient = googleAuthClient,
+//                    authViewModel = authViewModel,
+//                    googleSignInLauncher = googleSignInLauncher,
+//                    languageViewModel = languageViewModel
+//                )
+//            }
+//
+//            // SIGNUP
+//            composable("signup") {
+//                SignUpScreen(
+//                    navController = navController,
+//                    authViewModel = authViewModel,
+//                    googleSignInLauncher = googleSignInLauncher,
+//                    languageViewModel = languageViewModel
+//                )
+//            }
+//
             // MAIN APP (after successful login)
-            composable("main") {
-                AppNavGraph(
-                    googleAuthClient = googleAuthClient,
-                    authViewModel = authViewModel,
-                    languageViewModel = languageViewModel,
-                    navController = navController
-                )
-            }
-
+//            composable("main") {
+//                MainScreen(
+//                    googleAuthClient = googleAuthClient,
+//                    authViewModel = authViewModel,
+//                    languageViewModel = languageViewModel,
+//                    //navController = navController
+//                    rootNavController = navController
+//                )
+//            }
 
         composable("profile") {
                 ProfileScreen(
