@@ -21,6 +21,9 @@ import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.*
+import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
+import student.projects.jetpackpam.screens.splash.SplashScreen
+import student.projects.jetpackpam.screens.splash.WelcomeScreen
 
 @Composable
 fun AppNavGraph(
@@ -37,8 +40,7 @@ fun AppNavGraph(
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 scope.launch {
-                    val signInResult = googleAuthClient
-                        .signInWithIntent(result.data!!)
+                    val signInResult = googleAuthClient.signInWithIntent(result.data!!)
                     authViewModel.handleGoogleSignInResult(signInResult)
 
                     navController.navigate("main") {
@@ -52,39 +54,46 @@ fun AppNavGraph(
         }
 
     CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
+
+        // ⭐ Your app STARTS at the splash screen, NOT login/main
         NavHost(
             navController = navController,
-            startDestination = if (userData == null) "login" else "main"
+            startDestination = "main"
         ) {
-            composable("login") {
-                LoginScreen(
-                    navController = navController,
-                    authViewModel = authViewModel,
-                    googleAuthClient = googleAuthClient,
-                    googleSignInLauncher = googleSignInLauncher,
-                    languageViewModel = languageViewModel
-                )
-            }
+//
+//            // LOGIN
+//            composable("login") {
+//                LoginScreen(
+//                    navController = navController,
+//                    googleAuthClient = googleAuthClient,
+//                    authViewModel = authViewModel,
+//                    googleSignInLauncher = googleSignInLauncher,
+//                    languageViewModel = languageViewModel
+//                )
+//            }
+//
+//            // SIGNUP
+//            composable("signup") {
+//                SignUpScreen(
+//                    navController = navController,
+//                    authViewModel = authViewModel,
+//                    googleSignInLauncher = googleSignInLauncher,
+//                    languageViewModel = languageViewModel
+//                )
+//            }
+//
+            // MAIN APP (after successful login)
+//            composable("main") {
+//                MainScreen(
+//                    googleAuthClient = googleAuthClient,
+//                    authViewModel = authViewModel,
+//                    languageViewModel = languageViewModel,
+//                    //navController = navController
+//                    rootNavController = navController
+//                )
+//            }
 
-            composable("signUp") {
-                SignUpScreen(
-                    navController = navController,
-                    authViewModel = authViewModel,
-                    googleSignInLauncher = googleSignInLauncher,
-                    languageViewModel = languageViewModel
-                )
-            }
-
-            composable("main") {
-                MainScreen(
-                    authViewModel = authViewModel,
-                    rootNavController = navController,
-                    googleAuthClient = googleAuthClient,
-                    languageViewModel = languageViewModel
-                )
-            }
-
-            composable("profile") {
+        composable("profile") {
                 ProfileScreen(
                     userData = userData,
                     languageViewModel = languageViewModel,
@@ -99,6 +108,7 @@ fun AppNavGraph(
 
             composable("startup") { StartUpScreen(navController) }
             composable("category") { CategorySelectionScreen(navController) }
+            composable("liveLogs") { LiveLogsScreen(navController) }
 
             composable("playing/{sessionId}/{category}") { backStackEntry ->
                 PlayingGameScreen(

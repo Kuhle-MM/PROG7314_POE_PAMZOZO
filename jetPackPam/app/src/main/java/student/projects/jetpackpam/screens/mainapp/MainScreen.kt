@@ -101,6 +101,8 @@ fun MainScreen(
                         "fontSize" -> "Font Size"
                         "pamTheme" -> "Pam Theme"
                         "personality" -> "Personality"
+                        "liveLogs" -> "Live Logs"
+                        "chat" -> "Chat"
                         else -> "Profile"
                     }
 

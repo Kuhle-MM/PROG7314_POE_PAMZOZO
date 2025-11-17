@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LGSnSFv0oyg=",
+  "dgSpecHash": "XL1Xf6s5qMU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+  "projectFilePath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lab_services_student\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\google.apis\\1.71.0\\google.apis.1.71.0.nupkg.sha512",
@@ -10,6 +10,7 @@
     "C:\\Users\\lab_services_student\\.nuget\\packages\\google.apis.calendar.v3\\1.69.0.3746\\google.apis.calendar.v3.1.69.0.3746.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\google.apis.core\\1.71.0\\google.apis.core.1.71.0.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.applicationinsights\\2.23.0\\microsoft.applicationinsights.2.23.0.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.20\\microsoft.aspnetcore.authentication.jwtbearer.8.0.20.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\8.0.20\\microsoft.aspnetcore.jsonpatch.8.0.20.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\8.0.20\\microsoft.aspnetcore.mvc.newtonsoftjson.8.0.20.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.codecoverage\\17.12.0\\microsoft.codecoverage.17.12.0.nupkg.sha512",
@@ -28,6 +29,12 @@
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.extensions.options\\9.0.9\\microsoft.extensions.options.9.0.9.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\9.0.9\\microsoft.extensions.options.configurationextensions.9.0.9.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.9\\microsoft.extensions.primitives.9.0.9.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.14.0\\microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.1.2\\microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.protocols\\7.1.2\\microsoft.identitymodel.protocols.7.1.2.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\7.1.2\\microsoft.identitymodel.protocols.openidconnect.7.1.2.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.net.test.sdk\\17.12.0\\microsoft.net.test.sdk.17.12.0.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\microsoft.testing.extensions.telemetry\\1.9.0\\microsoft.testing.extensions.telemetry.1.9.0.nupkg.sha512",
@@ -52,6 +59,7 @@
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.codedom\\7.0.0\\system.codedom.7.0.0.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.0\\system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512",
+    "C:\\Users\\lab_services_student\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.1.2\\system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.management\\7.0.2\\system.management.7.0.2.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.net.http.json\\9.0.9\\system.net.http.json.9.0.9.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
@@ -61,9 +69,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Detected package version outside of dependency constraint: MSTest 3.6.4 requires MSTest.TestAdapter (= 3.6.4) but version MSTest.TestAdapter 3.11.0 was resolved.",
-      "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "filePath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "libraryId": "MSTest.TestAdapter",
       "targetGraphs": [
         "net9.0"
@@ -73,9 +81,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Detected package version outside of dependency constraint: MSTest 3.6.4 requires MSTest.TestFramework (= 3.6.4) but version MSTest.TestFramework 3.11.0 was resolved.",
-      "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "filePath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "libraryId": "MSTest.TestFramework",
       "targetGraphs": [
         "net9.0"
@@ -85,9 +93,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Detected package version outside of dependency constraint: MSTest 3.6.4 requires MSTest.Analyzers (= 3.6.4) but version MSTest.Analyzers 3.11.0 was resolved.",
-      "projectPath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "projectPath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lab_services_student\\Source\\Repos\\PROG7314_POE\\PamAPITest\\PamAPITest.csproj",
+      "filePath": "C:\\Users\\lab_services_student\\AndroidStudioProjects\\PROG7314_POE_PAMZOZO\\PamAPITest\\PamAPITest.csproj",
       "libraryId": "MSTest.Analyzers",
       "targetGraphs": [
         "net9.0"
