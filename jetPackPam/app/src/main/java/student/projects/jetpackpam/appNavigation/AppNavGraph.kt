@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.localization.LocalLanguageViewModel
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
+import student.projects.jetpackpam.models.LogsViewModel
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
@@ -35,7 +37,7 @@ fun AppNavGraph(
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
+    val logsViewModel: LogsViewModel = viewModel()
     val googleSignInLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -108,7 +110,7 @@ fun AppNavGraph(
 
             composable("startup") { StartUpScreen(navController) }
             composable("category") { CategorySelectionScreen(navController) }
-            composable("liveLogs") { LiveLogsScreen(navController) }
+            composable("liveLogs") { LiveLogsScreen(navController, logsViewModel) }
 
             composable("playing/{sessionId}/{category}") { backStackEntry ->
                 PlayingGameScreen(

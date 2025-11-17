@@ -17,19 +17,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import student.projects.jetpackpam.models.LogsViewModel
 
 val paleCard = Color(0xFFFFFFFF)
 
 @Composable
-fun SettingsScreen(navController: NavController) {
-
+fun SettingsScreen(navController: NavController,
+                   logsViewModel: LogsViewModel
+) {
     // Expansion states
     var logsExpanded by remember { mutableStateOf(false) }
     var motorPositionExpanded by remember { mutableStateOf(false) }
     var motorSpeedExpanded by remember { mutableStateOf(false) }
     var controllerSizeExpanded by remember { mutableStateOf(false) }
     var biometricsExpanded by remember { mutableStateOf(false) }
+    val intervals = listOf(2, 5, 10, 15, 20, 30, 45, 60)
+    var expanded by remember { mutableStateOf(false) }
+// New supported intervals (label + minutes)
+//    val intervals = listOf(
+//        "Every 2 min" to 2,
+//        "Every 5 min" to 5,
+//        "Every 10 min" to 10,
+//        "Every 15 min" to 15,
+//        "Every 20 min" to 20,
+//        "Every 30 min" to 30,
+//        "Every 45 min" to 45,
+//        "Every 1 hour" to 60,
+//    )
 
     Column(
         modifier = Modifier
@@ -37,43 +53,34 @@ fun SettingsScreen(navController: NavController) {
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-
-        Text(
-            text = "Settings",
-            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
-
         // -------------------------
         // Logs
         // -------------------------
         SettingsCategory("Logs")
 
         ExpandableSettingsItem(
-            expanded = logsExpanded,
-            onExpandToggle = { logsExpanded = !logsExpanded },
+            expanded = expanded,
+            onExpandToggle = { expanded = !expanded },
             icon = Icons.Default.ListAlt,
-            title = "Change Log Timed Options",
+            title = "Change Log Interval",
             subtitle = "Adjust how frequently logs are filtered."
         ) {
             Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+
                 Text("Select Interval:", fontWeight = FontWeight.Bold)
 
-                val options = listOf("Every 10 min", "Every 30 min", "Hourly")
-                var selected by remember { mutableStateOf(options.first()) }
-
-                options.forEach { label ->
+                intervals.forEach { minutes ->
                     Row(
                         Modifier
                             .fillMaxWidth()
                             .padding(vertical = 6.dp)
-                            .clickable { selected = label }
+                            .clickable { logsViewModel.updateInterval(minutes) }
                     ) {
                         RadioButton(
-                            selected = selected == label,
-                            onClick = { selected = label }
+                            selected = logsViewModel.selectedInterval == minutes,
+                            onClick = { logsViewModel.updateInterval(minutes) }
                         )
-                        Text(label, Modifier.padding(start = 8.dp))
+                        Text("$minutes minutes", Modifier.padding(start = 8.dp))
                     }
                 }
             }
@@ -190,6 +197,19 @@ fun SettingsScreen(navController: NavController) {
             }
         }
     }
+}
+fun generateTimeBlocks(interval: Int): List<Pair<String, Int>> {
+
+    val blocks = mutableListOf<Pair<String, Int>>()
+
+    // For example: if interval = 10 → 0-9, 10-19, 20-29 ...
+    for (i in 0 until (60 / interval)) {
+        val start = i * interval
+        val end = start + interval - 1
+        blocks.add("${start}–${end} min" to i)
+    }
+
+    return blocks
 }
 
 @Composable

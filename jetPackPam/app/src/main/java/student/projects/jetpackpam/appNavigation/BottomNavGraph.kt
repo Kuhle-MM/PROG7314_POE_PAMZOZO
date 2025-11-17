@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
+import student.projects.jetpackpam.models.LogsViewModel
 import student.projects.jetpackpam.screens.ChatScreen
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.bottomnavscreen.HomeScreen
@@ -49,7 +51,7 @@ fun BottomNavGraph(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
-
+    val logsViewModel: LogsViewModel = viewModel()
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
@@ -90,14 +92,14 @@ fun BottomNavGraph(
         composable("games") { StartUpScreen(navController) }
         composable("start") { StartUpScreen(navController) }
         composable("category") { CategorySelectionScreen(navController) }
-        composable("liveLogs") { LiveLogsScreen(navController) }
+        composable("liveLogs") { LiveLogsScreen(navController, logsViewModel) }
 
-        composable("settings") { SettingsScreen(navController) }
-        composable("settingsBiometrics") { SettingsBiometricsScreen(navController) }
-        composable("settingsControllerSize") { SettingsControllerSizeScreen(navController) }
-        composable("settingsMotorSpeed") { SettingsMotorSpeedScreen(navController) }
-        composable("settingsMotorPosition") { SettingsMotorPositionScreen(navController) }
-        composable("settingsLogs") { SettingsLogsScreen(navController) }
+        composable("settings") { SettingsScreen(navController, logsViewModel) }
+//        composable("settingsBiometrics") { SettingsBiometricsScreen(navController) }
+//        composable("settingsControllerSize") { SettingsControllerSizeScreen(navController) }
+//        composable("settingsMotorSpeed") { SettingsMotorSpeedScreen(navController) }
+//        composable("settingsMotorPosition") { SettingsMotorPositionScreen(navController) }
+//        composable("settingsLogs") { SettingsLogsScreen(navController) }
 
         composable("playing/{sessionId}/{category}") { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
