@@ -36,14 +36,15 @@ fun WelcomeScreen(navController: NavController) {
         // Canvas background circles
         // -----------------------
         Canvas(modifier = Modifier.fillMaxSize()) {
-            val stroke = Stroke(width = 15f)
+            //val stroke = Stroke(width = 15f)
 
             // Top-right circle
             drawCircle(
                 color = Color(0xFFF0A1F8),
                 radius = 325f,
+
                 center = Offset(x = size.width - 50f, y = 50f),
-                style = stroke
+                //style = stroke
             )
 
             // Bottom-left circle
@@ -51,7 +52,7 @@ fun WelcomeScreen(navController: NavController) {
                 color = Color(0xFFFF9BC9),
                 radius = 720f,
                 center = Offset(x = 50f, y = size.height - 50f),
-                style = stroke
+               // style = stroke
             )
         }
 

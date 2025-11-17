@@ -3,6 +3,7 @@ package student.projects.jetpackpam.screens.firsttimecustom
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import student.projects.jetpackpam.models.LanguageViewModel
@@ -65,7 +68,37 @@ fun PersonalitySelectionScreen2(languageViewModel: LanguageViewModel) {
         uiTexts["shakespearean"] ?: "Shakespearean",
         uiTexts["techGeek"] ?: "Tech Geek"
     )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
 
+        // -----------------------
+        // Canvas background circles
+        // -----------------------
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 325f,
+
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 720f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }
+
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars

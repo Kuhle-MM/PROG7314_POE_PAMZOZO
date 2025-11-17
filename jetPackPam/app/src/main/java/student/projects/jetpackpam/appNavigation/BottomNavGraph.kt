@@ -27,6 +27,7 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.controls.Controls
 import student.projects.jetpackpam.screens.firsttimecustom.FontSelectionScreen
 import student.projects.jetpackpam.screens.firsttimecustom.LanguageSelectionScreen
 import student.projects.jetpackpam.screens.firsttimecustom.PamThemeSelectionScreen
@@ -88,6 +89,7 @@ fun BottomNavGraph(
         composable("video") {
             VideoScreen(languageViewModel= languageViewModel)
         }
+        composable("controls") { Controls(navController) }
 
         composable("games") { StartUpScreen(navController) }
         composable("start") { StartUpScreen(navController) }

@@ -5,21 +5,28 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import student.projects.jetpackpam.models.LogsViewModel
+import student.projects.jetpackpam.screens.settings.ControllerSizeState.selectedSize
 
 val paleCard = Color(0xFFFFFFFF)
 
@@ -33,20 +40,41 @@ fun SettingsScreen(navController: NavController,
     var motorSpeedExpanded by remember { mutableStateOf(false) }
     var controllerSizeExpanded by remember { mutableStateOf(false) }
     var biometricsExpanded by remember { mutableStateOf(false) }
+    var followMeExpanded by remember { mutableStateOf(false) }
     val intervals = listOf(2, 5, 10, 15, 20, 30, 45, 60)
     var expanded by remember { mutableStateOf(false) }
-// New supported intervals (label + minutes)
-//    val intervals = listOf(
-//        "Every 2 min" to 2,
-//        "Every 5 min" to 5,
-//        "Every 10 min" to 10,
-//        "Every 15 min" to 15,
-//        "Every 20 min" to 20,
-//        "Every 30 min" to 30,
-//        "Every 45 min" to 45,
-//        "Every 1 hour" to 60,
-//    )
 
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+
+        // -----------------------
+        // Canvas background circles
+        // -----------------------
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 125f,
+
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 320f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -93,53 +121,39 @@ fun SettingsScreen(navController: NavController,
         // -------------------------
         SettingsCategory("Motors")
 
-        // Motor position
+        // Gear Shift Position
         ExpandableSettingsItem(
             expanded = motorPositionExpanded,
             onExpandToggle = { motorPositionExpanded = !motorPositionExpanded },
             icon = Icons.Default.SettingsRemote,
-            title = "Motor Controller Position",
-            subtitle = "Adjust the position of your motor controller."
+            title = "Gear Shift Position",
+            subtitle = "Adjust the position of your gear-shift controller."
         ) {
             Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
-                val positions = listOf("Front", "Middle", "Back")
-                var selected by remember { mutableStateOf(positions.first()) }
+
+                val positions = listOf("Top", "Left", "Right", "Bottom")
+                var selected by remember { mutableStateOf(GearShiftPositionState.selectedPosition) }
 
                 positions.forEach { pos ->
                     Row(
                         Modifier
                             .fillMaxWidth()
                             .padding(vertical = 6.dp)
-                            .clickable { selected = pos }
+                            .clickable {
+                                selected = pos
+                                GearShiftPositionState.selectedPosition = pos
+                            }
                     ) {
                         RadioButton(
                             selected = selected == pos,
-                            onClick = { selected = pos }
+                            onClick = {
+                                selected = pos
+                                GearShiftPositionState.selectedPosition = pos
+                            }
                         )
                         Text(pos, Modifier.padding(start = 8.dp))
                     }
                 }
-            }
-        }
-
-        // Motor speed
-        ExpandableSettingsItem(
-            expanded = motorSpeedExpanded,
-            onExpandToggle = { motorSpeedExpanded = !motorSpeedExpanded },
-            icon = Icons.Default.DirectionsCar,
-            title = "Motor Speed Range",
-            subtitle = "Control the speed of P.A.M."
-        ) {
-            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
-                Text("Speed:", fontWeight = FontWeight.Bold)
-                var speed by remember { mutableStateOf(50f) }
-
-                Slider(
-                    value = speed,
-                    onValueChange = { speed = it },
-                    valueRange = 0f..100f
-                )
-                Text("${speed.toInt()}%")
             }
         }
 
@@ -152,19 +166,73 @@ fun SettingsScreen(navController: NavController,
             subtitle = "Change the size of your controller."
         ) {
             Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
-                var size by remember { mutableStateOf(1f) }
-                Text("Size:", fontWeight = FontWeight.Bold)
+                Text("Select Joystick Size:", fontWeight = FontWeight.Bold)
 
-                Slider(
-                    value = size,
-                    onValueChange = { size = it },
-                    valueRange = 0.5f..2f
-                )
-                Text(String.format("%.1fx", size))
+                val sizes = listOf(0.8f, 1f, 1.2f) // small, medium, large
+                val labels = listOf("Small", "Medium", "Large")
+                var selectedSize by remember { mutableStateOf(1f) }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(top = 12.dp)
+                ) {
+                    sizes.forEachIndexed { index, sizeValue ->
+                        Box(
+                            modifier = Modifier
+                                .size((60 * sizeValue).dp)
+                                .background(
+                                    color = if (selectedSize == sizeValue) Color(0xFFE34FF2) else Color.Gray,
+                                    shape = CircleShape
+                                )
+                                .clickable { selectedSize = sizeValue },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                labels[index],
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                }
             }
+
+            // Expose the selected size to the ControlsScreen
+            ControllerSizeState.selectedSize = selectedSize
         }
 
+
         Spacer(Modifier.height(24.dp))
+        // -------------------------
+        // BLE features
+        // -------------------------
+        SettingsCategory("Accessibility")
+        // Follow me
+        ExpandableSettingsItem(
+            expanded = followMeExpanded,
+            onExpandToggle = { followMeExpanded = !followMeExpanded },
+            icon = Icons.Default.People,
+            title = "Follow me feature",
+            subtitle = "Allows me to follow you using bluetooth, without controlling me until you deactivate this feature."
+        ) {
+            Column(Modifier.padding(start = 56.dp, bottom = 12.dp)) {
+
+                var enabled by remember { mutableStateOf(false) }
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Biometrics Enabled")
+                    Switch(
+                        checked = enabled,
+                        onCheckedChange = { enabled = it }
+                    )
+                }
+            }
+        }
 
         // -------------------------
         // Biometrics
@@ -273,4 +341,11 @@ fun ExpandableSettingsItem(
             }
         }
     }
+}
+object ControllerSizeState {
+    var selectedSize by mutableStateOf(1f) // default medium
+}
+
+object GearShiftPositionState {
+    var selectedPosition by mutableStateOf("Right")
 }

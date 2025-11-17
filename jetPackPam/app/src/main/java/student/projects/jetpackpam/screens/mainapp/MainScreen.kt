@@ -104,6 +104,7 @@ fun MainScreen(
                         "liveLogs" -> "Live Logs"
                         "settings" -> "Settings"
                         "chat" -> "Chat"
+                        "controls" -> "Controls"
                         else -> "Profile"
                     }
 

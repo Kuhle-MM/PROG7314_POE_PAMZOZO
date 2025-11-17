@@ -40,6 +40,7 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.controls.Controls
 import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.settings.SettingsBiometricsScreen
@@ -174,6 +175,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable("controls") { Controls(navController) }
 
                         composable("startup") { StartUpScreen(navController) }
                         composable("category") { CategorySelectionScreen(navController) }
