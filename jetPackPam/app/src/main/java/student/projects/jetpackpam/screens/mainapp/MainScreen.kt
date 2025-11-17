@@ -35,20 +35,20 @@ fun MainScreen(
     googleAuthClient: GoogleAuthClient,
     languageViewModel: LanguageViewModel
 ) {
+    val uiTexts by languageViewModel.uiTexts
+
     val bottomNavController = rememberNavController()
     val activity = LocalContext.current as Activity
     val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity)
     val isExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    // Observe UI texts
-    val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
+    val languageViewModel = languageViewModel
 
     if (isExpanded) {
-        // Tablet / Large Screen Layout → Side Navigation
+        // 🔹 Tablet / Large Screen Layout → Side Navigation
         Row(modifier = Modifier.fillMaxSize()) {
-            SideBar(navController = bottomNavController, uiTexts = uiTexts)
+            SideBar(navController = bottomNavController)
             Box(modifier = Modifier.weight(1f)) {
                 BottomNavGraph(
                     navController = bottomNavController,
@@ -60,7 +60,7 @@ fun MainScreen(
             }
         }
     } else {
-        // Phone / Portrait → Bottom Navigation + Drawer on Home tab
+        // 🔹 Phone / Portrait → Bottom Navigation + Drawer on Home tab
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
         ModalNavigationDrawer(
@@ -68,18 +68,17 @@ fun MainScreen(
             drawerContent = {
                 SideNav(
                     currentRoute = getCurrentRoute(bottomNavController),
+                    languageViewModel= languageViewModel,
                     onItemSelected = { route ->
-                        bottomNavController.navigate(route) { launchSingleTop = true }
+                        bottomNavController.navigate(route) {
+                            launchSingleTop = true
+                        }
                         scope.launch { drawerState.close() }
                     },
                     onLogout = {
                         try {
                             authViewModel.signOut()
-                            Toast.makeText(
-                                context,
-                                uiTexts["signOutSuccess"] ?: "Signed out successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
                             rootNavController.navigate("login") {
                                 popUpTo("main") { inclusive = true }
                             }
@@ -99,30 +98,28 @@ fun MainScreen(
                 topBar = {
                     val currentRoute = getCurrentRoute(bottomNavController)
                     val title = when (currentRoute) {
-                        "home" -> uiTexts["home"] ?: "Home"
-                        "video" -> uiTexts["video"] ?: "Video"
-                        "games" -> uiTexts["games"] ?: "Games"
-                        "language" -> uiTexts["language"] ?: "Language"
-                        "fontSize" -> uiTexts["fontSize"] ?: "Font Size"
-                        "pamTheme" -> uiTexts["pamTheme"] ?: "Pam Theme"
-                        "personality" -> uiTexts["personality"] ?: "Personality"
-                        "chat" -> uiTexts["chat"] ?: "Chat"
-                        else -> uiTexts["profile"] ?: "Profile"
+                        "home" -> "Home"
+                        "video" -> "Video"
+                        "games" -> "Games"
+                        "language" -> "Language"
+                        "fontSize" -> "Font Size"
+                        "pamTheme" -> "Pam Theme"
+                        "personality" -> "Personality"
+                        else -> "Profile"
                     }
 
                     TopAppBar(
                         title = { Text(title) },
+
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(
-                                    Icons.Default.Settings,
-                                    contentDescription = uiTexts["settings"] ?: "Settings"
-                                )
+                                Icon(Icons.Default.Menu, contentDescription = "Open menu")
                             }
                         }
                     )
-                },
-                bottomBar = { BottomBar(navController = bottomNavController, uiTexts = uiTexts) }
+                }
+                ,
+                bottomBar = { BottomBar(navController = bottomNavController) }
             ) { innerPadding ->
                 BottomNavGraph(
                     navController = bottomNavController,
@@ -143,24 +140,34 @@ private fun getCurrentRoute(navController: NavHostController): String? {
     return navBackStackEntry?.destination?.route
 }
 
-/** 🔹 Bottom Navigation for Phones **/
 @Composable
-fun BottomBar(navController: NavHostController, uiTexts: Map<String, String>) {
+fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Home to (uiTexts["home"] ?: "Home"),
-        BottomBarScreen.Video to (uiTexts["video"] ?: "Video"),
-        BottomBarScreen.Games to (uiTexts["games"] ?: "Games")
     )
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
-        screens.forEach { (screen, title) ->
+        screens.forEach { screen ->
+            AddItem(screen, currentDestination, navController)
             val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
             val animatedColor by animateColorAsState(
                 targetValue = if (selected) Color(0xFFB48CFF) else Color.Gray
-            )
+        }
+    }
+}
+
+/** 🔹 Individual Nav Items **/
+@Composable
+fun RowScope.AddItem(
+    screen: BottomBarScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+    val animatedColor by animateColorAsState(
+        targetValue = if (selected) Color(0xFFB48CFF) else Color.Gray
+    )
 
             NavigationBarItem(
                 label = { Text(title, color = animatedColor) },
@@ -177,7 +184,7 @@ fun BottomBar(navController: NavHostController, uiTexts: Map<String, String>) {
     }
 }
 
-/** 🔹 Side Navigation for Tablets **/
+/** 🔹 Tablet Side Rail **/
 @Composable
 fun SideBar(navController: NavHostController, uiTexts: Map<String, String>) {
     val screens = listOf(

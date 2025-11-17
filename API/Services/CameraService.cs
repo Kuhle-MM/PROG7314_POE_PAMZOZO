@@ -1,62 +1,18 @@
-﻿using System;
-using System.Threading;
-
-namespace PROG7314_POE.Services
+﻿namespace PROG7314_POE.Services
 {
     public class CameraService
     {
-        private byte[]? _latestImage;
-        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private byte[] _latestImage;
 
         public void SetLatestImage(byte[] imageBytes)
         {
-            _lock.EnterWriteLock();
-            try
-            {
-                _latestImage = imageBytes;
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-        public byte[]? GetLatestImage()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _latestImage;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            _latestImage = imageBytes;
         }
 
-        public void ClearImage()
+        public byte[] GetLatestImage()
         {
-            _lock.EnterWriteLock();
-            try
-            {
-                _latestImage = null;
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        public bool HasImage()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _latestImage != null && _latestImage.Length > 0;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return _latestImage;
         }
     }
+
 }

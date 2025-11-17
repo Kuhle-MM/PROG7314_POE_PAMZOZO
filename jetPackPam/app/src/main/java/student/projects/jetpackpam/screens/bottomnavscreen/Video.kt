@@ -1,22 +1,45 @@
-package student.projects.jetpackpam
-
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.CenterFocusStrong
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -29,11 +52,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.CameraRequest
 import student.projects.jetpackpam.data.MotorRequest
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.retrofit.PiRetrofitInstance
 import kotlin.math.hypot
 
 @Composable
-fun VideoScreen() {
+fun VideoScreen(languageViewModel: LanguageViewModel) {
+    val uiTexts by languageViewModel.uiTexts
+
     val context = LocalContext.current
     DisposableEffect(Unit) {
         (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -43,15 +69,22 @@ fun VideoScreen() {
     }
 
     val coroutineScope = rememberCoroutineScope()
-    var imageUrl by remember { mutableStateOf("http://192.168.137.1:7298/api/CameraCapturing/latest") }
+    var imageUrl by remember { mutableStateOf("http://10.0.2.2:5000/api/camera/stream") }
     var hasFeed by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    // Refresh image periodically
+    // Refresh live feed every 1 second
     LaunchedEffect(Unit) {
         while (true) {
-            imageUrl = "http://192.168.137.1:7298/api/CameraCapturing/latest?ts=${System.currentTimeMillis()}"
-            delay(500)
+            try {
+                imageUrl = "http://10.0.2.2:5000/api/camera/stream?ts=${System.currentTimeMillis()}"
+                hasFeed = true
+                errorMessage = null
+            } catch (e: Exception) {
+                hasFeed = false
+                errorMessage = "⚠️ Unable to refresh video feed. Check connection."
+            }
+            delay(1000)
         }
     }
 
@@ -62,7 +95,7 @@ fun VideoScreen() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // -------- Left Joystick: Robot movement --------
+        // ---------- Left: Motor Joystick ----------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -74,26 +107,35 @@ fun VideoScreen() {
                 onMove = { x, y ->
                     coroutineScope.launch {
                         try {
-                            PiRetrofitInstance.api.moveMotors(MotorRequest(x, y))
+                            val leftSpeed = (y + x).coerceIn(-100, 100)
+                            val rightSpeed = (y - x).coerceIn(-100, 100)
+                            PiRetrofitInstance.api.moveMotors(
+                                MotorRequest(
+                                    x = x,
+                                    y = y,
+                                    leftMotorSpeed = leftSpeed,
+                                    rightMotorSpeed = rightSpeed
+                                )
+                            )
                             errorMessage = null
                         } catch (e: Exception) {
-                            errorMessage = "⚠️ Motor API unreachable."
+                            errorMessage = "⚠️ Could not connect to motor API."
                         }
                     }
                 },
                 onStop = {
                     coroutineScope.launch {
                         try {
-                            PiRetrofitInstance.api.stopMotors()
+                            PiRetrofitInstance.api.moveMotors(MotorRequest(0, 0, 0, 0))
                         } catch (e: Exception) {
-                            errorMessage = "⚠️ Stop failed."
+                            errorMessage = "⚠️ Failed to stop motors. API not responding."
                         }
                     }
                 }
             )
         }
 
-        // -------- Center: Video feed --------
+        // ---------- Center: Video Feed ----------
         Box(
             modifier = Modifier
                 .weight(3f)
@@ -111,20 +153,25 @@ fun VideoScreen() {
                     contentScale = ContentScale.Crop
                 )
             } else {
+                // Fallback when no live feed detected
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = errorMessage ?: "No live feed.",
+                        text = errorMessage ?: "🚫 No live feed detected.",
                         color = Color.White,
                         modifier = Modifier.padding(16.dp)
                     )
                     IconButton(onClick = {
                         coroutineScope.launch {
-                            imageUrl = "http://192.168.137.1:7298/api/CameraCapturing/latest?ts=${System.currentTimeMillis()}"
-                            hasFeed = true
-                            errorMessage = null
+                            try {
+                                imageUrl = "http://10.0.2.2:5000/api/camera/stream?ts=${System.currentTimeMillis()}"
+                                hasFeed = true
+                                errorMessage = null
+                            } catch (e: Exception) {
+                                errorMessage = "⚠️ Failed to reconnect to feed."
+                            }
                         }
                     }) {
                         Icon(Icons.Default.Refresh, contentDescription = "Retry", tint = Color.White)
@@ -133,7 +180,7 @@ fun VideoScreen() {
             }
         }
 
-        // -------- Right: Camera control --------
+        // ---------- Right: Camera Controls ----------
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -145,31 +192,44 @@ fun VideoScreen() {
                 onMove = { pan, tilt ->
                     coroutineScope.launch {
                         try {
-                            PiRetrofitInstance.api.moveCamera(CameraRequest(pan.toFloat(), tilt.toFloat()))
+                            PiRetrofitInstance.api.moveCamera(CameraRequest(pan, tilt))
+                            errorMessage = null
                         } catch (e: Exception) {
-                            errorMessage = "⚠️ Camera move failed."
+                            errorMessage = "⚠️ Could not connect to camera API."
                         }
                     }
                 },
                 onReset = {
                     coroutineScope.launch {
                         try {
-                            PiRetrofitInstance.api.resetCamera()
+                            PiRetrofitInstance.api.moveCamera(CameraRequest(pan = 0, tilt = 0))
+                            errorMessage = null
                         } catch (e: Exception) {
-                            errorMessage = "⚠️ Camera reset failed."
+                            errorMessage = "⚠️ Reset failed. Camera API unreachable."
                         }
                     }
                 }
             )
         }
     }
-}
 
-// ------------------- Joystick -------------------
+    // ---------- Overlay Error Message ----------
+//    errorMessage?.let {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 8.dp)
+//                .background(Color(0xAA000000)),
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Text(text = it, color = Color.Red, modifier = Modifier.padding(8.dp))
+//        }
+//    }
+}
 
 @Composable
 fun JoystickControl(
-    onMove: (x: Float, y: Float) -> Unit,
+    onMove: (x: Int, y: Int) -> Unit,
     onStop: () -> Unit
 ) {
     var handlePosition by remember { mutableStateOf(Offset.Zero) }
@@ -189,13 +249,11 @@ fun JoystickControl(
                         change.consume()
                         val newOffset = handlePosition + dragAmount
                         val distance = hypot(newOffset.x, newOffset.y)
-                        handlePosition = if (distance < radius) newOffset
-                        else Offset(
-                            x = newOffset.x / distance * radius,
-                            y = newOffset.y / distance * radius
-                        )
-                        val normalizedX = (handlePosition.x / radius).coerceIn(-1f, 1f)
-                        val normalizedY = (-handlePosition.y / radius).coerceIn(-1f, 1f)
+                        if (distance < radius) {
+                            handlePosition = newOffset
+                        }
+                        val normalizedX = (newOffset.x / radius * 100).toInt()
+                        val normalizedY = (-newOffset.y / radius * 100).toInt()
                         onMove(normalizedX, normalizedY)
                     }
                 )
@@ -204,24 +262,22 @@ fun JoystickControl(
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawCircle(Color.Gray)
-            drawCircle(
-                Color.Red,
-                radius = 20f,
-                center = Offset(size.width / 2 + handlePosition.x, size.height / 2 + handlePosition.y)
-            )
+            drawCircle(Color.Red, radius = 20f, center = Offset(
+                size.width / 2 + handlePosition.x,
+                size.height / 2 + handlePosition.y
+            ))
         }
     }
 }
 
-// ------------------- Camera Control -------------------
-
+//Camera control with two sliders (Pan and Tilt) and reset button.
 @Composable
 fun CameraControl(
     onMove: (pan: Int, tilt: Int) -> Unit,
     onReset: () -> Unit
 ) {
-    var pan by remember { mutableStateOf(90) }
-    var tilt by remember { mutableStateOf(45) }
+    var pan by remember { mutableStateOf(0) }
+    var tilt by remember { mutableStateOf(0) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -230,38 +286,55 @@ fun CameraControl(
             .padding(16.dp)
             .width(150.dp)
     ) {
-        Text("Camera", color = Color.White)
+        Text("Camera Control", color = Color.White)
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = { tilt = (tilt + 5).coerceAtMost(90); onMove(pan, tilt) }) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = { tilt = (tilt + 10).coerceAtMost(90); onMove(pan, tilt) }) {
+                //Text("🔼")
                 Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Up")
             }
-            Button(onClick = { tilt = (tilt - 5).coerceAtLeast(0); onMove(pan, tilt) }) {
+            Button(onClick = { tilt = (tilt - 10).coerceAtLeast(-90); onMove(pan, tilt) }) {
+                //Text("🔽")
                 Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Down")
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = { pan = (pan - 5).coerceAtLeast(0); onMove(pan, tilt) }) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = { pan = (pan - 10).coerceAtLeast(-90); onMove(pan, tilt) }) {
+                //Text("◀️")
                 Icon(Icons.Default.ChevronLeft, contentDescription = "Left")
             }
-            Button(onClick = { pan = (pan + 5).coerceAtMost(180); onMove(pan, tilt) }) {
+            Button(onClick = { pan = (pan + 10).coerceAtMost(90); onMove(pan, tilt) }) {
+                //Text("▶️")
                 Icon(Icons.Default.ChevronRight, contentDescription = "Right")
             }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
-        Button(onClick = { pan = 90; tilt = 45; onReset() }) {
+
+        Button(onClick = {
+            pan = 0
+            tilt = 0
+            onReset()
+        }) {
             Icon(Icons.Default.Refresh, contentDescription = "Reset")
         }
     }
 }
+// -------------------- PREVIEW --------------------
 
-@Preview(showBackground = true)
-@Composable
-fun VideoScreenPreview() {
-    VideoScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun VideoScreenPreview() {
+//    VideoScreen()
+//}

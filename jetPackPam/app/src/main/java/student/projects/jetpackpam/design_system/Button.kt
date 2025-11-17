@@ -46,12 +46,19 @@ fun LongButton(
 @Composable
 fun PrimaryIconButton(
     icon: @Composable () -> Unit,
-    onClick: () -> Unit   // regular lambda, NOT @Composable
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    IconButton(onClick = onClick) { icon() }
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    ) {
+        icon()
+    }
 }
-
-
 
 @Composable
 fun GoogleBtn(

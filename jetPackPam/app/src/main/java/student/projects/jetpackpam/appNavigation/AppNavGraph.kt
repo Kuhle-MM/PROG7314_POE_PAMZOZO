@@ -1,7 +1,6 @@
 package student.projects.jetpackpam.appNavigation
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,20 +11,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.localization.LocalLanguageViewModel
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
-import student.projects.jetpackpam.screens.ProfileScreen
+import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.charades.*
-import student.projects.jetpackpam.screens.firsttimecustom.PersonalitySelectionScreen2
-
-private const val TAG = "AppNavGraph"
 
 @Composable
 fun AppNavGraph(
@@ -34,40 +29,28 @@ fun AppNavGraph(
     authViewModel: AuthorizationModelViewModel,
     languageViewModel: LanguageViewModel
 ) {
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-
     val userData by authViewModel.userData.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    // --- Google One Tap Launcher ---
-    val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            coroutineScope.launch {
-                try {
-                    val signInResult = googleAuthClient.signInWithIntent(result.data ?: return@launch)
+    val googleSignInLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                scope.launch {
+                    val signInResult = googleAuthClient
+                        .signInWithIntent(result.data!!)
                     authViewModel.handleGoogleSignInResult(signInResult)
 
-                    // Navigate safely to main
                     navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
                         launchSingleTop = true
-                        navController.graph.startDestinationRoute?.let { start ->
-                            popUpTo(start) { inclusive = true }
-                        }
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Google One Tap error", e)
-                    Toast.makeText(context, "Google sign-in failed: ${e.message}", Toast.LENGTH_LONG).show()
-                    authViewModel.handleGoogleSignInError(e.localizedMessage)
                 }
+            } else {
+                Toast.makeText(context, "Sign-in cancelled", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Toast.makeText(context, "Google sign-in cancelled", Toast.LENGTH_SHORT).show()
         }
-    }
 
-    // --- Navigation Graph ---
     CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
         NavHost(
             navController = navController,
@@ -78,16 +61,20 @@ fun AppNavGraph(
                     navController = navController,
                     authViewModel = authViewModel,
                     googleAuthClient = googleAuthClient,
-                    googleSignInLauncher = googleSignInLauncher
+                    googleSignInLauncher = googleSignInLauncher,
+                    languageViewModel = languageViewModel
                 )
             }
+
             composable("signUp") {
                 SignUpScreen(
                     navController = navController,
                     authViewModel = authViewModel,
-                    googleSignInLauncher = googleSignInLauncher
+                    googleSignInLauncher = googleSignInLauncher,
+                    languageViewModel = languageViewModel
                 )
             }
+
             composable("main") {
                 MainScreen(
                     authViewModel = authViewModel,
@@ -96,34 +83,33 @@ fun AppNavGraph(
                     languageViewModel = languageViewModel
                 )
             }
+
             composable("profile") {
-                PersonalitySelectionScreen2(
-                    languageViewModel = languageViewModel
-                )
-            }
-            composable("personality") {
                 ProfileScreen(
                     userData = userData,
-                    uiTexts = languageViewModel.uiTexts
+                    languageViewModel = languageViewModel,
+                    onSignOut = {
+                        authViewModel.signOut()
+                        navController.navigate("login") {
+                            popUpTo("main") { inclusive = true }
+                        }
+                    }
                 )
             }
+
             composable("startup") { StartUpScreen(navController) }
             composable("category") { CategorySelectionScreen(navController) }
+
             composable("playing/{sessionId}/{category}") { backStackEntry ->
-                val sessionId = backStackEntry.arguments?.getString("sessionId") ?: ""
-                val category = backStackEntry.arguments?.getString("category") ?: ""
-                PlayingGameScreen(navController, sessionId, category)
-            }
-            composable(
-                route = "gameover?correct={correct}&skipped={skipped}",
-                arguments = listOf(
-                    navArgument("correct") { defaultValue = ""; type = androidx.navigation.NavType.StringType },
-                    navArgument("skipped") { defaultValue = ""; type = androidx.navigation.NavType.StringType }
+                PlayingGameScreen(
+                    navController = navController,
+                    sessionId = backStackEntry.arguments?.getString("sessionId") ?: "",
+                    category = backStackEntry.arguments?.getString("category") ?: ""
                 )
-            ) { backStackEntry ->
-                val correct = backStackEntry.arguments?.getString("correct")
-                val skipped = backStackEntry.arguments?.getString("skipped")
-                GameOverScreen(navController, correct, skipped)
+            }
+
+            composable("gameover") {
+                GameOverScreen(navController, null, null)
             }
         }
     }

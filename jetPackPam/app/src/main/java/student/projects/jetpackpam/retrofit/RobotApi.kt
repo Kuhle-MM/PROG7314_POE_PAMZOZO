@@ -6,18 +6,9 @@ import student.projects.jetpackpam.data.CameraRequest
 import student.projects.jetpackpam.data.MotorRequest
 
 interface RobotApi {
-    @POST("api/Motor/move")
+    @POST("api/Motor/moveMotors")
     suspend fun moveMotors(@Body request: MotorRequest)
 
-    @POST("api/Motor/stop")
-    suspend fun stopMotors()
-
-    @POST("api/Camera/move")
+    @POST("api/Camera/moveCamera")
     suspend fun moveCamera(@Body request: CameraRequest)
-
-    @POST("api/Camera/joystick")
-    suspend fun moveCameraJoystick(@Body request: CameraRequest)
-
-    @POST("api/Camera/reset")
-    suspend fun resetCamera()
 }

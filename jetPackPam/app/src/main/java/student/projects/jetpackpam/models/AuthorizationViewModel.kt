@@ -124,8 +124,6 @@ class AuthorizationModelViewModel(
 
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
-
-
                         val profileUpdate = UserProfileChangeRequest.Builder()
                             .setDisplayName("$name $surname")
                             .build()

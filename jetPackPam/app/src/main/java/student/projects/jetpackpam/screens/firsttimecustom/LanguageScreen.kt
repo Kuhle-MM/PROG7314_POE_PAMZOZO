@@ -32,7 +32,6 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val uiTexts by remember { derivedStateOf { languageViewModel.uiTexts } }
-
     var selectedLanguage by remember { mutableStateOf(languageViewModel.selectedLanguage) }
     var currentLanguageCode by remember { mutableStateOf(languageViewModel.currentLanguageCode) }
 
@@ -48,6 +47,8 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
     }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { padding ->
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
@@ -64,6 +65,7 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
             modifier = rootModifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
                 text = uiTexts["header"] ?: "Select preferred language",
                 fontStyle = FontStyle.Italic,
@@ -83,22 +85,22 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
             Spacer(modifier = Modifier.height(40.dp))
 
             LazyRow(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-                items(languages) { language ->
+                items(languages.size) { index ->
+                    val language = languages[index]
                     val isSelected = selectedLanguage == language
 
                     OutlinedCard(
                         onClick = {
                             val newCode = languageCode(language)
-                            selectedLanguage = language
-                            currentLanguageCode = newCode
 
-                            // Save to Firebase
-                            languageViewModel.saveLanguageToFirebase(language, newCode)
-
-                            // Update texts globally
                             scope.launch {
-                                languageViewModel.translateAll(newCode) { newTexts ->
-                                    languageViewModel.updateTexts(newTexts)
+                                languageViewModel.translateAll(newCode) { translated ->
+                                    languageViewModel.setLanguage(
+                                        language = language,
+                                        code = newCode,
+                                        texts = translated
+                                    )
+                                    languageViewModel.updateTexts(translated)
                                 }
                             }
                         },
@@ -111,13 +113,9 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
                         colors = CardDefaults.cardColors(
                             containerColor = if (isSelected) Color(0x22B48CFF) else Color.Transparent
                         )
-                    )
-                    {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = language, fontSize = 22.sp)
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(text = language, fontSize = 22.sp, textAlign = TextAlign.Center)
                         }
                     }
                 }
@@ -127,14 +125,15 @@ fun LanguageSelectionScreen(languageViewModel: LanguageViewModel) {
 
             Button(
                 onClick = {
-                    Toast.makeText(context, "Language updated globally!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        uiTexts["buttonNext"] ?: "Saved",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB48CFF))
             ) {
-                Text(
-                    text = uiTexts["buttonNext"] ?: "Next",
-                    fontSize = 18.sp
-                )
+                Text(text = uiTexts["buttonNext"] ?: "Set", fontSize = 18.sp)
             }
 
             Spacer(modifier = Modifier.height(24.dp))

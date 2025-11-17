@@ -2,7 +2,6 @@ package student.projects.jetpackpam
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -14,6 +13,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.messaging.FirebaseMessaging
 import student.projects.jetpackpam.appNavigation.AppNavGraph
@@ -21,6 +23,8 @@ import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.screens.splash.SplashScreen
+import student.projects.jetpackpam.screens.splash.WelcomeScreen
 import student.projects.jetpackpam.ui.theme.JetPackPamTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,14 +35,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // --- Request microphone permission ---
-        val micPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        // Request microphone permissions
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (!isGranted) {
-                    Toast.makeText(this, "Microphone permission required.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Microphone permission is required.", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Already granted
+            }
+
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED
         ) micPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -56,12 +72,13 @@ class MainActivity : ComponentActivity() {
             ) notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        // --- Google Auth + ViewModel setup ---
+        // Initialize GoogleAuthClient
         googleAuthClient = GoogleAuthClient(
             context = applicationContext,
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
 
+        // Initialize ViewModel using factory
         val factory = AuthorizationModelViewModelFactory(googleAuthClient)
         authViewModel = ViewModelProvider(this, factory)[AuthorizationModelViewModel::class.java]
 
@@ -80,13 +97,44 @@ class MainActivity : ComponentActivity() {
             val languageViewModel: LanguageViewModel = viewModel()
             LaunchedEffect(Unit) { languageViewModel.loadLanguage() }
 
-            JetPackPamTheme(languageViewModel = languageViewModel) {
+            // Load the saved language on startup
+            LaunchedEffect(Unit) {
+                languageViewModel.loadLanguage()
+            }
+
+            JetPackPamTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AppNavGraph(
-                        googleAuthClient = googleAuthClient,
-                        authViewModel = authViewModel,
-                        languageViewModel = languageViewModel
-                    )
+
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "splash"
+                    ) {
+
+                        // SPLASH SCREEN
+                        composable("splash") {
+                            SplashScreen(navController = navController)
+                        }
+
+                        // WELCOME SCREEN
+                        composable("welcome") {
+                            WelcomeScreen(navController = navController) {
+                                navController.navigate("main") {
+                                    popUpTo("welcome") { inclusive = true }
+                                }
+                            }
+                        }
+
+                        // MAIN APP (YOUR EXISTING LOGIC)
+                        composable("main") {
+                            AppNavGraph(
+                                googleAuthClient = googleAuthClient,
+                                authViewModel = authViewModel,
+                                languageViewModel = languageViewModel
+                            )
+                        }
+                    }
                 }
             }
         }

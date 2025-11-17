@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,10 +41,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
-fun PersonalitySelectionScreen() {
+fun PersonalitySelectionScreen(languageViewModel: LanguageViewModel
+) {
+    val uiTexts by languageViewModel.uiTexts
+
     val context = LocalContext.current
     val personalities = listOf(
         "Sarcastic", "Friendly", "Gen Z", "Never in the mood", "Motivational Coach",

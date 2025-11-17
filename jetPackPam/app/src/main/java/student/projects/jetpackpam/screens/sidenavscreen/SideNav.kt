@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import student.projects.jetpackpam.models.LanguageViewModel
 
 @Composable
 fun SideNav(
@@ -19,12 +20,15 @@ fun SideNav(
     onItemSelected: (String) -> Unit,
     onLogout: () -> Unit
 ) {
+    // ✅ Correct usage (same style as HomeScreen)
+    val uiTexts = languageViewModel.uiTexts
+
     val items = listOf(
-        SideNavItem("profile", "Profile", Icons.Default.AccountCircle),
-        SideNavItem("language", "Language", Icons.Default.Language),
-        SideNavItem("fontSize", "Font Size", Icons.Default.FormatSize),
-        SideNavItem("pamTheme", "Pam Theme", Icons.Default.Palette),
-       // SideNavItem("personality", "Personality", Icons.Default.Person)
+        SideNavItem("profile", "profile", Icons.Default.AccountCircle),
+        SideNavItem("language", "language", Icons.Default.Language),
+        SideNavItem("fontSize", "fontSize", Icons.Default.FormatSize),
+        SideNavItem("pamTheme", "pamTheme", Icons.Default.Palette),
+        SideNavItem("personality", "personality", Icons.Default.Person)
     )
 
     ModalDrawerSheet(
@@ -34,7 +38,7 @@ fun SideNav(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Settings",
+            text = uiTexts["settings"] ?: "Settings",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(start = 16.dp, bottom = 24.dp)
         )
@@ -42,10 +46,21 @@ fun SideNav(
         // 🔹 Side navigation items
         items.forEach { item ->
             NavigationDrawerItem(
+                label = {
+                    Text(
+                        text = uiTexts[item.labelKey]
+                            ?: item.labelKey.replaceFirstChar { it.uppercaseChar() }
+                    )
+                },
                 label = { Text(item.label) },
                 selected = currentRoute == item.route,
                 onClick = { onItemSelected(item.route) },
-                icon = { Icon(item.icon, contentDescription = item.label) },
+                icon = {
+                    Icon(
+                        item.icon,
+                        contentDescription = uiTexts[item.labelKey] ?: item.labelKey
+                    )
+                },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
             )
         }
@@ -54,10 +69,10 @@ fun SideNav(
 
         // Logout option at the bottom
         NavigationDrawerItem(
-            label = { Text("Logout") },
+            label = { Text(text = uiTexts["logout"] ?: "Logout") },
             selected = false,
             onClick = { onLogout() },
-            icon = { Icon(Icons.Default.ExitToApp, contentDescription = "Logout") },
+            icon = { Icon(Icons.Default.ExitToApp, contentDescription = uiTexts["logout"] ?: "Logout") },
             modifier = Modifier
                 .padding(NavigationDrawerItemDefaults.ItemPadding)
                 .align(Alignment.CenterHorizontally)

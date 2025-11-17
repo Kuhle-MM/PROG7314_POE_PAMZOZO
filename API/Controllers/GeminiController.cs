@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROG7314_POE.Models;
 using PROG7314_POE.Services;
-using static PROG7314_POE.Services.GeminiService;
 
 namespace PROG7314_POE.Controllers
 {
