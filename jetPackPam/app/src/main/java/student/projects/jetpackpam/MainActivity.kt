@@ -41,6 +41,11 @@ import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
 import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
+import student.projects.jetpackpam.screens.settings.SettingsBiometricsScreen
+import student.projects.jetpackpam.screens.settings.SettingsControllerSizeScreen
+import student.projects.jetpackpam.screens.settings.SettingsLogsScreen
+import student.projects.jetpackpam.screens.settings.SettingsMotorPositionScreen
+import student.projects.jetpackpam.screens.settings.SettingsMotorSpeedScreen
 import student.projects.jetpackpam.screens.settings.SettingsScreen
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
@@ -171,7 +176,14 @@ class MainActivity : ComponentActivity() {
                         composable("startup") { StartUpScreen(navController) }
                         composable("category") { CategorySelectionScreen(navController) }
                         composable("liveLogs") { LiveLogsScreen(navController) }
+
                         composable("settings") { SettingsScreen(navController) }
+                        composable("settingsBiometrics") { SettingsBiometricsScreen(navController) }
+                        composable("settingsControllerSize") { SettingsControllerSizeScreen(navController) }
+                        composable("settingsMotorSpeed") { SettingsMotorSpeedScreen(navController) }
+                        composable("settingsMotorPosition") { SettingsMotorPositionScreen(navController) }
+                        composable("settingsLogs") { SettingsLogsScreen(navController) }
+
                         composable("playing/{sessionId}/{category}") { backStackEntry ->
                             PlayingGameScreen(
                                 navController = navController,
