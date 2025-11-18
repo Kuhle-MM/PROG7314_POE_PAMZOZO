@@ -1,73 +1,54 @@
-P.A.M. (Personal Assistant Machine)
+# P.A.M. (Personal Assistant Machine)
 
-PAM is a compact, portable robotic personal assistant built with a Raspberry Pi + AlphaBotV2 platform, a REST API backend, and an Android Jetpack Compose frontend. She performs object detection and fetching, autonomous navigation, live camera streaming, voice & text control, games (charades), Google Calendar integration, Gemini-powered conversational personalization, and multi-language translation.
+> **PAM** is a compact, portable robotic personal assistant built with a Raspberry Pi + AlphaBotV2 platform, a REST API backend, and an Android Jetpack Compose frontend. She performs object avoidance and fetching, autonomous navigation, live camera streaming, voice & text control, Gemini-powered conversational personalization, and multi-language translation.
 
-Table of Contents
+---
 
-Overview
+## 📑 Table of Contents
 
-Architecture & Visuals
+1.  [Overview](#overview)
+2.  [Architecture & Visuals](#architecture--visuals)
+3.  [Core Features](#core-features)
+4.  [Updated Section (New Features)](#updated-section-new-features)
+5.  [Tech Stack](#tech-stack)
+6.  [Hardware Setup (Raspberry Pi + AlphaBotV2)](#hardware-setup-raspberry-pi--alphabotv2)
+7.  [Backend (REST API)](#backend-rest-api)
+      * [Camera](#camera)
+      * [Motor](#motor)
+      * [Mapping](#mapping)
+      * [Games](#games)
+      * [Google Calendar](#google-calendar)
+      * [Gemini Chat](#gemini-chat)
+      * [Translation](#translation)
+8.  [Android Frontend (Jetpack Compose)](#android-frontend-jetpack-compose)
+      * [UI & Navigation](#ui--navigation)
+      * [Key composables & snippets](#key-composables--snippets)
+      * [Permissions & Manifest](#permissions--manifest)
+      * [Retrofit + API models](#retrofit--api-models)
+      * [Text-to-Speech & Speech-to-Text](#text-to-speech--speech-to-text)
+      * [Security (Biometrics & SSO)](#security-biometrics--sso)
+      * [Offline Data (RoomDB)](#offline-data-roomdb)
+9.  [Mapping & Navigation (High level)](#mapping--navigation-high-level)
+10. [Examples: API calls and responses](#examples-api-calls-and-responses)
+11. [Deployment](#deployment)
+12. [Testing & Troubleshooting](#testing--troubleshooting)
+13. [Future Improvements](#future-improvements)
+14. [Contributing](#contributing)
+15. [License](#license)
 
-Core Features
+---
 
-Updated Section (New Features)
-
-Tech Stack
-
-Hardware Setup (Raspberry Pi + AlphaBotV2)
-
-Backend (REST API)
-
-Camera
-
-Motor
-
-Mapping
-
-Games
-
-Google Calendar
-
-Gemini Chat
-
-Translation
-
-Android Frontend (Jetpack Compose)
-
-UI & Navigation
-
-Key composables & snippets
-
-Permissions & Manifest
-
-Retrofit + API models
-
-Text-to-Speech & Speech-to-Text
-
-Security (Biometrics & SSO)
-
-Offline Data (RoomDB)
-
-Mapping & Navigation (High level)
-
-Examples: API calls and responses
-
-Deployment
-
-Testing & Troubleshooting
-
-Future Improvements
-
-Contributing
-
-License
-
-Overview
+## 🤖 Overview
 
 PAM brings together robotics, cloud APIs, and a modern Android UI to create a helpful companion that can: follow a user via BLE, fetch small objects, provide live MPEG camera feedback, play games, schedule with Google Calendar, and hold a personalized conversational experience via Gemini. The system architecture separates concerns into: hardware controller scripts (Raspberry Pi), a REST API that the mobile app talks to, and the Jetpack Compose mobile app that serves as the UX layer and remote control.
 
-Architecture & Visuals
+---
 
+## 🏗️ Architecture & Visuals
+
+
+
+```text
 +-----------------+        HTTPS/WS/MPEG        +------------------+        Serial/I2C/HTTP       +------------------+
 |  Android App    | <-------------------------> |  REST API Server | <--------------------------> | Raspberry Pi     |
 | (Jetpack Comp.) |                         |  (Python/Node)   |                            | + AlphaBotV2     |
@@ -79,10 +60,9 @@ Architecture & Visuals
       v                                              v
   Google Calendar  <------------------------>  Gemini / LLM
  (OAuth2)                                     (Secure API)
-
-
+```
 ASCII UI mock (Main screen)
-
+```
 ---------------------------
 | PAM — Live Camera Feed  |
 | [ MPEG Video Stream ]   |  <--- Low latency live feed
@@ -97,112 +77,135 @@ ASCII UI mock (Main screen)
 |-------------------------|
 | Bottom Nav: Home | Games|
 ---------------------------
+```
 
-
-Core Features
+##🌟 Core Features
 
 These are the foundational capabilities of the PAM system:
 
-Motor Control & Navigation: Full omnidirectional control using the AlphaBotV2's driver board. Supports precise speed adjustments via PWM and rotational logic for smooth turning.
+* Motor Control & Navigation: Full omnidirectional control using the AlphaBotV2's driver board. Supports precise speed adjustments via PWM and rotational logic for smooth turning.
 
-Voice & Text Command: Multi-modal input allows users to speak commands via Speech-to-Text (STT) or type them manually.
+* Object Fetching: Utilizes computer vision (OpenCV) to identify specific targets (e.g., a cup or keys) and sequences motor commands to approach and "retrieve" them using the robot's gripper/arms.
 
-Gemini Conversational AI: A context-aware chatbot powered by Google's Gemini. It maintains session context to provide persona-based, helpful, and human-like responses rather than static commands.
+* Voice & Text Command: Multi-modal input allows users to speak commands via Speech-to-Text (STT) or type them manually.
 
-Multi-Language Translation: Real-time translation service capable of converting spoken or typed text between supported languages, making PAM a useful travel companion.
+* Interactive Games (Charades): A multiplayer mode where PAM uses movement patterns to "act out" words for the user to guess, or uses vision recognition to guess what the user is acting out.
 
-Updated Section (New Features)
+* Google Calendar Integration: Secure OAuth2 access allowing PAM to read upcoming schedules, remind users of events, and add new appointments through voice commands.
+
+* Gemini Conversational AI: A context-aware chatbot powered by Google's Gemini. It maintains session context to provide persona-based, helpful, and human-like responses rather than static commands.
+
+* Multi-Language Translation: Real-time translation service capable of converting spoken or typed text between supported languages, making PAM a useful travel companion.
+
+##🚀 Updated Section (New Features)
 
 The latest version of PAM includes significant architectural and feature enhancements:
 
-Enhanced User Interface (UI):
+* Enhanced User Interface (UI):
 
-Welcome & Splash Screens: A polished entry experience with animated branding and initialization status.
+  * Welcome & Splash Screens: A polished entry experience with animated branding and initialization status.
 
-Material 3 Design: Updated color palettes, typography, and component styling for a modern, accessible look.
+  * Material 3 Design: Updated color palettes, typography, and component styling for a modern, accessible look.
 
-Live Camera Feed (MJPG): * Moved from frame-by-frame WebSocket delivery to a raw MJPG stream via rpicam-vid.
+* Live Camera Feed (MPEG):
 
-Benefit: Drastically reduces video latency to milliseconds, enabling smoother remote driving and real-time visual feedback.
+  * Moved from frame-by-frame WebSocket delivery to a raw MPEG stream via rpicam-vid.
 
-"Follow Me" Mode (BLE): * Autonomous tethering using Bluetooth Low Energy (BLE).
+  * Benefit: Drastically reduces video latency to milliseconds, enabling smoother remote driving and real-time visual feedback.
 
-PAM scans for the user's phone signal strength (RSSI) to estimate distance and automatically drives to maintain a set proximity to the user.
+* "Follow Me" Mode (BLE):
 
-Live Sensor Logs: * A real-time WebSocket channel that streams internal state data (ultrasonic distance, battery voltage, CPU temp) directly to the app.
+  * Autonomous tethering using Bluetooth Low Energy (BLE).
 
-UI Overlay: These logs appear as a transparent overlay on the camera feed, letting the user see exactly what the robot "sees" (e.g., "Obstacle Detected: 15cm").
+  * PAM scans for the user's phone signal strength (RSSI) to estimate distance and automatically drives to maintain a set proximity to the user.
 
-Biometric Security: * Integration with Android's BiometricPrompt API.
+* Live Sensor Logs:
 
-Users can lock the application using their device's native Fingerprint or Face Unlock hardware, ensuring unauthorized users cannot control the robot.
+  * A real-time WebSocket channel that streams internal state data (ultrasonic distance, battery voltage, CPU temp) directly to the app.
 
-Push Notifications: * Integration with Firebase Cloud Messaging (FCM).
+  * UI Overlay: These logs appear as a transparent overlay on the camera feed, letting the user see exactly what the robot "sees" (e.g., "Obstacle Detected: 15cm").
 
-PAM can send alerts for critical events (e.g., "Battery Low," "Intruder Detected," "Meeting Starting") even when the app is closed.
+* Biometric Security:
 
-Offline Capability (RoomDB): * Implementation of a local SQLite database using Android Room.
+  * Integration with Android's BiometricPrompt API.
 
-Benefit: Chat history, application settings, and cached calendar events are stored locally, allowing core app functions to work without an active internet connection.
+  * Users can lock the application using their device's native Fingerprint or Face Unlock hardware, ensuring unauthorized users cannot control the robot.
 
-Expanded Settings: * New configuration screens allowing users to fine-tune robot sensitivity, change turn speeds, toggle "Follow Me" distance thresholds, and manage API keys directly from the app.
+* Push Notifications:
 
-Tech Stack
+  * Integration with Firebase Cloud Messaging (FCM).
 
-Hardware: Raspberry Pi 3, AlphaBotV2, Bluetooth Module
+  * PAM can send alerts for critical events (e.g., "Battery Low," "Intruder Detected," "Meeting Starting") even when the app is closed.
 
-Backend: Python (Bottle Framework)
+* Offline Capability (RoomDB):
 
-Database: * Remote: PostgreSQL/Redis
+  *  Implementation of a local SQLite database using Android Room.
 
-Local Mobile: RoomDB (Android) for offline caching
+  * Benefit: Chat history, application settings, and cached calendar events are stored locally, allowing core app functions to work without an active internet connection.
 
-Mobile: Android (Kotlin) + Jetpack Compose
+* Expanded Settings:
 
-Networking: Retrofit (REST), MJPG Stream (Video), BLE (Positioning)
+  * New configuration screens allowing users to fine-tune robot sensitivity, change turn speeds, toggle "Follow Me" distance thresholds, and manage API keys directly from the app.
 
-Security: Android BiometricManager, OAuth2
+##🛠️ Tech Stack
 
-LLM: Gemini API (via backend)
+* **Hardware:** Raspberry Pi 3b, AlphaBotV2, Bluetooth Module
 
-Hardware Setup (Raspberry Pi + AlphaBotV2)
+* **Backend:** Python (Bottle Framework)
 
-1. Flash OS
+* **Database:**
 
-# Flash Raspberry Pi OS (Legacy, 32-bit) Lite
-# Using Raspberry Pi Imager
+  * Remote: PostgreSQL/Redis
+
+  * Local Mobile: RoomDB (Android) for offline caching
+
+* **Mobile:** Android (Kotlin) + Jetpack Compose
+
+* **Networking:** Retrofit (REST), MPEG Stream (Video), BLE (Positioning)
+
+* **Security:** Android BiometricManager, OAuth2
+
+* **LLM:** Gemini API (via backend)
+
+##🔌 Hardware Setup (Raspberry Pi + AlphaBotV2)
+
+**1. Flash OS**
+```
+# Flash Raspberry Pi OS (Lite recommended for headless)
+# Using Raspberry Pi Imager or balenaEtcher
 # Ensure 'rpicam-vid' is available (default on Bullseye/Bookworm)
+```
 
-
-2. Initial Pi setup
-
+**2. Initial Pi setup**
+```
 sudo apt update && sudo apt upgrade -y
 sudo raspi-config    # enable ssh, camera, I2C if needed
 sudo apt install python3-pip git libatlas-base-dev -y
 # Install dependencies (Bottle is used for the API now)
 pip3 install bottle pigpio opencv-python numpy bluepy
+```
 
+**3. Wiring & AlphaBot setup**
 
-3. Wiring & AlphaBot setup
+* Follow AlphaBot V2 wiring guide for your Pi header.
 
-Follow AlphaBot V2 wiring guide for your Pi header.
+* Ensure motor power supply is adequate.
 
-Ensure motor power supply is adequate.
+* Ensure AlphaBot.py and PCA9685.py driver files are in the same directory as the scripts below.
 
-Ensure AlphaBot.py and PCA9685.py driver files are in the same directory as the scripts below.
-
-4. Run the robot controller
+**4. Run the robot controller**
 
 The system is now split into three files for stability and performance.
 
-main.py: Handles Motor control and Servos (Port 5000).
+ 1. main.py: Handles Motor control and Servos (Port 5000).
 
-stream.py: Handles low-latency video streaming (Port 8000).
+ 2. stream.py: Handles low-latency video streaming (Port 8000).
 
-pam.py: A launcher script that starts both services simultaneously.
+ 3. pam.py: A launcher script that starts both services simultaneously.
 
-Create main.py (Motor & Servo Logic):
+**Create main.py (Motor & Servo Logic):**
 
+```python
 #!/usr/bin/env python3
 from bottle import post, request, run
 from AlphaBot import AlphaBot
@@ -301,10 +304,10 @@ def reset_camera():
 
 if __name__ == "__main__":
     run(host="0.0.0.0", port=5000, debug=True)
+```
 
-
-Create stream.py (Secure MJPEG Streamer):
-
+**Create stream.py (Secure MJPEG Streamer):**
+```python
 #!/usr/bin/env python3
 import subprocess
 import threading
@@ -404,12 +407,12 @@ try:
     server.serve_forever()
 finally:
     if camera.process: camera.process.terminate()
+```
 
-
-Create pam.py (Launcher):
+**Create pam.py (Launcher):**
 
 To start PAM, simply run this file. It handles the lifecycle of the other two scripts.
-
+```python
 #!/usr/bin/env python3
 import subprocess, sys, signal, time
 
@@ -441,36 +444,39 @@ try:
     for p in processes: p.wait()
 except Exception as e:
     cleanup(None, None)
+```
+---
 
-
-Backend (REST API)
+# 🧠 Backend (REST API)
 
 The API has been updated to use the Bottle framework on Port 5000.
 
-API Modules & Endpoints
+## API Modules & Endpoints
 
-POST /api/command — Standard Directional Control
+* POST /api/command — Standard Directional Control
 
-Payload: { "cmd": "forward", "speed": 60 }
+  * Payload: { "cmd": "forward", "speed": 60 }
 
-Commands: forward, backward, left, right, stop
+  * Commands: forward, backward, left, right, stop
 
-POST /api/joystick — Analog Control (Joystick)
+* POST /api/joystick — Analog Control (Joystick)
 
-Payload: { "x": 0.5, "y": 1.0, "speed": 50 }
+  * Payload: { "x": 0.5, "y": 1.0, "speed": 50 }
 
-Logic: Uses move_robot_analog mixing for smooth turning.
+  * Logic: Uses move_robot_analog mixing for smooth turning.
 
-POST /camera/move — Pan/Tilt Servo Control
+* POST /camera/move — Pan/Tilt Servo Control
 
-Payload: { "pan": 90, "tilt": 45 }
+  * Payload: { "pan": 90, "tilt": 45 }
 
-POST /camera/reset — Resets camera to center position.
+*POST /camera/reset — Camera Reset
 
-GET http://<IP>:8000/stream.mjpg?token=<KEY> — Port 8000 Dedicated Camera Stream.
+  * Resets camera to center position.
 
-Live Log WebSocket Example
+* GET http://<IP>:8000/stream.mjpg?token=<KEY> — Port 8000 Dedicated Camera Stream
 
+**Live Log WebSocket Example**
+```python
 @app.websocket('/ws/logs')
 async def log_ws(websocket: WebSocket):
     await websocket.accept()
@@ -478,12 +484,12 @@ async def log_ws(websocket: WebSocket):
         # Push sensor data to app for UI overlay
         data = {"sensor": "ultrasonic", "distance": 15, "avoidance_active": True}
         await websocket.send_json(data)
+```
 
-
-Android Frontend (Jetpack Compose)
+## 📱 Android Frontend (Jetpack Compose)
 
 Project-level overview (packages)
-
+```
 com.yourapp.pam
 ├─ ui
 │  ├─ splash        <-- New Splash/Welcome screens
@@ -498,21 +504,21 @@ com.yourapp.pam
 │  └─ repo
 ├─ di
 └─ MainActivity.kt
+```
 
-
-Key dependencies (Gradle)
-
+**Key dependencies (Gradle)**
+```kotlin
 implementation "androidx.compose.ui:ui:1.5.0"
 implementation "androidx.room:room-runtime:2.6.0" // Offline DB
 kapt "androidx.room:room-compiler:2.6.0"
 implementation "androidx.biometric:biometric:1.2.0" // Security
 implementation "com.google.android.exoplayer:exoplayer:2.19.0" // Video handling
+```
 
-
-RoomDB (Offline Database)
+**RoomDB (Offline Database)**
 
 Used to store chat history and user settings locally.
-
+```kotlin
 @Entity
 data class ChatMessage(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -520,12 +526,12 @@ data class ChatMessage(
     val isFromUser: Boolean,
     val timestamp: Long
 )
+```
 
-
-Biometric Authentication
+**Biometric Authentication**
 
 Implementing phone's integrated security for app entry.
-
+```kotlin
 fun authenticateUser(activity: FragmentActivity) {
     val executor = ContextCompat.getMainExecutor(activity)
     val biometricPrompt = BiometricPrompt(activity, executor,
@@ -537,22 +543,22 @@ fun authenticateUser(activity: FragmentActivity) {
         })
     // Show prompt
 }
+```
 
-
-MJPG Camera View (Compose)
-
+**MJPG Camera View (Compose)**
+```kotlin
 @Composable
-fun MJPG CameraStream(url: String) {
+fun MpegCameraStream(url: String) {
     // Implementation using AndroidView to embed a surface
     // capable of rendering MJPEG streams via player or webview
     AndroidView(factory = { context -> 
         WebView(context).apply { loadUrl(url) } 
     })
 }
+```
 
-
-Live Logs Overlay
-
+**Live Logs Overlay**
+```kotlin
 @Composable
 fun ObstacleOverlay(distance: Int) {
     if(distance < 20) {
@@ -561,37 +567,38 @@ fun ObstacleOverlay(distance: Int) {
         }
     }
 }
+```
+---
 
-
-Mapping & Navigation (High level)
+## 🗺️ Mapping & Navigation (High level)
 
 PAM's navigation stack includes:
 
-Perception — Sensors + MJPG camera feed.
+1. Perception — Sensors + MPEG camera feed.
 
-Live Logging — The backend streams obstacle data to the app, allowing the user to see exactly what the robot "sees" in real-time.
+2. Live Logging — The backend streams obstacle data to the app, allowing the user to see exactly what the robot "sees" in real-time.
 
-Follow Me (BLE) — Uses RSSI (Received Signal Strength Indicator) from the phone's Bluetooth to triangulate and follow the user.
+3. Follow Me (BLE) — Uses RSSI (Received Signal Strength Indicator) from the phone's Bluetooth to triangulate and follow the user.
+---
+## 🚢 Deployment
 
-Deployment
+* **Docker:** We recommend building the backend services into a Docker container for consistency across development and the Raspberry Pi.
 
-Docker: We recommend building the backend services into a Docker container for consistency across development and the Raspberry Pi.
+* **Systemd (Raspberry Pi):** create a systemd service to auto-start the robot controller on boot to ensure PAM is ready as soon as the Pi is powered on.
 
-Systemd (Raspberry Pi): create a systemd service to auto-start the robot controller on boot to ensure PAM is ready as soon as the Pi is powered on.
-
-Firebase: Deploy the Firebase Cloud Functions for push notifications and ensure google-services.json is correctly configured in the Android app.
-
-Testing & Troubleshooting
+* **Firebase:** Deploy the Firebase Cloud Functions for push notifications and ensure google-services.json is correctly configured in the Android app.
+---
+## 🧪 Testing & Troubleshooting
 
 Common issues
 
 BLE Disconnects: Ensure location permissions are granted for Bluetooth scanning on Android.
 
-MJPG Latency: Adjust resolution on the Raspberry Pi camera script to reduce bandwidth.
+MPEG Latency: Adjust resolution on the Raspberry Pi camera script to reduce bandwidth.
 
 Biometrics fail: Ensure the device has a lock screen security (PIN/Pattern) set up.
 
-Future Improvements
+🔮 Future Improvements
 
 Use ultrasonic sensors for object detection for increased mapping accuracy.
 
@@ -599,48 +606,48 @@ Enhance games with checkpoint racing around a scanned area.
 
 Integration of advanced SLAM for complex room mapping.
 
-Reference List
+📚 Reference List
 
-Admin, 2023. Google Lens Vs Pinterest Lens: The Rising War in the Visual Search Domain - August 2025. [online] Skyram Blog. Available at: https://www.skyramtechnologies.com/blog/google-lens-vs-pinterest-lens-visual-search-showdown/#:~:text=Google%20Lens's%20primary%20advantage%20is,visual%20search%20for%20many%20users. [Accessed 19 August 2025].
+1. Admin, 2023. Google Lens Vs Pinterest Lens: The Rising War in the Visual Search Domain - August 2025. Skyram Blog.
 
-Android Developers, 2025. Card. [online] Android Developers. Available at: https://developer.android.com/develop/ui/compose/components/card [Accessed 7 October 2025].
+2. Android Developers, 2025. Card.
 
-Android Knowledge, 2024a. Navigation Component in Jetpack Compose using Kotlin | Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=a3Y2uncgAMM [Accessed 7 October 2025].
+3. Android Knowledge, 2024a. Navigation Component in Jetpack Compose using Kotlin. YouTube.
 
-Android Knowledge, 2024b. Navigation Drawer + Bottom Navigation + Bottom Sheet in Jetpack Compose | Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=KkJb6rx0gC4 [Accessed 4 October 2025].
+4. Android Knowledge, 2024b. Navigation Drawer + Bottom Navigation + Bottom Sheet. YouTube.
 
-Android Makers, 2024. Building a Joystick Controller using Compose Multiplatform. [online] YouTube. Available at: https://www.youtube.com/watch?v=6xHeRprn_34&t=100s [Accessed 7 October 2025].
+5. Android Makers, 2024. Building a Joystick Controller using Compose Multiplatform. YouTube.
 
-AntMan232, 2012. Raspberry Pi I2C (Python). [online] Instructables. Available at: https://www.instructables.com/Raspberry-Pi-I2C-Python/ [Accessed 7 October 2025].
+6. AntMan232, 2012. Raspberry Pi I2C (Python). Instructables.
 
-Bukk, A., 2019. Ep.04 - Joystick and touch events | Android Studio 2D Game Development. [online] YouTube. Available at: https://www.youtube.com/watch?v=3oZ2jt0hQmo&t=25s [Accessed 7 October 2025].
+7. Bukk, A., 2019. Ep.04 - Joystick and touch events. YouTube.
 
-Custer, C., 2025. How to Use an API in Python – Dataquest. [online] Dataquest. Available at: https://www.dataquest.io/blog/api-in-python/ [Accessed 23 September 2025].
+8. Custer, C., 2025. How to Use an API in Python. Dataquest.
 
-Data Slayer, 2018. How to Setup Camera Module for Raspberry Pi 3 Model B+. [online] YouTube. Available at: https://www.youtube.com/watch?v=tHjwx2AQHxU [Accessed 7 October 2025].
+9. Data Slayer, 2018. How to Setup Camera Module for Raspberry Pi 3 Model B+. YouTube.
 
-Drummond, R., 2015. REST API on a Pi, Part 2: control your GPIO I/O ports over the internet. [online] Robert-Drummond. Available at: https://robert-drummond.com/2015/06/01/rest-api-on-a-pi-part-2-control-your-gpio-io-ports-over-the-internet/ [Accessed 7 October 2025].
+10. Drummond, R., 2015. REST API on a Pi, Part 2: control your GPIO I/O ports over the internet.
 
-Google Lens, 2025. Google Lens. [online] Google Lens. Available at: https://lens.google/ [Accessed 20 August 2025].
+11. Google Lens, 2025. Google Lens.
 
-Lacker, P., 2025. Firebase Google Sign-In with Jetpack Compose & Clean Architecture - Android Studio Tutorial. [online] YouTube. Available at: https://www.youtube.com/watch?v=zCIfBbm06QM&t=28s [Accessed 6 October 2025].
+12. Lacker, P., 2025. Firebase Google Sign-In with Jetpack Compose & Clean Architecture. YouTube.
 
-Laimonas Naradauskas, 2024. Google Lens: Revolutionising Visual Search Experiences. [online] Smarter Digital Marketing. Available at: https://www.smarterdigitalmarketing.co.uk/google-lens/ [Accessed 19 August 2025].
+13. Laimonas Naradauskas, 2024. Google Lens: Revolutionising Visual Search Experiences.
 
-Lima, L., 2015. Building a Rest API with the Bottle Framework. [online] Toptal Engineering Blog. Available at: https://www.toptal.com/python/building-a-rest-api-with-bottle-framework [Accessed 7 October 2025].
+14. Lima, L., 2015. Building a Rest API with the Bottle Framework. Toptal Engineering Blog.
 
-Milvus, 2025. What Is the Technology behind Google Lens? [online] Milvus.io. Available at: https://milvus.io/ai-quick-reference/what-is-the-technology-behind-google-lens [Accessed 19 August 2025].
+15. Milvus, 2025. What Is the Technology behind Google Lens?.
 
-Net, in, 2022. Stack Overflow. [online] Stack Overflow. Available at: https://stackoverflow.com/questions/73540601/writing-unit-test-cases-for-web-api-in-net [Accessed 6 October 2025].
+16. Net, in, 2022. Stack Overflow.
 
-philipplackner, 2023. GitHub - philipplackner/NestedNavigationGraphsGuide. [online] GitHub. Available at: https://github.com/philipplackner/NestedNavigationGraphsGuide [Accessed 4 October 2025].
+17. philipplackner, 2023. GitHub - philipplackner/NestedNavigationGraphsGuide.
 
-Rick-Anderson, 2022. Unit Testing ASP.NET Web API 2. [online] Microsoft.com. Available at: https://learn.microsoft.com/en-us/aspnet/web-api/overview/testing-and-debugging/unit-testing-with-aspnet-web-api [Accessed 6 October 2025].
+18. Rick-Anderson, 2022. Unit Testing ASP.NET Web API 2. Microsoft.com.
 
-SK RADWOAN, 2025. Login Page - Walking Application. [online] Dribbble. Available at: https://dribbble.com/shots/26177865-Login-Page-Walking-Application [Accessed 20 August 2025].
+19. SK RADWOAN, 2025. Login Page - Walking Application. Dribbble.
 
-Visual Paradigm, 2025. UML Class Diagram Tutorial. [online] Visual-paradigm.com. Available at: https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/ [Accessed 22 August 2025].
+20. Visual Paradigm, 2025. UML Class Diagram Tutorial.
 
-W L PROJECT, 2023. Change App Icon In Android Studio Jetpack Compose | Change The Launcher Logo In Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=HkNcLyiKM6U [Accessed 7 October 2025].
+21. W L PROJECT, 2023. Change App Icon In Android Studio Jetpack Compose. YouTube.
 
-Waveshare, 2025. AlphaBot2-Pi - Waveshare Wiki. [online] Waveshare. Available at: https://www.waveshare.com/wiki/AlphaBot2-Pi [Accessed 7 October 2025].
+22. Waveshare, 2025. AlphaBot2-Pi - Waveshare Wiki.
