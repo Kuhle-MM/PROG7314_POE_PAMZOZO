@@ -28,9 +28,8 @@
 8. [Examples: API calls and responses](#examples-api-calls-and-responses)
 9. [Deployment & CI](#deployment--ci)
 10. [Testing & Troubleshooting](#testing--troubleshooting)
-11. [Future Improvements](#future-improvements)
-12. [Contributing](#contributing)
-13. [License](#license)
+11. [Contributing](#contributing)
+12. [License](#license)
 
 ---
 
@@ -437,57 +436,90 @@ curl -X POST https://api.yourserver.com/chat/gemini \
 
 ---
 
-## Future Improvements
-
-* Use ultrasonic sensors for object detection for increased mapping accuracy.
-* Enhance games with checkpoint racing around a scanned area.
-
----
 
 ## Reference List
 
-Admin, 2023. Google Lens Vs Pinterest Lens: The Rising War in the Visual Search Domain - August 2025. [online] Skyram Blog. Available at: &lt;https://www.skyramtechnologies.com/blog/google-lens-vs-pinterest-lens-visual-search-showdown/#:~:text=Google%20Lens's%20primary%20advantage%20is,visual%20search%20for%20many%20users.&gt; [Accessed 19 August 2025].
+Admin, 2023. Google Lens Vs Pinterest Lens: The Rising War in the Visual Search Domain - August 2025. [online] Skyram Blog. Available at: https://www.skyramtechnologies.com/blog/google-lens-vs-pinterest-lens-visual-search-showdown/#:~:text=Google%20Lens's%20primary%20advantage%20is,visual%20search%20for%20many%20users.
+ [Accessed 19 August 2025].
 
-Android Developers, 2025. Card. [online] Android Developers. Available at: &lt;https://developer.android.com/develop/ui/compose/components/card&gt; [Accessed 7 October 2025].
+Android Developers, 2025. Biometric. [online] Android Developers. Available at: https://developer.android.com/jetpack/androidx/releases/biometric
+ [Accessed 15 November 2025].
 
-Android Knowledge, 2024a. Navigation Component in Jetpack Compose using Kotlin | Android Studio. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=a3Y2uncgAMM&gt; [Accessed 7 October 2025].
+Android Developers, 2025. Card. [online] Android Developers. Available at: https://developer.android.com/develop/ui/compose/components/card
+ [Accessed 7 October 2025].
 
-Android Knowledge, 2024b. Navigation Drawer + Bottom Navigation + Bottom Sheet in Jetpack Compose | Android Studio. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=KkJb6rx0gC4&gt; [Accessed 4 October 2025].
+Android Knowledge, 2024a. Navigation Component in Jetpack Compose using Kotlin | Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=a3Y2uncgAMM
+ [Accessed 7 October 2025].
 
-Android Makers, 2024. Building a Joystick Controller using Compose Multiplatform. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=6xHeRprn_34&t=100s&gt; [Accessed 7 October 2025].
+Android Knowledge, 2024b. Navigation Drawer + Bottom Navigation + Bottom Sheet in Jetpack Compose | Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=KkJb6rx0gC4
+ [Accessed 4 October 2025].
 
-AntMan232, 2012. Raspberry Pi I2C (Python). [online] Instructables. Available at: &lt;https://www.instructables.com/Raspberry-Pi-I2C-Python/&gt; [Accessed 7 October 2025].
+Android Makers, 2024. Building a Joystick Controller using Compose Multiplatform. [online] YouTube. Available at: https://www.youtube.com/watch?v=6xHeRprn_34&t=100s
+ [Accessed 7 October 2025].
 
-Bukk, A., 2019. Ep.04 - Joystick and touch events | Android Studio 2D Game Development. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=3oZ2jt0hQmo&t=25s&gt; [Accessed 7 October 2025].
+AntMan232, 2012. Raspberry Pi I2C (Python). [online] Instructables. Available at: https://www.instructables.com/Raspberry-Pi-I2C-Python/
+ [Accessed 7 October 2025].
 
-Custer, C., 2025. How to Use an API in Python – Dataquest. [online] Dataquest. Available at: &lt;https://www.dataquest.io/blog/api-in-python/&gt; [Accessed 23 September 2025].
+Bukk, A., 2019. Ep.04 - Joystick and touch events | Android Studio 2D Game Development. [online] YouTube. Available at: https://www.youtube.com/watch?v=3oZ2jt0hQmo&t=25s
+ [Accessed 7 October 2025].
 
-Data Slayer, 2018. How to Setup Camera Module for Raspberry Pi 3 Model B+. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=tHjwx2AQHxU&gt; [Accessed 7 October 2025].
+Custer, C., 2025. How to Use an API in Python – Dataquest. [online] Dataquest. Available at: https://www.dataquest.io/blog/api-in-python/
+ [Accessed 23 September 2025].
 
-Drummond, R., 2015. REST API on a Pi, Part 2: control your GPIO I/O ports over the internet. [online] Robert-Drummond. Available at: &lt;https://robert-drummond.com/2015/06/01/rest-api-on-a-pi-part-2-control-your-gpio-io-ports-over-the-internet/&gt; [Accessed 7 October 2025].
+Data Slayer, 2018. How to Setup Camera Module for Raspberry Pi 3 Model B+. [online] YouTube. Available at: https://www.youtube.com/watch?v=tHjwx2AQHxU
+ [Accessed 7 October 2025].
 
-Google Lens, 2025. Google Lens. [online] Google Lens. Available at: &lt;https://lens.google/&gt; [Accessed 20 August 2025].
+Drummond, R., 2015. REST API on a Pi, Part 2: control your GPIO I/O ports over the internet. [online] Robert-Drummond. Available at: https://robert-drummond.com/2015/06/01/rest-api-on-a-pi-part-2-control-your-gpio-io-ports-over-the-internet/
+ [Accessed 7 October 2025].
 
-Lacker, P., 2025. Firebase Google Sign-In with Jetpack Compose & Clean Architecture - Android Studio Tutorial. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=zCIfBbm06QM&t=28s&gt; [Accessed 6 October 2025].
+Google Lens, 2025. Google Lens. [online] Google Lens. Available at: https://lens.google/
+ [Accessed 20 August 2025].
 
-Laimonas Naradauskas, 2024. Google Lens: Revolutionising Visual Search Experiences. [online] Smarter Digital Marketing. Available at: &lt;https://www.smarterdigitalmarketing.co.uk/google-lens/&gt; [Accessed 19 August 2025].
+Lacker, P., 2025. Firebase Google Sign-In with Jetpack Compose & Clean Architecture - Android Studio Tutorial. [online] YouTube. Available at: https://www.youtube.com/watch?v=zCIfBbm06QM&t=28s
+ [Accessed 6 October 2025].
 
-Lima, L., 2015. Building a Rest API with the Bottle Framework. [online] Toptal Engineering Blog. Available at: &lt;https://www.toptal.com/python/building-a-rest-api-with-bottle-framework&gt; [Accessed 7 October 2025].
+Laimonas Naradauskas, 2024. Google Lens: Revolutionising Visual Search Experiences. [online] Smarter Digital Marketing. Available at: https://www.smarterdigitalmarketing.co.uk/google-lens/
+ [Accessed 19 August 2025].
 
-Milvus, 2025. What Is the Technology behind Google Lens? [online] Milvus.io. Available at: &lt;https://milvus.io/ai-quick-reference/what-is-the-technology-behind-google-lens&gt; [Accessed 19 August 2025].
+Lima, L., 2015. Building a Rest API with the Bottle Framework. [online] Toptal Engineering Blog. Available at: https://www.toptal.com/python/building-a-rest-api-with-bottle-framework
+ [Accessed 7 October 2025].
 
-Net, in, 2022. Stack Overflow. [online] Stack Overflow. Available at: &lt;https://stackoverflow.com/questions/73540601/writing-unit-test-cases-for-web-api-in-net&gt; [Accessed 6 October 2025].
+Milvus, 2025. What Is the Technology behind Google Lens?. [online] Milvus.io. Available at: https://milvus.io/ai-quick-reference/what-is-the-technology-behind-google-lens
+ [Accessed 19 August 2025].
 
-philipplackner, 2023. GitHub - philipplackner/NestedNavigationGraphsGuide. [online] GitHub. Available at: &lt;https://github.com/philipplackner/NestedNavigationGraphsGuide&gt; [Accessed 4 October 2025].
+Microsoft, 2025. Real-time ASP.NET with SignalR | .NET. [online] Microsoft. Available at: https://dotnet.microsoft.com/en-us/apps/aspnet/signalr
+ [Accessed 15 November 2025].
 
-Rick-Anderson, 2022. Unit Testing ASP.NET Web API 2. [online] Microsoft.com. Available at: &lt;https://learn.microsoft.com/en-us/aspnet/web-api/overview/testing-and-debugging/unit-testing-with-aspnet-web-api&gt; [Accessed 6 October 2025].
+Net, in, 2022. Stack Overflow. [online] Stack Overflow. Available at: https://stackoverflow.com/questions/73540601/writing-unit-test-cases-for-web-api-in-net
+ [Accessed 6 October 2025].
 
-SK RADWOAN, 2025. Login Page - Walking Application. [online] Dribbble. Available at: &lt;https://dribbble.com/shots/26177865-Login-Page-Walking-Application&gt; [Accessed 20 August 2025].
+philipplackner, 2023. GitHub - philipplackner/NestedNavigationGraphsGuide. [online] GitHub. Available at: https://github.com/philipplackner/NestedNavigationGraphsGuide
+ [Accessed 4 October 2025].
 
-Visual Paradigm, 2025. UML Class Diagram Tutorial. [online] Visual-paradigm.com. Available at: &lt;https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/&gt; [Accessed 22 August 2025].
+philipplackner, 2025. BiometricAuth/app/src/main/java/com/plcoding/biometricauth/BiometricPromptManager.kt at master · philipplackner/BiometricAuth. [online] GitHub. Available at: https://github.com/philipplackner/BiometricAuth/blob/master/app/src/main/java/com/plcoding/biometricauth/BiometricPromptManager.kt
+ [Accessed 17 November 2025].
 
-W L PROJECT, 2023. Change App Icon In Android Studio Jetpack Compose | Change The Launcher Logo In Android Studio. [online] YouTube. Available at: &lt;https://www.youtube.com/watch?v=HkNcLyiKM6U&gt; [Accessed 7 October 2025].
+Philipp Lackner, 2024. How to Implement Biometric Auth in Your Android App. [online] YouTube. Available at: https://www.youtube.com/watch?v=_dCRQ9wta-I
+.
 
-Waveshare, 2025. AlphaBot2-Pi - Waveshare Wiki. [online] Waveshare. Available at: &lt;https://www.waveshare.com/wiki/AlphaBot2-Pi&gt; [Accessed 7 October 2025].
+Rick-Anderson, 2022. Unit Testing ASP.NET Web API 2. [online] Microsoft.com. Available at: https://learn.microsoft.com/en-us/aspnet/web-api/overview/testing-and-debugging/unit-testing-with-aspnet-web-api
+ [Accessed 6 October 2025].
 
+Sattar, S., 2023. Biometric Login System in Android with Jetpack Compose. [online] Medium. Available at: https://isaacsufyan.medium.com/biometric-login-system-in-android-with-jetpack-compose-d5f38afa5356
+ [Accessed 15 November 2025].
+
+SK RADWOAN, 2025. Login Page - Walking Application. [online] Dribbble. Available at: https://dribbble.com/shots/26177865-Login-Page-Walking-Application
+ [Accessed 20 August 2025].
+
+Visual Paradigm, 2025. UML Class Diagram Tutorial. [online] Visual-paradigm.com. Available at: https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/
+ [Accessed 22 August 2025].
+
+W L PROJECT, 2023. Change App Icon In Android Studio Jetpack Compose | Change The Launcher Logo In Android Studio. [online] YouTube. Available at: https://www.youtube.com/watch?v=HkNcLyiKM6U
+ [Accessed 7 October 2025].
+
+Wadepickett, 2023. Get started with ASP.NET Core SignalR. [online] Microsoft.com. Available at: https://learn.microsoft.com/en-za/aspnet/core/tutorials/signalr?view=aspnetcore-10.0&WT.mc_id=dotnet-35129-website&tabs=visual-studio
+ [Accessed 15 November 2025].
+
+Waveshare, 2025. AlphaBot2-Pi - Waveshare Wiki. [online] Waveshare. Available at: https://www.waveshare.com/wiki/AlphaBot2-Pi
+ [Accessed 7 October 2025].
 
