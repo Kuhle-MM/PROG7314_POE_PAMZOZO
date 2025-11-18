@@ -9,7 +9,7 @@
 
 1. [Overview](#overview)
 2. [Architecture & Visuals](#architecture--visuals)
-3. [Features](#features)
+3. [Updated Features](#updated-features)
 4. [Tech Stack](#tech-stack)
 5. [Hardware Setup (Raspberry Pi + AlphaBotV2)](#hardware-setup-raspberry-pi--alphabotv2)
 6. [Backend (REST API)](#backend-rest-api)
@@ -74,9 +74,7 @@ PAM brings together robotics, cloud APIs, and a modern Android UI to create a he
 
 ---
 
-## Features
-
-**Core features**
+## Updated Features
 
 * Live camera streaming mirrored to the mobile app
 * Motor control (move, rotate, speed control)
@@ -167,7 +165,6 @@ We recommend using **FastAPI** for type-safety and automatic docs; Flask is fine
 ### API Modules & Endpoints (high-level)
 
 * `/camera/stream` — WebSocket or MJPEG endpoint for live stream
-* `/camera/snapshot` — GET a single frame
 * `/motor` — POST motor commands (`{ cmd: "forward", speed: 60 }`)
 * `/chat/gemini` — POST user message -> returns LLM response
 * `/translate` — POST text + target language -> returns translated text
@@ -204,7 +201,6 @@ com.yourapp.pam
 │  ├─ home
 │  ├─ chat
 │  ├─ camera
-│  ├─ games
 │  ├─ settings
 │  └─ auth
 ├─ data
@@ -368,12 +364,6 @@ curl -X POST http://raspi.local:5000/motor \
  -d '{"cmd":"forward","speed":60}'
 ```
 
-**Snapshot**
-
-```bash
-curl http://raspi.local:5000/camera/snapshot --output snapshot.jpg
-```
-
 **Chat (Gemini)**
 
 ```bash
@@ -401,8 +391,6 @@ curl -X POST https://api.yourserver.com/chat/gemini \
 
 ---
 
-
-## Reference List
 
 Admin, 2023. Google Lens Vs Pinterest Lens: The Rising War in the Visual Search Domain - August 2025. [online] Skyram Blog. Available at: https://www.skyramtechnologies.com/blog/google-lens-vs-pinterest-lens-visual-search-showdown/#:~:text=Google%20Lens's%20primary%20advantage%20is,visual%20search%20for%20many%20users.
  [Accessed 19 August 2025].
