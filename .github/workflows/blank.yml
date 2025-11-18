@@ -10,7 +10,7 @@ env:
 on:
   push:
     branches:
-      - 'NewNewAphiwe'
+      - 'Master'
   workflow_dispatch:
 
 jobs:
