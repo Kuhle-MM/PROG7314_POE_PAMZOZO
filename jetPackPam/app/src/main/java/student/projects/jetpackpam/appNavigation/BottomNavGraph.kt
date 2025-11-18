@@ -74,7 +74,7 @@ fun BottomNavGraph(
                 userData = userData,
                 languageViewModel= languageViewModel,
                 onSignOut = {
-                    authViewModel.signOutSafely(context, navController, authViewModel)
+                    authViewModel.signOutSafely(context, navController,)
                 }
             )
         }
