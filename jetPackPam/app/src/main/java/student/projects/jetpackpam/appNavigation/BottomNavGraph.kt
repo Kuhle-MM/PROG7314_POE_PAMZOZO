@@ -1,6 +1,5 @@
 package student.projects.jetpackpam.appNavigation
 
-import VideoScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -16,6 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import student.projects.jetpackpam.VideoScreen
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.models.LogsViewModel
@@ -87,7 +87,7 @@ fun BottomNavGraph(
         }
 
         composable("video") {
-            VideoScreen(languageViewModel= languageViewModel)
+            VideoScreen()
         }
         composable("controls") { Controls(navController) }
 

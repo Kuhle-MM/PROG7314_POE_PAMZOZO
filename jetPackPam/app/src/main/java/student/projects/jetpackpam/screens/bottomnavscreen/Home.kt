@@ -80,9 +80,6 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Button(onClick = onSignOut) {
-                Text(text = uiTexts["signOut"] ?: "Sign out")
-            }
 
             Image(
                 painter = painterResource(id = R.drawable.pamicon),

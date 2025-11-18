@@ -38,16 +38,26 @@ fun AppNavGraph(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val logsViewModel: LogsViewModel = viewModel()
+
+    // Google One Tap launcher
     val googleSignInLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 scope.launch {
-                    val signInResult = googleAuthClient.signInWithIntent(result.data!!)
-                    authViewModel.handleGoogleSignInResult(signInResult)
+                    try {
+                        // convert returned intent to a SignInResult and let ViewModel handle firebase sign-in
+                        val signInResult = googleAuthClient.signInWithIntent(result.data!!)
+                        authViewModel.handleGoogleSignInResult(signInResult)
 
-                    navController.navigate("main") {
-                        popUpTo("login") { inclusive = true }
-                        launchSingleTop = true
+                        // navigation will also happen when userData changes; keep safe navigation here:
+                        navController.navigate("main") {
+                            popUpTo("login") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    } catch (e: Exception) {
+                        // Surface the error and set ViewModel error state if needed
+                        authViewModel.handleGoogleSignInError(e.localizedMessage)
+                        Toast.makeText(context, "Google sign-in failed: ${e.message}", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
@@ -56,58 +66,83 @@ fun AppNavGraph(
         }
 
     CompositionLocalProvider(LocalLanguageViewModel provides languageViewModel) {
-
-        // ⭐ Your app STARTS at the splash screen, NOT login/main
+        // app starts at splash -> welcome -> login/signup -> main
         NavHost(
             navController = navController,
-            startDestination = "main"
+            startDestination = "splash"
         ) {
-//
-//            // LOGIN
-//            composable("login") {
-//                LoginScreen(
-//                    navController = navController,
-//                    googleAuthClient = googleAuthClient,
-//                    authViewModel = authViewModel,
-//                    googleSignInLauncher = googleSignInLauncher,
-//                    languageViewModel = languageViewModel
-//                )
-//            }
-//
-//            // SIGNUP
-//            composable("signup") {
-//                SignUpScreen(
-//                    navController = navController,
-//                    authViewModel = authViewModel,
-//                    googleSignInLauncher = googleSignInLauncher,
-//                    languageViewModel = languageViewModel
-//                )
-//            }
-//
-            // MAIN APP (after successful login)
-//            composable("main") {
-//                MainScreen(
-//                    googleAuthClient = googleAuthClient,
-//                    authViewModel = authViewModel,
-//                    languageViewModel = languageViewModel,
-//                    //navController = navController
-//                    rootNavController = navController
-//                )
-//            }
+            // Splash & Welcome
+            composable("splash") {
+                SplashScreen(navController = navController)
+            }
 
-        composable("profile") {
+            composable("welcome") {
+                WelcomeScreen(navController = navController)
+            }
+
+            // LOGIN
+            composable("login") {
+                LoginScreen(
+                    navController = navController,
+                    googleAuthClient = googleAuthClient,
+                    authViewModel = authViewModel,
+                    languageViewModel = languageViewModel,
+                    googleSignInLauncher = googleSignInLauncher
+                )
+            }
+
+            // SIGNUP (route name matches LoginScreen's navigate("signUp"))
+            composable("signUp") {
+                SignUpScreen(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    googleSignInLauncher = googleSignInLauncher,
+                    languageViewModel = languageViewModel
+                )
+            }
+
+            // MAIN APP
+            composable("main") {
+                MainScreen(
+                    googleAuthClient = googleAuthClient,
+                    authViewModel = authViewModel,
+                    languageViewModel = languageViewModel,
+                    rootNavController = navController
+                )
+            }
+
+            // PROFILE (uses a coroutine for sign-out to avoid calling suspend directly)
+            composable("profile") {
                 ProfileScreen(
                     userData = userData,
                     languageViewModel = languageViewModel,
                     onSignOut = {
-                        authViewModel.signOut()
-                        navController.navigate("login") {
-                            popUpTo("main") { inclusive = true }
+                        scope.launch {
+                            try {
+                                runCatching { googleAuthClient.signOut() }
+
+                                authViewModel.signOut()
+
+                                // OPTIONAL — keep if you have biometric storage
+                                runCatching { authViewModel.setBiometricEnabled(context, false) }.getOrNull()
+
+                                // ❗ REMOVED because you do not have this method
+                                // runCatching { authViewModel.clearLastSavedEmail(context) }.getOrNull()
+
+                                navController.navigate("login") {
+                                    popUpTo("main") { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
+
                 )
             }
 
+            // Charades / Game / Live logs routes
             composable("startup") { StartUpScreen(navController) }
             composable("category") { CategorySelectionScreen(navController) }
             composable("liveLogs") { LiveLogsScreen(navController, logsViewModel) }

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-42:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-42:12
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
 MERGED from [androidx.navigation:navigation-common:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e0373ec69a6a5c78121afb7e23d6891f\transformed\navigation-common-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-runtime:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\9281fe26bc506245ade5819deace1c09\transformed\navigation-runtime-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\f62b01ee5e6010fab93b26158050f4f4\transformed\navigation-common-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
@@ -20,6 +20,7 @@ MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_stu
 MERGED from [androidx.credentials:credentials:1.3.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\2af890858bc4c097036c2925a8c79528\transformed\credentials-1.3.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\fa7191caa74801ae90594ae82994092b\transformed\credentials-play-services-auth-1.3.0\AndroidManifest.xml:17:1-44:12
 MERGED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:17:1-40:12
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:17:1-27:12
 MERGED from [com.google.firebase:firebase-database-ktx:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\23334400cd5014d163f88f0a9b52eeb4\transformed\firebase-database-ktx-21.0.0\AndroidManifest.xml:2:1-18:12
 MERGED from [com.google.firebase:firebase-database:22.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\dbd50d9cdf6a31cae8757faef2833fd1\transformed\firebase-database-22.0.1\AndroidManifest.xml:15:1-38:12
 MERGED from [com.google.android.gms:play-services-fido:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\f69f5d09be12a8d8b536f8bfaf89a599\transformed\play-services-fido-21.0.0\AndroidManifest.xml:2:1-10:12
@@ -132,6 +133,7 @@ MERGED from [androidx.fragment:fragment:1.5.7] C:\Users\lab_services_student\.gr
 MERGED from [androidx.activity:activity:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\9d765552f00e7b84364e4ebaf090334b\transformed\activity-1.9.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.activity:activity-ktx:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\4991b9923e2767b9c47d87ce2d6d03ef\transformed\activity-ktx-1.9.2\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity-compose:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\3532f499503a1d77fcf24d45d5d1c9ac\transformed\activity-compose-1.9.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.security:security-crypto:1.1.0-alpha03] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\983f0087abf82766056a78b5a3b31f1a\transformed\security-crypto-1.1.0-alpha03\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\783e41709358f0cbfddb76adc065fcac\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.annotation:annotation-experimental:1.5.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\79d463d83495c14741cfc82f3fe16666\transformed\annotation-experimental-1.5.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.window.extensions.core:core:1.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\84d7d1c317a4b567e7cf091306838b04\transformed\core-1.0.0\AndroidManifest.xml:2:1-7:12
@@ -160,6 +162,7 @@ MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] C:\Users\lab
 MERGED from [io.reactivex.rxjava2:rxandroid:2.0.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\c914bbd663937a5a6bb324705ecf2c9f\transformed\rxandroid-2.0.2\AndroidManifest.xml:15:1-21:12
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\8a30ada634262ce4adbbaedc912186b4\transformed\constraintlayout-1.1.3\AndroidManifest.xml:2:1-11:12
 	package
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:4:5-42
 		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml
@@ -170,7 +173,7 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\lab_serv
 	xmlns:android
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:4:5-66
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:5-67
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:7:5-67
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:7:5-67
 MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\aa7c2e843cc7f454a18821db71b6ec07\transformed\firebase-auth-23.0.0\AndroidManifest.xml:25:5-67
@@ -190,9 +193,9 @@ MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Use
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\145314958f5086b7c1a77ce531d5c4b1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\145314958f5086b7c1a77ce531d5c4b1\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:4:22-64
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:5:5-78
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:5-79
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:8:5-79
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:8:5-79
 MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\aa7c2e843cc7f454a18821db71b6ec07\transformed\firebase-auth-23.0.0\AndroidManifest.xml:26:5-79
@@ -218,24 +221,34 @@ MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Us
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\29be8b941099aef00f37844b705ef23f\transformed\transport-runtime-3.1.9\AndroidManifest.xml:22:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\29be8b941099aef00f37844b705ef23f\transformed\transport-runtime-3.1.9\AndroidManifest.xml:22:5-79
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:5:22-76
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:22-76
 uses-permission#android.permission.VIBRATE
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:6:5-65
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:9:5-66
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:22:5-66
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:22:5-66
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:6:22-63
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:9:22-63
 uses-permission#android.permission.RECORD_AUDIO
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:5-70
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:5-71
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:22-68
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:22-68
 uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:5-84
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:5-85
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:22-82
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:22-82
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:5-15:47
+MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:5-77
+MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:5-77
+MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
+MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
+	tools:ignore
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-44
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-61
 application
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:5-40:19
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:5-40:19
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:5-57:19
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:5-57:19
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:46:5-109:19
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:46:5-109:19
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:10:5-20:19
@@ -329,55 +342,67 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\lab_serv
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\a73517399bf1ff9eab1fa020c7af33cf\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:9-35
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:25:9-35
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:9-30
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:23:9-30
 	android:fullBackupContent
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-54
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:9-54
 	android:roundIcon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:9-61
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:24:9-61
 	android:icon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:22:9-41
 	android:allowBackup
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:9-35
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:9-48
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:26:9-48
 	android:dataExtractionRules
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-65
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:9-65
+	android:usesCleartextTraffic
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:27:9-44
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:9-51
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:9-51
 activity#student.projects.jetpackpam.MainActivity
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:9-30:20
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:30:9-39:20
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:23:13-34
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:33:13-34
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:22:13-36
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:32:13-36
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:24:13-52
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:34:13-52
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:13-41
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:31:13-68
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:25:13-29:29
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:35:13-38:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:26:17-69
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:17-69
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:26:25-66
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:28:17-77
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:37:17-77
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:28:27-74
-service#student.projects.jetpackpam.util.MyFirebaseMessagingService
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:32:9-38:19
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:37:27-74
+activity#student.projects.jetpackpam.screens.accounthandler.authorization.BiometricPromptActivity
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:42:9-46:55
+	android:label
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:45:13-52
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:34:13-37
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:44:13-37
+	android:theme
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:46:13-52
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:33:13-60
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:43:13-116
+service#student.projects.jetpackpam.util.MyFirebaseMessagingService
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:49:9-55:19
+	android:exported
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:51:13-37
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:50:13-87
 intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:35:13-37:29
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:52:13-54:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:17-77
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:53:17-78
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:25-75
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:53:25-75
 uses-sdk
 INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml
@@ -414,6 +439,8 @@ MERGED from [androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users
 MERGED from [androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\fa7191caa74801ae90594ae82994092b\transformed\credentials-play-services-auth-1.3.0\AndroidManifest.xml:21:5-44
 MERGED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:20:5-44
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-database-ktx:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\23334400cd5014d163f88f0a9b52eeb4\transformed\firebase-database-ktx-21.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-database-ktx:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\23334400cd5014d163f88f0a9b52eeb4\transformed\firebase-database-ktx-21.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-database:22.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\dbd50d9cdf6a31cae8757faef2833fd1\transformed\firebase-database-22.0.1\AndroidManifest.xml:18:5-44
@@ -638,6 +665,8 @@ MERGED from [androidx.activity:activity-ktx:1.9.2] C:\Users\lab_services_student
 MERGED from [androidx.activity:activity-ktx:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\4991b9923e2767b9c47d87ce2d6d03ef\transformed\activity-ktx-1.9.2\AndroidManifest.xml:5:5-44
 MERGED from [androidx.activity:activity-compose:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\3532f499503a1d77fcf24d45d5d1c9ac\transformed\activity-compose-1.9.2\AndroidManifest.xml:5:5-44
 MERGED from [androidx.activity:activity-compose:1.9.2] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\3532f499503a1d77fcf24d45d5d1c9ac\transformed\activity-compose-1.9.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.security:security-crypto:1.1.0-alpha03] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\983f0087abf82766056a78b5a3b31f1a\transformed\security-crypto-1.1.0-alpha03\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.security:security-crypto:1.1.0-alpha03] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\983f0087abf82766056a78b5a3b31f1a\transformed\security-crypto-1.1.0-alpha03\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\783e41709358f0cbfddb76adc065fcac\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\783e41709358f0cbfddb76adc065fcac\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.5.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\79d463d83495c14741cfc82f3fe16666\transformed\annotation-experimental-1.5.0\AndroidManifest.xml:5:5-44
@@ -718,12 +747,6 @@ uses-permission#student.projects.jetpackpam.permission.C2D_MESSAGE
 ADDED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:12:5-79
 	android:name
 		ADDED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:12:22-76
-uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:5-77
-MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
-MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
-	android:name
-		ADDED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:22-74
 uses-permission#android.permission.WAKE_LOCK
 ADDED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:16:5-68
 MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:24:5-68
@@ -1086,6 +1109,14 @@ ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_servi
 		ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:36:13-107
 	android:name
 		ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:34:13-89
+uses-permission#android.permission.USE_BIOMETRIC
+ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:5-72
+	android:name
+		ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:22-69
+uses-permission#android.permission.USE_FINGERPRINT
+ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:5-74
+	android:name
+		ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:22-71
 meta-data#com.google.firebase.components:com.google.firebase.database.ktx.FirebaseDatabaseLegacyRegistrar
 ADDED from [com.google.firebase:firebase-database-ktx:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\23334400cd5014d163f88f0a9b52eeb4\transformed\firebase-database-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
 	android:value

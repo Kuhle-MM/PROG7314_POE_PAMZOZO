@@ -43,7 +43,6 @@ fun MainScreen(
     val isExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val languageViewModel = languageViewModel
 
     if (isExpanded) {
         // 🔹 Tablet / Large Screen Layout → Side Navigation
@@ -76,17 +75,17 @@ fun MainScreen(
                         scope.launch { drawerState.close() }
                     },
                     onLogout = {
+                        // centralised, safe sign-out + navigation helper from your ViewModel
                         try {
-                            authViewModel.signOut()
-                            Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
-                            rootNavController.navigate("login") {
-                                popUpTo("main") { inclusive = true }
-                            }
+                            authViewModel.signOutSafely(context, rootNavController)
                         } catch (e: Exception) {
+                            // fallback — show error but do not finish the activity
                             Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        } finally {
+                            scope.launch { drawerState.close() }
                         }
-                        scope.launch { drawerState.close() }
                     }
+
                 )
             }
         ) {

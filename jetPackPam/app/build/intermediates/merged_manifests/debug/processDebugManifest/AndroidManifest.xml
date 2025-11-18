@@ -8,19 +8,21 @@
         android:minSdkVersion="29"
         android:targetSdkVersion="36" />
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <!-- Optional: Android 13+ runtime permission -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Create a unique permission for your app and use it so only your app can receive your OneSignal messages. -->
     <permission
         android:name="student.projects.jetpackpam.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="student.projects.jetpackpam.permission.C2D_MESSAGE" /> <!-- Required runtime permission to display notifications on Android 13 -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required, makes sure notifications are delivered on time. -->
+    <uses-permission android:name="student.projects.jetpackpam.permission.C2D_MESSAGE" /> <!-- Required, makes sure notifications are delivered on time. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- c2dm RECEIVE are basic requirements for push messages through Google's FCM -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!--
@@ -45,6 +47,8 @@
     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- EvMe -->
     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <queries>
         <intent>
@@ -76,7 +80,10 @@
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:testOnly="true"
-        android:theme="@style/Theme.JetPackPam" >
+        android:theme="@style/Theme.JetPackPam"
+        android:usesCleartextTraffic="true" >
+
+        <!-- Main launcher activity -->
         <activity
             android:name="student.projects.jetpackpam.MainActivity"
             android:exported="true"
@@ -89,6 +96,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Biometric transient authentication Activity -->
+        <activity
+            android:name="student.projects.jetpackpam.screens.accounthandler.authorization.BiometricPromptActivity"
+            android:exported="false"
+            android:label="BiometricPromptActivity"
+            android:theme="@style/Theme.JetPackPam" />
+
+        <!-- Firebase Messaging Service -->
         <service
             android:name="student.projects.jetpackpam.util.MyFirebaseMessagingService"
             android:exported="false" >
