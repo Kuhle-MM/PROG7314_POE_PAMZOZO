@@ -344,8 +344,6 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\mihla\.g
 		ADDED from C:\Users\mihla\source\repos\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:9-48
 	android:dataExtractionRules
 		ADDED from C:\Users\mihla\source\repos\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:9-65
-	android:usesCleartextTraffic
-		ADDED from C:\Users\mihla\source\repos\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:9-44
 	android:name
 		ADDED from C:\Users\mihla\source\repos\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:9-51
 activity#student.projects.jetpackpam.MainActivity

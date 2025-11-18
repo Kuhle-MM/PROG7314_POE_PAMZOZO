@@ -17,7 +17,7 @@
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.JetPackPam"
-        android:usesCleartextTraffic="true">
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"
