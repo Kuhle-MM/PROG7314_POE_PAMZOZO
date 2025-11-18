@@ -76,7 +76,8 @@
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:testOnly="true"
-        android:theme="@style/Theme.JetPackPam" >
+        android:theme="@style/Theme.JetPackPam"
+        android:usesCleartextTraffic="true" >
         <activity
             android:name="student.projects.jetpackpam.MainActivity"
             android:exported="true"
