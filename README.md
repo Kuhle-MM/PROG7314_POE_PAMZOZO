@@ -7,8 +7,6 @@ remote-controlled navigation, live camera streaming, voice & text
 control, follow me feature BLE enabled, Gemini-powered conversational
 personalization, and multi-language translation.
 
-Developers: Aliziwe Qeqe, Kuhle Mlinganiso, Aphiwe Mhotwana and Hlumelo Ntwanambi
----
 ## Table of Contents
 
 -   Overview
