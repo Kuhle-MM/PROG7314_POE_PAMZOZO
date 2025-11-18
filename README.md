@@ -84,7 +84,6 @@ PAM brings together robotics, cloud APIs, and a modern Android UI to create a he
 * Fetching routine (extendable arms simulated in the firmware)
 * Voice and text command input
 * Games: Charades (multiplayer via app)
-* Google Calendar integration (read/add/modify events)
 * Gemini integration for personalized chat responses
 * Translation service for local languages
 * Authentication: SSO + biometric support
@@ -101,7 +100,6 @@ PAM brings together robotics, cloud APIs, and a modern Android UI to create a he
 * Networking: Retrofit (Android), WebSocket for camera streaming
 * LLM: Gemini API (via backend)
 * Translation: Google Translate API or Open-source alternative
-* Calendar: Google Calendar API (OAuth2)
 
 ---
 
