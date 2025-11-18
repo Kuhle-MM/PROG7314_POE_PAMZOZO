@@ -20,8 +20,7 @@ class GoogleAuthClient(
     private val context: Context,
     private val oneTapClient: SignInClient
 ) {
-    // 🔴 ANR FIX: Initialize FirebaseAuth lazily. This prevents the blocking I/O
-    // associated with getInstance() from running synchronously on the main thread during startup.
+    // Lazy to avoid any main-thread heavy work at construction time
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     /** Launch One Tap sign-in and return IntentSender, null if unavailable */
@@ -32,21 +31,29 @@ class GoogleAuthClient(
         null
     }
 
-    /** Handle One Tap or classic intent */
+    /**
+     * Convert the One Tap Intent result into a SignInResult (idToken + basic profile info).
+     * This does NOT sign in to Firebase — that's handled in the ViewModel so that
+     * all Firebase authentication lives in one place.
+     */
     fun signInWithIntent(intent: Intent): SignInResult {
         return try {
             val credential = oneTapClient.getSignInCredentialFromIntent(intent)
             val googleIdToken = credential.googleIdToken
+            val displayName = credential.displayName
+            val photoUri = credential.profilePictureUri?.toString()
+            val id = credential.id
 
             if (googleIdToken.isNullOrBlank()) {
                 SignInResult(data = null, idToken = null, errorMessage = "No account selected")
             } else {
+                // Provide best-available profile info. Firebase will supply authoritative data after sign-in.
                 SignInResult(
                     data = UserData(
-                        userId = "", // Will be filled after Firebase sign-in
-                        username = credential.displayName ?: "Unknown User",
-                        profilePictureUrl = credential.profilePictureUri?.toString(),
-                        email = null // Firebase will provide email after sign-in
+                        userId = id ?: "",
+                        username = displayName,
+                        profilePictureUrl = photoUri,
+                        email = null // will be provided by Firebase after credential sign-in
                     ),
                     idToken = googleIdToken,
                     errorMessage = null
@@ -60,7 +67,6 @@ class GoogleAuthClient(
 
     /** Classic Google Sign-In fallback intent */
     fun getSignInIntent(): Intent {
-        // Use the Web Client ID resource for consistency
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.google_web_client_id))
             .requestEmail()
@@ -68,9 +74,14 @@ class GoogleAuthClient(
         return GoogleSignIn.getClient(context, gso).signInIntent
     }
 
-    /** Currently signed-in Firebase user */
+    /** Currently signed-in Firebase user — CORRECT FIELD ORDER */
     fun getSignedInUser(): UserData? = auth.currentUser?.run {
-        UserData(uid, displayName, email, photoUrl?.toString())
+        UserData(
+            userId = uid,
+            username = displayName,
+            profilePictureUrl = photoUrl?.toString(),
+            email = email
+        )
     }
 
     private fun buildSignInRequest(): BeginSignInRequest {
@@ -90,10 +101,9 @@ class GoogleAuthClient(
         try {
             oneTapClient.signOut().await()
             auth.signOut()
+            Log.d(TAG, "Successfully signed out from OneTap and Firebase")
         } catch (e: Exception) {
             Log.e(TAG, "Sign out failed", e)
         }
     }
-
-
 }

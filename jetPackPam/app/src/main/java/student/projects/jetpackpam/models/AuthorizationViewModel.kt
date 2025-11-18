@@ -1,28 +1,32 @@
 package student.projects.jetpackpam.models
 
+import android.content.Context
 import android.content.IntentSender
-import android.util.Log
-import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import android.content.Context
-import android.widget.Toast
-import androidx.navigation.NavHostController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import student.projects.jetpackpam.data.local.OfflineRepository
 import student.projects.jetpackpam.data.sync.FirebaseSyncManager
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
 import student.projects.jetpackpam.screens.accounthandler.authorization.LocalUserData
 
+/**
+ * ViewModel to handle authentication state for:
+ * 1. Email/Password login & sign-up
+ * 2. Google One Tap login
+ *
+ * Automatically creates Realtime Database structure after successful sign-up.
+ */
 class AuthorizationModelViewModel(
     public val googleAuthClient: GoogleAuthClient
 ) : ViewModel() {
@@ -30,7 +34,7 @@ class AuthorizationModelViewModel(
     private val _signUpSuccess = MutableStateFlow(false)
     val signUpSuccess: StateFlow<Boolean> = _signUpSuccess
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val db = FirebaseDatabase.getInstance().reference //Added Realtime DB reference
+    private val db = FirebaseDatabase.getInstance().reference // Realtime DB reference
 
     // Loading state for UI
     private val _isLoading = MutableStateFlow(false)
@@ -43,18 +47,15 @@ class AuthorizationModelViewModel(
     // Currently signed-in user
     private val _userData = MutableStateFlow<UserData?>(googleAuthClient.getSignedInUser())
     val userData: StateFlow<UserData?> = _userData.asStateFlow()
+
+    // Offline / Sync helpers (must be initialized by host)
     lateinit var offlineRepo: OfflineRepository
     lateinit var syncManager: FirebaseSyncManager
 
-
-//--------------------------------------------------------------------------------------------------------------------------------
-
     fun setupOfflineSupport(repo: OfflineRepository, sync: FirebaseSyncManager) {
-    this.offlineRepo = repo
-    this.syncManager = sync
-
+        this.offlineRepo = repo
+        this.syncManager = sync
     }
-
 
     // --- EMAIL/PASSWORD LOGIN ---
     fun login(email: String, password: String, onSuccess: () -> Unit) {
@@ -66,24 +67,36 @@ class AuthorizationModelViewModel(
         _isLoading.value = true
         _errorMessage.value = null
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                _isLoading.value = false
-                if (task.isSuccessful) {
-                    _userData.value = auth.currentUser?.let { firebaseUser ->
-                        UserData(
-                            userId = firebaseUser.uid,
-                            username = firebaseUser.displayName,
-                            email = firebaseUser.email,
-                            profilePictureUrl = firebaseUser.photoUrl?.toString()
-
-                        )
+        // Use coroutine + await to avoid nested callbacks and to handle exceptions properly
+        viewModelScope.launch {
+            try {
+                val result = auth.signInWithEmailAndPassword(email, password).await()
+                val firebaseUser = result.user
+                if (firebaseUser != null) {
+                    _userData.value = UserData(
+                        userId = firebaseUser.uid,
+                        username = firebaseUser.displayName,
+                        email = firebaseUser.email,
+                        profilePictureUrl = firebaseUser.photoUrl?.toString()
+                    )
+                    // attempt to sync any unsynced data for this user (fire-and-forget)
+                    if (this@AuthorizationModelViewModel::syncManager.isInitialized) {
+                        launch(Dispatchers.IO) {
+                            try {
+                                syncManager.sync(firebaseUser.uid)
+                            } catch (_: Exception) { /* sync failure should not block login */ }
+                        }
                     }
                     onSuccess()
                 } else {
-                    _errorMessage.value = task.exception?.localizedMessage ?: "Login failed"
+                    _errorMessage.value = "Login failed: no user returned"
                 }
+            } catch (e: Exception) {
+                _errorMessage.value = e.localizedMessage ?: "Login failed"
+            } finally {
+                _isLoading.value = false
             }
+        }
     }
 
     // --- EMAIL/PASSWORD SIGN-UP ---
@@ -95,85 +108,99 @@ class AuthorizationModelViewModel(
         confirmPassword: String,
         onSuccess: () -> Unit
     ) {
-        Log.d("SignUpViewModel", "Starting sign-up for: $email")
-
         if (name.isBlank() || surname.isBlank() || email.isBlank() ||
             password.isBlank() || confirmPassword.isBlank()
         ) {
             _errorMessage.value = "Please fill in all fields"
-            Log.w("SignUpViewModel", "Missing fields detected.")
             return
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _errorMessage.value = "Invalid email address"
-            Log.w("SignUpViewModel", "Invalid email format: $email")
             return
         }
 
         if (password != confirmPassword) {
             _errorMessage.value = "Passwords do not match"
-            Log.w("SignUpViewModel", "Password mismatch for: $email")
             return
         }
 
         viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
             try {
-                _isLoading.value = true
-                Log.d("SignUpViewModel", "Attempting Firebase sign-up...")
+                // create user (suspend until result)
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+                val firebaseUser = authResult.user
+                if (firebaseUser == null) {
+                    _errorMessage.value = "Sign up failed: no user returned"
+                    _isLoading.value = false
+                    return@launch
+                }
 
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnSuccessListener {
-                        val profileUpdate = UserProfileChangeRequest.Builder()
-                            .setDisplayName("$name $surname")
-                            .build()
-                        val user = auth.currentUser
-                        if (user != null) {
-                            Log.i("SignUpViewModel", "Sign-up successful for: $email")
-                            viewModelScope.launch {
-                                syncManager.sync(user.uid)
-                                offlineRepo.saveOffline(
-                                    uid = user.uid,
-                                    key = "profile",
-                                    data = LocalUserData(
-                                        name = name,
-                                        surname = surname,
-                                        email = email,
-                                        phone = password
-                                    )
+                // update display name
+                val profileUpdate = UserProfileChangeRequest.Builder()
+                    .setDisplayName("$name $surname")
+                    .build()
+                firebaseUser.updateProfile(profileUpdate).await()
+
+                // create default structure in Realtime Database (DO NOT STORE PASSWORD)
+                createUserStructure(
+                    uid = firebaseUser.uid,
+                    name = name,
+                    surname = surname,
+                    email = email
+                )
+
+                // Save a minimal local user profile for offline use (DO NOT STORE PASSWORD)
+                if (this@AuthorizationModelViewModel::offlineRepo.isInitialized) {
+                    launch(Dispatchers.IO) {
+                        try {
+                            offlineRepo.saveOffline(
+                                uid = firebaseUser.uid,
+                                key = "profile",
+                                data = LocalUserData(
+                                    name = name,
+                                    surname = surname,
+                                    email = email,
+                                    phone = "" // left blank intentionally; never store password
                                 )
-                            }
-
-                            // ✅ Create default user structure in Realtime Database
-                            createUserStructure(
-                                uid = user.uid,
-                                name = name,
-                                surname = surname,
-                                email = email,
-                                password = password
                             )
-
-                            _isLoading.value = false
-                            _signUpSuccess.value = true
-                            onSuccess()
+                        } catch (e: Exception) {
+                            // swallow so signup continues; optionally log
                         }
                     }
-                    .addOnFailureListener { e ->
-                        Log.e("SignUpViewModel", "Sign-up failed: ${e.localizedMessage}")
-                        _isLoading.value = false
-                        _errorMessage.value = e.localizedMessage ?: "Unknown error"
-                    }
+                }
 
+                // Attempt to sync immediately if possible (fire-and-forget)
+                if (this@AuthorizationModelViewModel::syncManager.isInitialized) {
+                    launch(Dispatchers.IO) {
+                        try {
+                            syncManager.sync(firebaseUser.uid)
+                        } catch (_: Exception) { /* ignore sync failures */ }
+                    }
+                }
+
+                // update view state
+                _userData.value = UserData(
+                    userId = firebaseUser.uid,
+                    username = firebaseUser.displayName,
+                    email = firebaseUser.email,
+                    profilePictureUrl = firebaseUser.photoUrl?.toString()
+                )
+
+                _signUpSuccess.value = true
+                onSuccess()
             } catch (e: Exception) {
-                Log.e("SignUpViewModel", "Unexpected error: ${e.localizedMessage}")
+                _errorMessage.value = e.localizedMessage ?: "Sign up failed"
+            } finally {
                 _isLoading.value = false
-                _errorMessage.value = "Unexpected error: ${e.localizedMessage}"
             }
         }
     }
 
-    // --- NEW: Create Realtime Database structure ---
-    private fun createUserStructure(uid: String, name: String, surname: String, email: String, password: String) {
+    // --- NEW: Create Realtime Database structure (safe: no password) ---
+    private fun createUserStructure(uid: String, name: String, surname: String, email: String) {
         val userRef = db.child("User").child(uid)
 
         val userData = mapOf(
@@ -199,102 +226,90 @@ class AuthorizationModelViewModel(
                 "name" to name,
                 "surname" to surname,
                 "email" to email,
-                "password" to password,
                 "phonenumber" to ""
             )
         )
 
+        // use tasks with listeners but don't block the UI; log failures
         userRef.setValue(userData)
             .addOnSuccessListener {
-                Log.d("FirebaseDB", "User data successfully created for $uid")
+                // created
             }
             .addOnFailureListener { e ->
-                Log.e("FirebaseDB", "Failed to create user structure", e)
+                // optionally log
             }
     }
 
-    // --- GOOGLE ONE TAP LOGIN ---
+    // --- GOOGLE ONE TAP & Firebase sign-in flow ---
     suspend fun getGoogleSignInIntentSender(): IntentSender? {
         return googleAuthClient.signIn()
     }
 
+    /**
+     * Accepts SignInResult from GoogleAuthClient.signInWithIntent() and
+     * signs into Firebase using the idToken. The ViewModel is responsible
+     * for merging state and updating local offline caches.
+     */
     fun handleGoogleSignInResult(result: SignInResult) {
         viewModelScope.launch {
             _isLoading.value = true
+            try {
+                val idToken = result.idToken
+                if (idToken.isNullOrBlank()) {
+                    _errorMessage.value = result.errorMessage ?: "Google sign-in failed"
+                    return@launch
+                }
 
-            val idToken = result.idToken
-            if (idToken.isNullOrBlank()) {
-                _errorMessage.value = result.errorMessage ?: "Google sign-in failed"
-                _isLoading.value = false
-                return@launch
-            }
+                val googleCredential = GoogleAuthProvider.getCredential(idToken, null)
+                val authResult = auth.signInWithCredential(googleCredential).await()
+                val firebaseUser = authResult.user
 
-            // Create Firebase credential
-            val googleCredential = GoogleAuthProvider.getCredential(idToken, null)
+                if (firebaseUser == null) {
+                    _errorMessage.value = "Google sign-in failed: no Firebase user"
+                    return@launch
+                }
 
-            // Sign in with Firebase
-            auth.signInWithCredential(googleCredential)
-                .addOnSuccessListener { authResult ->
-                    val firebaseUser = authResult.user
-                    val email = firebaseUser?.email
-                    val username = firebaseUser?.displayName
-                    val photo = firebaseUser?.photoUrl?.toString()
+                // update view state
+                _userData.value = UserData(
+                    userId = firebaseUser.uid,
+                    username = firebaseUser.displayName,
+                    email = firebaseUser.email,
+                    profilePictureUrl = firebaseUser.photoUrl?.toString()
+                )
 
-                    if (firebaseUser == null || email.isNullOrBlank()) {
-                        _errorMessage.value = "Failed to get email from Firebase"
-                        _isLoading.value = false
-                        return@addOnSuccessListener
+                // ensure offline profile exists
+                if (this@AuthorizationModelViewModel::offlineRepo.isInitialized) {
+                    launch(Dispatchers.IO) {
+                        try {
+                            offlineRepo.saveOffline(
+                                uid = firebaseUser.uid,
+                                key = "profile",
+                                data = LocalUserData(
+                                    name = firebaseUser.displayName ?: "",
+                                    surname = "",
+                                    email = firebaseUser.email ?: "",
+                                    phone = ""
+                                )
+                            )
+                        } catch (_: Exception) { /* ignore */ }
                     }
-
-                    // Check if email already has sign-in methods
-                    auth.fetchSignInMethodsForEmail(email)
-                        .addOnSuccessListener { signInMethods ->
-                            when {
-                                // Already linked with Google
-                                signInMethods.signInMethods?.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD) == true -> {
-                                    _userData.value = UserData(
-                                        userId = firebaseUser.uid,
-                                        username = username,
-                                        email = email,
-                                        profilePictureUrl = photo
-                                    )
-                                    _errorMessage.value = null
-                                    Log.d("GoogleSSO", "Signed in with Google: $email")
-                                }
-
-                                // Account exists but not linked
-                                !signInMethods.signInMethods.isNullOrEmpty() -> {
-                                    _errorMessage.value =
-                                        "This email is already registered. Please log in with your password first to link Google."
-                                    Log.w("GoogleSSO", "Account exists but not linked: $email")
-                                }
-
-                                // No account found → auto-register with Google
-                                else -> {
-                                    _userData.value = UserData(
-                                        userId = firebaseUser.uid,
-                                        username = username,
-                                        email = email,
-                                        profilePictureUrl = photo
-                                    )
-                                    _signUpSuccess.value = true
-                                    Log.i("GoogleSSO", "New Google user created: $email")
-                                }
-                            }
-                            _isLoading.value = false
-                        }
-                        .addOnFailureListener { e ->
-                            _errorMessage.value = "Email verification failed: ${e.localizedMessage}"
-                            _isLoading.value = false
-                        }
                 }
-                .addOnFailureListener { e ->
-                    _errorMessage.value = "Google sign-in failed: ${e.localizedMessage}"
-                    _isLoading.value = false
+
+                // trigger sync
+                if (this@AuthorizationModelViewModel::syncManager.isInitialized) {
+                    launch(Dispatchers.IO) {
+                        try {
+                            syncManager.sync(firebaseUser.uid)
+                        } catch (_: Exception) { /* ignore */ }
+                    }
                 }
+            } catch (e: Exception) {
+                _errorMessage.value = e.localizedMessage ?: "Google sign-in failed"
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
-
 
     fun handleGoogleSignInError(message: String?) {
         _isLoading.value = false
@@ -320,12 +335,11 @@ class AuthorizationModelViewModel(
 
     fun signOutSafely(
         context: Context,
-        navController: NavHostController,
-        authViewModel: AuthorizationModelViewModel
+        navController: androidx.navigation.NavHostController
     ) {
-        CoroutineScope(Dispatchers.Main).launch {
+        viewModelScope.launch(Dispatchers.Main) {
             try {
-                authViewModel.signOut()
+                signOut()
                 Toast.makeText(context, "Signed out successfully", Toast.LENGTH_SHORT).show()
                 navController.navigate("login") {
                     popUpTo("main") { inclusive = true }
@@ -339,5 +353,4 @@ class AuthorizationModelViewModel(
             }
         }
     }
-
 }
