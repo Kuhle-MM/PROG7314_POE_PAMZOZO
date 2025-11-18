@@ -16,8 +16,6 @@
    * Camera
    * Motor
    * Mapping
-   * Games
-   * Google Calendar
    * Gemini Chat
    * Translation
 7. [Android Frontend (Jetpack Compose)](#android-frontend-jetpack-compose)
@@ -365,12 +363,6 @@ fun ChatScreen(viewModel: ChatViewModel) {
 
 ---
 
-## Google Calendar Integration
-
-1. Create a Google Cloud project and enable the Google Calendar API.
-2. Configure OAuth 2.0 credentials (Android / Web) and add authorized redirect URIs.
-3. Background: Mobile app triggers OAuth flow; server exchanges token for access/refresh tokens.
-
 **Server-side example (Python / FastAPI)**
 
 ```python
@@ -401,25 +393,6 @@ from fastapi import FastAPI
 
 * Endpoint `/translate` — proxies to Google Translate, DeepL, or an open-source model.
 * UI allows user to set preferred language in `Settings` and translations are applied to chat and UI prompts.
-
----
-
-## Games - Charades
-
-* Game server manages game state; users can join via the app.
-* One user receives a prompt (word/phrase) privately; PAM can act out via motor gestures or camera hints.
-
-**Game state example**
-
-```json
-{
-  "gameId": "abc-123",
-  "players": ["user1","user2"],
-  "round": 1,
-  "prompt": "singing in the rain",
-  "turn": "user2"
-}
-```
 
 ---
 
