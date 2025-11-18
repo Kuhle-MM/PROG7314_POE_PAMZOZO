@@ -12,6 +12,7 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.Toast
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -44,6 +45,8 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.Stroke
 import kotlinx.coroutines.withContext
 import student.projects.jetpackpam.retrofit.AskRequest
 import student.projects.jetpackpam.retrofit.languageApi
@@ -54,6 +57,35 @@ data class Message(val text: String, val isFromMe: Boolean)
 // Public ChatScreen to use in your NavGraph
 @Composable
 fun ChatScreen(languageViewModel: LanguageViewModel) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+
+        // -----------------------
+        // Canvas background circles
+        // -----------------------
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 325f,
+
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 720f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }}
     // Read ui texts snapshot (like your Home screen)
     val uiTexts = languageViewModel.uiTexts
     val context = LocalContext.current

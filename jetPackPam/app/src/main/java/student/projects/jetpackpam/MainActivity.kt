@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import student.projects.jetpackpam.appNavigation.AppNavGraph
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
+import student.projects.jetpackpam.models.LogsViewModel
 import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
@@ -40,8 +41,15 @@ import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
 import student.projects.jetpackpam.screens.charades.GameOverScreen
 import student.projects.jetpackpam.screens.charades.PlayingGameScreen
 import student.projects.jetpackpam.screens.charades.StartUpScreen
+import student.projects.jetpackpam.screens.controls.Controls
 import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
+import student.projects.jetpackpam.screens.settings.SettingsBiometricsScreen
+import student.projects.jetpackpam.screens.settings.SettingsControllerSizeScreen
+import student.projects.jetpackpam.screens.settings.SettingsLogsScreen
+import student.projects.jetpackpam.screens.settings.SettingsMotorPositionScreen
+import student.projects.jetpackpam.screens.settings.SettingsMotorSpeedScreen
+import student.projects.jetpackpam.screens.settings.SettingsScreen
 import student.projects.jetpackpam.screens.sidenavscreen.ProfileScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
 import student.projects.jetpackpam.screens.splash.WelcomeScreen
@@ -112,6 +120,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val languageViewModel: LanguageViewModel = viewModel()
+            val logsViewModel: LogsViewModel = viewModel()
             val navController = rememberNavController()
             val context = LocalContext.current
             val scope = rememberCoroutineScope()
@@ -189,11 +198,19 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable("controls") { Controls(navController) }
 
                         // ------------------ GAME SCREENS ------------------
                         composable("startup") { StartUpScreen(navController) }
                         composable("category") { CategorySelectionScreen(navController) }
-                        composable("liveLogs") { LiveLogsScreen(navController) }
+                        composable("liveLogs") { LiveLogsScreen(navController, logsViewModel) }
+
+                        composable("settings") { SettingsScreen(navController, logsViewModel) }
+//                        composable("settingsBiometrics") { SettingsBiometricsScreen(navController) }
+//                        composable("settingsControllerSize") { SettingsControllerSizeScreen(navController) }
+//                        composable("settingsMotorSpeed") { SettingsMotorSpeedScreen(navController) }
+//                        composable("settingsMotorPosition") { SettingsMotorPositionScreen(navController) }
+//                        composable("settingsLogs") { SettingsLogsScreen(navController) }
 
                         composable("playing/{sessionId}/{category}") { backStackEntry ->
                             PlayingGameScreen(

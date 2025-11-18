@@ -1,5 +1,6 @@
 package student.projects.jetpackpam.screens.firsttimecustom
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -35,6 +37,36 @@ import kotlin.math.sin
 
 @Composable
 fun PamThemeSelectionScreen(languageViewModel: LanguageViewModel) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+
+        // -----------------------
+        // Canvas background circles
+        // -----------------------
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 325f,
+
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 720f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }
+    }
     var isDarkMode by remember { mutableStateOf(false) }
     var selectedTheme by remember { mutableStateOf(1) }
     val uiTexts = languageViewModel.uiTexts

@@ -27,8 +27,8 @@ sealed class BottomBarScreen (
         )
 
         object Games : BottomBarScreen(
-            route = "games",
-            title = "Games",
+            route = "controls",
+            title = "Controls",
             icon = Icons.Outlined.Gamepad
         )
 }

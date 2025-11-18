@@ -2,35 +2,49 @@ package student.projects.jetpackpam.screens.accounthandler
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.OffsetMapping.Companion.Identity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import student.projects.jetpackpam.data.local.LocalDB
-import student.projects.jetpackpam.data.local.OfflineRepository
-import student.projects.jetpackpam.data.sync.FirebaseSyncManager
 import student.projects.jetpackpam.design_system.GoogleBtn
 import student.projects.jetpackpam.design_system.LinkButton
 import student.projects.jetpackpam.design_system.LongButton
 import student.projects.jetpackpam.design_system.TextFieldLong
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
+import student.projects.jetpackpam.screens.accounthandler.authorization.AuthorizationModelViewModelFactory
+import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
+import student.projects.jetpackpam.util.DeviceConfiguration
+//import com.google.android.gms.identity.client.Identity
 
+// SignUpScreen.kt
+// SignUpScreen.kt
 @Composable
 fun SignUpScreen(
     navController: NavController,
@@ -38,21 +52,40 @@ fun SignUpScreen(
     languageViewModel: LanguageViewModel,
     googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
-    // Read UI texts directly (LanguageViewModel exposes a MutableState<Map<String,String>>)
-    val uiTexts = languageViewModel.uiTexts
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+
+        // -----------------------
+        // Canvas background circles
+        // -----------------------
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val stroke = Stroke(width = 15f)
+
+            // Top-right circle
+            drawCircle(
+                color = Color(0xFFF0A1F8),
+                radius = 325f,
+
+                center = Offset(x = size.width - 50f, y = 50f),
+                style = stroke
+            )
+
+            // Bottom-left circle
+            drawCircle(
+                color = Color(0xFFFF9BC9),
+                radius = 720f,
+                center = Offset(x = 50f, y = size.height - 50f),
+                style = stroke
+            )
+        }
+    }
+    val uiTexts by languageViewModel.uiTexts
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
-    // Create local DB / repo / sync (consider moving this to Application for reuse)
-    val db = LocalDB.getInstance(context)
-    val repo = remember { OfflineRepository(db.offlineDao()) }
-    val sync = remember { FirebaseSyncManager(repo, FirebaseDatabase.getInstance().reference) }
-
-    // Make sure offline support is setup exactly once
-    LaunchedEffect(Unit) {
-        authViewModel.setupOfflineSupport(repo, sync)
-    }
 
     // UI state
     var emailText by remember { mutableStateOf("") }
@@ -103,7 +136,7 @@ fun SignUpScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SignUpHeader(uiTexts)
+            SignUpHeader()
 
             SignUpFormSection(
                 emailText = emailText,
@@ -123,8 +156,7 @@ fun SignUpScreen(
                 isLoading = isLoading,
                 coroutineScope = coroutineScope,
                 context = context,
-                googleSignInLauncher = googleSignInLauncher,
-                uiTexts = uiTexts
+                googleSignInLauncher = googleSignInLauncher
             )
 
             errorMessage?.let { msg ->
@@ -138,20 +170,21 @@ fun SignUpScreen(
     }
 }
 
+
+
 @Composable
-fun SignUpHeader(uiTexts: Map<String, String>) {
+fun SignUpHeader() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Sign Up", style = MaterialTheme.typography.titleLarge)
         Text(
-            text = uiTexts["signup_title"] ?: "Sign Up",
-            style = MaterialTheme.typography.titleLarge
-        )
-        Text(
-            text = uiTexts["signup_subtitle"] ?: "Enter the fields to create your new profile",
+            text = "Enter the fields to create your new profile",
             style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
+// SignUpFormSection.kt
+// SignUpFormSection.kt
 @Composable
 fun SignUpFormSection(
     emailText: String,
@@ -171,8 +204,7 @@ fun SignUpFormSection(
     isLoading: Boolean,
     coroutineScope: CoroutineScope,
     context: Context,
-    googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
-    uiTexts: Map<String, String>
+    googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
@@ -184,16 +216,16 @@ fun SignUpFormSection(
             TextFieldLong(
                 text = nameText,
                 onValueChange = onNameTextChange,
-                label = uiTexts["name_label"] ?: "Name",
-                hint = uiTexts["name_hint"] ?: "John",
+                label = "Name",
+                hint = "John",
                 isTextSecret = false,
                 modifier = Modifier.weight(1f)
             )
             TextFieldLong(
                 text = surnameText,
                 onValueChange = onSurnameTextChange,
-                label = uiTexts["surname_label"] ?: "Surname",
-                hint = uiTexts["surname_hint"] ?: "Doe",
+                label = "Surname",
+                hint = "Doe",
                 isTextSecret = false,
                 modifier = Modifier.weight(1f)
             )
@@ -203,16 +235,16 @@ fun SignUpFormSection(
         TextFieldLong(
             text = emailText,
             onValueChange = onEmailTextChange,
-            label = uiTexts["email_label"] ?: "Email",
-            hint = uiTexts["email_hint"] ?: "example@example.com",
+            label = "Email",
+            hint = "example@example.com",
             isTextSecret = false,
             modifier = Modifier.fillMaxWidth()
         )
         TextFieldLong(
             text = phoneNumberText,
             onValueChange = onPhoneNumberTextChange,
-            label = uiTexts["phone_label"] ?: "Phone",
-            hint = uiTexts["phone_hint"] ?: "0672221234",
+            label = "Phone",
+            hint = "0672221234",
             isTextSecret = false,
             modifier = Modifier.fillMaxWidth()
         )
@@ -221,23 +253,23 @@ fun SignUpFormSection(
         TextFieldLong(
             text = passwordText,
             onValueChange = onPasswordTextChange,
-            label = uiTexts["password_label"] ?: "Password",
-            hint = uiTexts["password_hint"] ?: "Password",
+            label = "Password",
+            hint = "Password",
             isTextSecret = true,
             modifier = Modifier.fillMaxWidth()
         )
         TextFieldLong(
             text = confirmPasswordText,
             onValueChange = onConfirmPasswordChange,
-            label = uiTexts["confirm_password_label"] ?: "Confirm Password",
-            hint = uiTexts["confirm_password_hint"] ?: "Confirm Password",
+            label = "Confirm Password",
+            hint = "Confirm Password",
             isTextSecret = true,
             modifier = Modifier.fillMaxWidth()
         )
 
         // Sign-Up Button
         LongButton(
-            text = if (isLoading) (uiTexts["signup_loading"] ?: "Signing up...") else (uiTexts["signup_button"] ?: "Sign Up"),
+            text = if (isLoading) "Signing up..." else "Sign Up",
             onClick = {
                 coroutineScope.launch {
                     authViewModel.signUp(
@@ -251,14 +283,14 @@ fun SignUpFormSection(
 
         // Navigate to Login
         LinkButton(
-            text = uiTexts["signup_prompt"] ?: "You already have a profile?",
+            text = "You already have a profile?",
             onClick = { navController.navigate("login") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         // Google One Tap Button
         GoogleBtn(
-            text = uiTexts["google_login"] ?: "Sign in with Google",
+            text = "Sign in with Google",
             onClick = {
                 coroutineScope.launch {
                     val intentSender = authViewModel.getGoogleSignInIntentSender()
@@ -267,7 +299,7 @@ fun SignUpFormSection(
                             IntentSenderRequest.Builder(intentSender).build()
                         )
                     } else {
-                        Toast.makeText(context, uiTexts["google_signin_failed"] ?: "Google Sign-In not available", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Google Sign-In not available", Toast.LENGTH_SHORT).show()
                     }
                 }
             },

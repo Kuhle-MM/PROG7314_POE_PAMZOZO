@@ -21,7 +21,7 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     var uiTexts by mutableStateOf(
         mapOf(
-            // login
+            //login
             "login_title" to "Log in",
             "login_subtitle" to "Log in to get started",
             "email_label" to "Email",
@@ -36,23 +36,19 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "login_failed_toast" to "Login failed: ",
             "google_signin_failed" to "Google Sign-In failed",
             "google_signin_cancelled" to "Google Sign-In cancelled",
-
-            // sign out
+            //sign out
             "signedOut" to "Signed out successfully",
-
-            // language screen
+            //language screen
             "header" to "Select preferred language",
             "heading" to "Language",
             "description" to "Choose the language you prefer for the app",
             "buttonNext" to "Set",
             "footer" to "Powered by Pam",
-
-            // home screen
+            //home screen
             "signOut" to "Sign out",
             "welcomeMessage" to "I’m ready to help you with anything.\nJust type below or say the word",
             "chatButton" to "Chat",
-
-            // side nav
+            //Side nav
             "settings" to "Settings",
             "profile" to "Profile",
             "language" to "Language",
@@ -60,22 +56,21 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "pamTheme" to "Theme",
             "personality" to "Personality",
             "logout" to "Logout",
-
-            // bottom nav
+            //bottom nav
             "home" to "Home",
             "video" to "Video",
             "games" to "Games",
-
-            // font size screen
+            //profile
+            "profile" to "Profile",
+            "signOut" to "Sign out",
+            //fontsize screen
             "fontHeader" to "Select your font size for our chat",
             "preview" to "Preview text",
-
-            // pam theme screen
+            //pamtheme screen
             "lightMode" to "Light mode",
             "darkMode" to "Dark mode",
             "themeHeader" to "Choose the best colour for me",
-
-            // personality screen
+            //personality screen
             "personalityHeader" to "Choose my personality",
             "sarcastic" to "Sarcastic",
             "friendly" to "Friendly",
@@ -87,8 +82,7 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "storyTeller" to "Story Teller",
             "shakespearean" to "Shakespearean",
             "techGeek" to "Tech Geek",
-
-            // chat screen
+            //chat screen
             "chatMessage" to "Type a message...",
             "listening" to "Listening...",
             "mic_permission_required" to "Microphone permission is required for speech input",
@@ -104,16 +98,17 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
             "mic_hold" to "Hold to talk",
             "songs" to "Songs",
             "animals" to "Animals",
-
-            // video screen
+            //video screen
             "liveFeed" to "No live feed detected",
             "cameraControl" to "Camera Control",
-
-            // games screen (charades)
+            //games screen
+            //charades
             "tapToPlay" to "TAP TO PLAY",
             "selectACategory" to "Select a Category",
             "actors" to "Actors",
             "movies" to "Movies",
+            "songs" to "Songs",
+            "animals" to "Animals",
             "food" to "Food",
             "peopleYouKnow" to "People You Know",
             "anime" to "Anime",
