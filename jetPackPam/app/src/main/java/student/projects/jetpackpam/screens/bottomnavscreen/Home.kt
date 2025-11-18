@@ -1,7 +1,6 @@
 package student.projects.jetpackpam.screens.bottomnavscreen
 
 import android.content.Context
-import androidx.activity.ComponentActivity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -37,16 +36,14 @@ fun HomeScreen(
     languageViewModel: LanguageViewModel,
     uiTexts: Map<String, String> = emptyMap()
 ) {
-
     val context: Context = LocalContext.current
 
-    // Animation State
+    // Animation state
     var showLogo by remember { mutableStateOf(false) }
     var showText by remember { mutableStateOf(false) }
     var showButton by remember { mutableStateOf(false) }
 
-    val infiniteTransition = rememberInfiniteTransition()
-    val floatAnim by infiniteTransition.animateFloat(
+    val floatAnim = rememberInfiniteTransition().animateFloat(
         initialValue = 0f,
         targetValue = 10f,
         animationSpec = infiniteRepeatable(
@@ -83,7 +80,6 @@ fun HomeScreen(
         DeviceConfiguration.DESKTOP -> 22.sp
     }
 
-    // ROOT CONTENT
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,11 +91,7 @@ fun HomeScreen(
 
         // SIGN OUT BUTTON
         Button(onClick = {
-            authViewModel.signOutSafely(
-                context = context,
-                navController = navController,
-                authViewModel = authViewModel
-            )
+            authViewModel.signOutSafely(context, navController)
         }) {
             Text(uiTexts["signOut"] ?: "Sign Out")
         }
@@ -112,7 +104,7 @@ fun HomeScreen(
             Image(
                 painter = painterResource(R.drawable.pamicon),
                 contentDescription = uiTexts["appLogo"] ?: "PAM",
-                modifier = Modifier.size(logoSize).offset(y = floatAnim.dp)
+                modifier = Modifier.size(logoSize).offset(y = floatAnim.value.dp)
             )
         }
 
@@ -130,12 +122,9 @@ fun HomeScreen(
                     textAlign = TextAlign.Center,
                     fontFamily = FontFamily.SansSerif
                 )
-
                 Spacer(modifier = Modifier.height(4.dp))
-
                 Text(
-                    text = uiTexts["welcomeMessage"]
-                        ?: "I’m ready to help you.\nType below or say the word.",
+                    text = uiTexts["welcomeMessage"] ?: "I’m ready to help you.\nType below or say the word.",
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Medium,
                     color = Color.Black,
@@ -151,7 +140,7 @@ fun HomeScreen(
             enter = fadeIn(tween(600)) + scaleIn(tween(600), initialScale = 0.8f)
         ) {
             ElevatedButton(onClick = { navController.navigate("chat") }) {
-                Icon(Icons.Default.ChatBubbleOutline, contentDescription = "Chat")
+                Icon(Icons.Default.ChatBubbleOutline, contentDescription = uiTexts["chatButton"] ?: "Chat")
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(uiTexts["chatButton"] ?: "Chat")
             }

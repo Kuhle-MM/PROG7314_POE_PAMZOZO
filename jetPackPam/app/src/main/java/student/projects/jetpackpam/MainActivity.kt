@@ -158,7 +158,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable("signup") {
+                        composable("signUp") {
                             SignUpScreen(
                                 navController = navController,
                                 authViewModel = authViewModel,

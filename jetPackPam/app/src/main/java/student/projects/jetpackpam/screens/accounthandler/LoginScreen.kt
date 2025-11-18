@@ -40,112 +40,72 @@ fun LoginScreen(
     languageViewModel: LanguageViewModel,
     googleSignInLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
-    val uiTexts by languageViewModel.uiTexts
-
+    val uiTexts = languageViewModel.uiTexts // Map<String, String>
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
-    // --- Local state for email & password ---
     var emailText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
 
-    // --- Collect state from ViewModel ---
     val isLoading by authViewModel.isLoading.collectAsState()
     val errorMessage by authViewModel.errorMessage.collectAsState()
-
-    // --- Log ViewModel state changes ---
-    LaunchedEffect(isLoading, errorMessage) {
-        Log.d("LoginScreen", "Loading state: $isLoading")
-        Log.d("LoginScreen", "Error message: $errorMessage")
-    }
-    val coroutineScope = rememberCoroutineScope()
-
-
-    // --- Classic Sign-In launcher (fallback) ---
-    val classicLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        coroutineScope.launch {
-            Log.d("LoginScreen", "Classic launcher callback triggered. Result code: ${result.resultCode}")
-
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                try {
-                    // Step 1: Get SignInResult from Google
-                    val signInResult = googleAuthClient.signInWithIntent(result.data!!)
-
-                    // Step 2: Handle sign-in via ViewModel
-                    authViewModel.handleGoogleSignInResult(signInResult)
-
-                    // Step 3: Observe userData to navigate only when Firebase confirms sign-in
-                    authViewModel.userData.collect { user ->
-                        if (user != null) {
-                            Log.d("LoginScreen", "Google user signed in: ${user.email}")
-                            navController.navigate("home") {
-                                popUpTo("login") { inclusive = true }
-                            }
-                        }
-                    }
-
-                } catch (e: Exception) {
-                    Log.e("LoginScreen", "Classic Google sign-in failed", e)
-                    Toast.makeText(
-                        context,
-                        "Google Sign-In failed: ${e.localizedMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                Log.d("LoginScreen", "Classic Google Sign-In cancelled or data is null: ${result.data}")
-                Toast.makeText(context, "Google Sign-In cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-// Inside LoginScreen Composable
     val userData by authViewModel.userData.collectAsState()
 
+    // --- Navigate if user already signed in ---
     LaunchedEffect(userData) {
-        if (userData != null && navController.currentDestination?.route != "main") {
-            Log.d("LoginScreen", "Navigating to main because user is signed in: ${userData!!.email}")
-            navController.navigate("main") {
-                popUpTo("login") { inclusive = true }
+        userData?.let {
+            if (navController.currentDestination?.route != "main") {
+                navController.navigate("main") { popUpTo("login") { inclusive = true } }
             }
         }
     }
 
+    // --- Classic fallback launcher ---
+    val classicLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            try {
+                val signInResult = googleAuthClient.signInWithIntent(result.data!!)
+                authViewModel.handleGoogleSignInResult(signInResult)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    context,
+                    uiTexts["google_sign_in_failed"] ?: "Google Sign-In failed: ${e.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+                Log.e("LoginScreen", "Classic Google sign-in failed", e)
+            }
+        } else {
+            Toast.makeText(
+                context,
+                uiTexts["google_sign_in_cancelled"] ?: "Google Sign-In cancelled",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
-    // --- Google Sign-In button click ---
     val onGoogleSignInClick: () -> Unit = {
-        Log.d("LoginScreen", "Google Sign-In button clicked")
         coroutineScope.launch {
             try {
                 val intentSender = googleAuthClient.signIn()
                 if (intentSender != null) {
-                    Log.d("LoginScreen", "Launching One Tap Sign-In")
-                    googleSignInLauncher.launch(
-                        IntentSenderRequest.Builder(intentSender).build()
-                    )
+                    googleSignInLauncher.launch(IntentSenderRequest.Builder(intentSender).build())
                 } else {
-                    Log.d("LoginScreen", "One Tap not available, using classic launcher")
-                    val fallbackIntent = googleAuthClient.getSignInIntent()
-                    classicLauncher.launch(fallbackIntent)
+                    classicLauncher.launch(googleAuthClient.getSignInIntent())
                 }
             } catch (e: Exception) {
-                Log.e("LoginScreen", "Google Sign-In error", e)
                 Toast.makeText(
                     context,
-                    "Google Sign-In failed: ${e.localizedMessage}",
+                    uiTexts["google_sign_in_failed"] ?: "Google Sign-In failed: ${e.localizedMessage}",
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
     }
 
-
     // --- Scaffold Layout ---
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        contentWindowInsets = WindowInsets.statusBars
-    ) { innerPadding ->
-
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         val rootModifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -157,24 +117,19 @@ fun LoginScreen(
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
-        // --- Adaptive UI layout ---
         when (deviceConfiguration) {
             DeviceConfiguration.MOBILE_PORTRAIT -> {
                 Column(
                     modifier = rootModifier.background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
-                    LoginHeader()
+                    LoginHeader(uiTexts)
                     LoginFormSection(
-                        emailText = emailText,
-                        onEmailTextChange = { emailText = it },
-                        passwordText = passwordText,
-                        onPasswordTextChange = { passwordText = it },
-                        navController = navController,
-                        authViewModel = authViewModel,
-                        onGoogleSignInClick = onGoogleSignInClick,
-                        isLoading = isLoading,
-                        errorMessage = errorMessage
+                        emailText, { emailText = it },
+                        passwordText, { passwordText = it },
+                        navController, authViewModel,
+                        onGoogleSignInClick, isLoading, errorMessage,
+                        uiTexts
                     )
                 }
             }
@@ -183,45 +138,30 @@ fun LoginScreen(
                     modifier = rootModifier.padding(horizontal = 32.dp),
                     horizontalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
-                    LoginHeader(modifier = Modifier.weight(1f))
+                    LoginHeader(uiTexts, modifier = Modifier.weight(1f))
                     LoginFormSection(
-                        emailText = emailText,
-                        onEmailTextChange = { emailText = it },
-                        passwordText = passwordText,
-                        onPasswordTextChange = { passwordText = it },
-                        navController = navController,
-                        authViewModel = authViewModel,
-                        onGoogleSignInClick = onGoogleSignInClick,
-                        isLoading = isLoading,
-                        errorMessage = errorMessage,
-                        modifier = Modifier
-                            .weight(1f)
-                            .verticalScroll(rememberScrollState())
+                        emailText, { emailText = it },
+                        passwordText, { passwordText = it },
+                        navController, authViewModel,
+                        onGoogleSignInClick, isLoading, errorMessage,
+                        uiTexts,
+                        modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
                     )
                 }
             }
             else -> {
                 Column(
-                    modifier = rootModifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(top = 48.dp),
+                    modifier = rootModifier.verticalScroll(rememberScrollState()).padding(top = 48.dp),
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    LoginHeader(
-                        modifier = Modifier.widthIn(max = 540.dp),
-                        alignment = Alignment.CenterHorizontally
-                    )
+                    LoginHeader(uiTexts, modifier = Modifier.widthIn(max = 540.dp))
                     LoginFormSection(
-                        emailText = emailText,
-                        onEmailTextChange = { emailText = it },
-                        passwordText = passwordText,
-                        onPasswordTextChange = { passwordText = it },
-                        navController = navController,
-                        authViewModel = authViewModel,
-                        onGoogleSignInClick = onGoogleSignInClick,
-                        isLoading = isLoading,
-                        errorMessage = errorMessage,
+                        emailText, { emailText = it },
+                        passwordText, { passwordText = it },
+                        navController, authViewModel,
+                        onGoogleSignInClick, isLoading, errorMessage,
+                        uiTexts,
                         modifier = Modifier.widthIn(max = 540.dp)
                     )
                 }
@@ -232,12 +172,19 @@ fun LoginScreen(
 
 @Composable
 fun LoginHeader(
-    alignment: Alignment.Horizontal = Alignment.Start,
-    modifier: Modifier = Modifier
+    uiTexts: Map<String, String>,
+    modifier: Modifier = Modifier,
+    alignment: Alignment.Horizontal = Alignment.Start
 ) {
     Column(modifier = modifier, horizontalAlignment = alignment) {
-        Text(text = "Log in", style = MaterialTheme.typography.titleLarge)
-        Text(text = "Log in to get started", style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = uiTexts["login_title"] ?: "Log in",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = uiTexts["login_subtitle"] ?: "Log in to get started",
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
 
@@ -252,88 +199,60 @@ fun LoginFormSection(
     onGoogleSignInClick: () -> Unit,
     isLoading: Boolean,
     errorMessage: String?,
+    uiTexts: Map<String, String>,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
-        // --- Email field ---
         TextFieldLong(
             text = emailText,
             onValueChange = onEmailTextChange,
-            label = "Email",
-            hint = "example@example.com",
+            label = uiTexts["email_label"] ?: "Email",
+            hint = uiTexts["email_hint"] ?: "example@example.com",
             isTextSecret = false,
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        // --- Password field ---
         TextFieldLong(
             text = passwordText,
             onValueChange = onPasswordTextChange,
-            label = "Password",
-            hint = "Password",
+            label = uiTexts["password_label"] ?: "Password",
+            hint = uiTexts["password_hint"] ?: "Password",
             isTextSecret = true,
             modifier = Modifier.fillMaxWidth()
         )
-
-        // --- Show error message if present ---
         errorMessage?.let { msg ->
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = msg,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Text(text = msg, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
         }
-
         Spacer(modifier = Modifier.height(24.dp))
-
-        // --- Login Button ---
         LongButton(
-            text = if (isLoading) "Logging in..." else "Log in",
+            text = if (isLoading) uiTexts["logging_in"] ?: "Logging in..." else uiTexts["login_button"] ?: "Log in",
             onClick = {
                 coroutineScope.launch {
-                    try {
-                        Log.d("LoginScreen", "Attempting login for email: $emailText")
-                        authViewModel.login(emailText, passwordText) {
-                            Log.d("LoginScreen", "Login successful. Navigating to main screen.")
-                            Toast.makeText(context, "Welcome back!", Toast.LENGTH_SHORT).show()
-                            navController.navigate("main") {
-                                popUpTo("login") { inclusive = true }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.e("LoginScreen", "Login failed: ${e.message}", e)
-                        Toast.makeText(context, "Login failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    authViewModel.login(emailText, passwordText) {
+                        Toast.makeText(context, uiTexts["welcome_back"] ?: "Welcome back!", Toast.LENGTH_SHORT).show()
+                        navController.navigate("main") { popUpTo("login") { inclusive = true } }
                     }
                 }
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        // --- Navigate to Sign Up ---
         LinkButton(
-            text = "Don't have an account?",
+            text = uiTexts["signup_prompt"] ?: "Don't have an account?",
             onClick = { navController.navigate("signUp") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-
         Spacer(modifier = Modifier.height(24.dp))
-
-        // --- Google Sign-In Button ---
         GoogleBtn(
-            text = "Log in Using Google",
+            text = uiTexts["login_google"] ?: "Log in Using Google",
             onClick = onGoogleSignInClick,
             modifier = Modifier.fillMaxWidth(),
             imageRes = student.projects.jetpackpam.R.drawable.google_logo
         )
-
     }
 }
