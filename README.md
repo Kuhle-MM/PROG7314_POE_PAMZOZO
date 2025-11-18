@@ -15,7 +15,6 @@
 
    * Camera
    * Motor
-   * Mapping
    * Gemini Chat
    * Translation
 7. [Android Frontend (Jetpack Compose)](#android-frontend-jetpack-compose)
@@ -26,13 +25,12 @@
    * Retrofit + API models
    * Text-to-Speech & Speech-to-Text
    * Google SSO
-8. [Mapping & Navigation (High level)](#mapping--navigation-high-level)
-9. [Examples: API calls and responses](#examples-api-calls-and-responses)
-10. [Deployment & CI](#deployment--ci)
-11. [Testing & Troubleshooting](#testing--troubleshooting)
-12. [Future Improvements](#future-improvements)
-13. [Contributing](#contributing)
-14. [License](#license)
+8. [Examples: API calls and responses](#examples-api-calls-and-responses)
+9. [Deployment & CI](#deployment--ci)
+10. [Testing & Troubleshooting](#testing--troubleshooting)
+11. [Future Improvements](#future-improvements)
+12. [Contributing](#contributing)
+13. [License](#license)
 
 ---
 
@@ -423,30 +421,6 @@ curl -X POST https://api.yourserver.com/chat/gemini \
 
 ---
 
-## Deployment & CI
-
-* Build the backend into a Docker container and deploy to a VM or cloud platform.
-* Use GitHub Actions for CI: build, run unit tests, and publish Docker image to registry.
-* For Pi: create a systemd service to auto-start the controller on boot.
-
-**Example systemd unit**
-
-```ini
-[Unit]
-Description=Pam Robot Controller
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/python3 /home/pi/robot_controller.py
-WorkingDirectory=/home/pi
-Restart=always
-User=pi
-
-[Install]
-WantedBy=multi-user.target
-```
-
----
 
 ## Testing & Troubleshooting
 
