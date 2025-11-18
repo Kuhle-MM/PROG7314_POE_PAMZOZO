@@ -1,6 +1,6 @@
 # P.A.M. (Personal Assistant Machine)
 
-> **PAM** is a compact, portable robotic personal assistant built with a Raspberry Pi + AlphaBotV2 platform, a REST API backend, and an Android Jetpack Compose frontend. She performs object detection and fetching, autonomous navigation, live camera streaming, voice & text control, games (charades), Google Calendar integration, Gemini-powered conversational personalization, and multi-language translation.
+> **PAM** is a compact, portable robotic personal assistant built with a Raspberry Pi + AlphaBotV2 platform, a REST API backend, and an Android Jetpack Compose frontend. She performs object avoidance and fetching, autonomous navigation, live camera streaming, voice & text control, Gemini-powered conversational personalization, and multi-language translation.
 
 ---
 
