@@ -19,3 +19,20 @@ data class UserPreferencesEntity(
     val languageCode: String = "en",    // future proof
     val themeMode: String = "light"     // future proof
 )
+
+@Entity(tableName = "settings")
+data class SettingsEntity(
+
+    @PrimaryKey val id: Int = 1,  // Always one row
+
+    val fontSize: Float = 20f,
+    val motorSpeed: Float = 50f,
+
+    val motorPosition: String = "Left",
+    val controllerSize: Float = 1f,
+    val themeMode: String = "Light", // "Light" or "Dark"
+    val logInterval: Int = 10,
+    // NEW:
+    val language: String = "English",
+    val languageCode: String = "en"
+)

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import student.projects.jetpackpam.ui.theme.Primary
 
 
 @Composable
@@ -35,7 +36,7 @@ fun LongButton(
         shape = MaterialTheme.shapes.small,
         contentPadding = PaddingValues(12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary )
+            containerColor = Primary )
     ) {
         Text(text = text,
             style = MaterialTheme.typography.titleSmall

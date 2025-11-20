@@ -18,7 +18,6 @@ import androidx.navigation.NavController
 import com.google.firebase.Timestamp
 import student.projects.jetpackpam.data.LogEntry
 import student.projects.jetpackpam.models.LogsViewModel
-import student.projects.jetpackpam.screens.settings.generateTimeBlocks
 import java.text.SimpleDateFormat
 import java.util.*
 

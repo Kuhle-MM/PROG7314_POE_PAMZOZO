@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Gamepad
 import androidx.compose.material.icons.outlined.Games
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.VideoCall
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -27,8 +28,8 @@ sealed class BottomBarScreen (
         )
 
         object Games : BottomBarScreen(
-            route = "controls",
-            title = "Controls",
-            icon = Icons.Outlined.Gamepad
+            route = "followMe",
+            title = "Follow Me",
+            icon = Icons.Outlined.People
         )
 }

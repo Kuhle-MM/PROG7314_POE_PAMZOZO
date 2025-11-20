@@ -21,4 +21,13 @@
     </string>
     <string name="project_id" translatable="false">p-a-m-376a0</string>
     <style name="Theme.JetPackPam" parent="android:Theme.Material.Light.NoActionBar"/>
+    <style name="Theme.JetPackPam.Biometric.Transparent" parent="android:Theme.Material.Light.NoActionBar">
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+        
+        <item name="android:windowIsTranslucent">true</item>
+        
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

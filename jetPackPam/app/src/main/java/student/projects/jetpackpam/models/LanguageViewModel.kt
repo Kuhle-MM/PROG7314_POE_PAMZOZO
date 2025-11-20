@@ -7,8 +7,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import student.projects.jetpackpam.data.LanguageRequest
+import student.projects.jetpackpam.data.local.SettingsEntity
+import student.projects.jetpackpam.data.local.SettingsManager
 import student.projects.jetpackpam.retrofit.languageApi
 
 class LanguageViewModel(application: Application) : AndroidViewModel(application) {
@@ -277,5 +281,28 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
     fun loadLanguage() {
         selectedLanguage = prefs.getString("languageName", "English") ?: "English"
         currentLanguageCode = prefs.getString("languageCode", "en") ?: "en"
+    }
+}
+
+
+
+class SettingsViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repo = SettingsManager.repo()
+
+    // Live settings as StateFlow
+    val settings = repo.settings
+        .stateIn(viewModelScope, SharingStarted.Lazily, SettingsEntity()) // Removed the .value access
+
+    fun updateFontSize(value: Float) = viewModelScope.launch {
+        repo.saveFontSize(value)
+    }
+
+    fun updateLanguage(name: String, code: String) = viewModelScope.launch {
+        repo.saveLanguage(name, code)
+    }
+
+    fun updateTheme(mode: String) = viewModelScope.launch {
+        repo.saveTheme(mode)
     }
 }

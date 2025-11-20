@@ -7,15 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +20,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +37,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import student.projects.jetpackpam.data.local.SettingsEntity
+import student.projects.jetpackpam.data.local.SettingsManager
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.util.DeviceConfiguration
 
@@ -46,29 +47,29 @@ import student.projects.jetpackpam.util.DeviceConfiguration
 fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
     val uiTexts = languageViewModel.uiTexts
 
-    var fontSize by remember { mutableStateOf(20f) } // default size in sp
+    val repo = SettingsManager.repo()
+
+    // Load settings from offline DB
+    val settings by repo.settings.collectAsState(initial = SettingsEntity())
+
+    // Coroutine scope for saving to DB
+    val scope = rememberCoroutineScope()
+
+    val fontSize = settings.fontSize
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-
-        // -----------------------
-        // Canvas background circles
-        // -----------------------
         Canvas(modifier = Modifier.fillMaxSize()) {
             val stroke = Stroke(width = 15f)
-
-            // Top-right circle
             drawCircle(
                 color = Color(0xFFF0A1F8),
                 radius = 325f,
-
                 center = Offset(x = size.width - 50f, y = 50f),
                 style = stroke
             )
-
-            // Bottom-left circle
             drawCircle(
                 color = Color(0xFFFF9BC9),
                 radius = 720f,
@@ -77,9 +78,9 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
             )
         }
     }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
 
         val rootModifier = Modifier
@@ -88,39 +89,40 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(horizontal = 16.dp, vertical = 24.dp)
-            .consumeWindowInsets(WindowInsets.navigationBars)
 
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
 
-        // --- Adaptive UI layout ---
+        val save: (Float) -> Unit = { newSize ->
+            scope.launch {
+                repo.saveFontSize(newSize)
+            }
+        }
+
         when (deviceConfiguration) {
+
             DeviceConfiguration.MOBILE_PORTRAIT -> {
-                Box(modifier = rootModifier) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 50.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
-                        Spacer(modifier = Modifier.height(40.dp))
-                        Text(
-                            text = uiTexts["preview"] ?: "Preview Text",
-                            fontSize = fontSize.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                Column(
+                    modifier = rootModifier,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    FontHeader(uiTexts["fontHeader"] ?: "Select your font size")
+                    Spacer(modifier = Modifier.height(40.dp))
+
+                    Text(
+                        text = uiTexts["preview"] ?: "Preview Text",
+                        fontSize = fontSize.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(25.dp))
 
                     Slider(
                         value = fontSize,
-                        onValueChange = { fontSize = it },
+                        onValueChange = save,
                         valueRange = 16f..48f,
-                        steps = 36,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp, 50.dp)
+                        steps = 36
                     )
                 }
             }
@@ -133,33 +135,35 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
+                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size")
                         Spacer(modifier = Modifier.height(20.dp))
+
                         Text(
                             text = uiTexts["preview"] ?: "Preview Text",
                             fontSize = fontSize.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f)
                         )
                     }
 
                     Slider(
                         value = fontSize,
-                        onValueChange = { fontSize = it },
+                        onValueChange = save,
                         valueRange = 16f..48f,
                         steps = 36,
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .width(50.dp)
-                            .padding(horizontal = 8.dp)
-                            .rotate(270f) // rotates for landscape
+                            .height(250.dp)
+                            .width(60.dp)
+                            .rotate(270f)
+                            .padding(8.dp)
                     )
                 }
             }
 
             else -> {
-                // Tablet or Desktop layout
                 Row(
                     modifier = rootModifier,
                     verticalAlignment = Alignment.CenterVertically,
@@ -167,20 +171,23 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size for our chat")
+                        FontHeader(uiTexts["fontHeader"] ?: "Select your font size")
                         Spacer(modifier = Modifier.height(32.dp))
+
                         Text(
                             text = uiTexts["preview"] ?: "Preview Text",
                             fontSize = fontSize.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f)
                         )
                     }
 
                     Slider(
                         value = fontSize,
-                        onValueChange = { fontSize = it },
+                        onValueChange = save,
                         valueRange = 16f..48f,
                         steps = 36,
                         modifier = Modifier
@@ -194,6 +201,9 @@ fun FontSelectionScreen(languageViewModel: LanguageViewModel) {
         }
     }
 }
+
+
+
 
 @Composable
 fun FontHeader(headerText: String) {

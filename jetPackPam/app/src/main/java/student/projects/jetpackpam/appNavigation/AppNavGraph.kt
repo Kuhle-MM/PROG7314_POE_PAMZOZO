@@ -4,7 +4,10 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.*
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,7 +25,10 @@ import student.projects.jetpackpam.screens.accounthandler.LoginScreen
 import student.projects.jetpackpam.screens.accounthandler.SignUpScreen
 import student.projects.jetpackpam.screens.mainapp.MainScreen
 import student.projects.jetpackpam.screens.accounthandler.authorization.GoogleAuthClient
-import student.projects.jetpackpam.screens.charades.*
+import student.projects.jetpackpam.screens.charades.CategorySelectionScreen
+import student.projects.jetpackpam.screens.charades.GameOverScreen
+import student.projects.jetpackpam.screens.charades.PlayingGameScreen
+import student.projects.jetpackpam.screens.charades.StartUpScreen
 import student.projects.jetpackpam.screens.livelogs.LiveLogsScreen
 import student.projects.jetpackpam.screens.splash.SplashScreen
 import student.projects.jetpackpam.screens.splash.WelcomeScreen
@@ -39,23 +45,23 @@ fun AppNavGraph(
     val scope = rememberCoroutineScope()
     val logsViewModel: LogsViewModel = viewModel()
 
-    // Google One Tap launcher
+    // Google One Tap launcher (handles StartIntentSenderForResult)
     val googleSignInLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 scope.launch {
                     try {
-                        // convert returned intent to a SignInResult and let ViewModel handle firebase sign-in
+                        // Convert returned intent to a SignInResult and let ViewModel handle firebase sign-in
                         val signInResult = googleAuthClient.signInWithIntent(result.data!!)
                         authViewModel.handleGoogleSignInResult(signInResult)
 
-                        // navigation will also happen when userData changes; keep safe navigation here:
+                        // Safe navigation after successful sign in
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
                             launchSingleTop = true
                         }
                     } catch (e: Exception) {
-                        // Surface the error and set ViewModel error state if needed
+                        // Surface the error and let ViewModel record it if needed
                         authViewModel.handleGoogleSignInError(e.localizedMessage)
                         Toast.makeText(context, "Google sign-in failed: ${e.message}", Toast.LENGTH_LONG).show()
                     }
@@ -115,30 +121,7 @@ fun AppNavGraph(
             composable("profile") {
                 ProfileScreen(
                     userData = userData,
-                    languageViewModel = languageViewModel,
-                    onSignOut = {
-                        scope.launch {
-                            try {
-                                runCatching { googleAuthClient.signOut() }
-
-                                authViewModel.signOut()
-
-                                // OPTIONAL — keep if you have biometric storage
-                                runCatching { authViewModel.setBiometricEnabled(context, false) }.getOrNull()
-
-                                // ❗ REMOVED because you do not have this method
-                                // runCatching { authViewModel.clearLastSavedEmail(context) }.getOrNull()
-
-                                navController.navigate("login") {
-                                    popUpTo("main") { inclusive = true }
-                                    launchSingleTop = true
-                                }
-                            } catch (e: Exception) {
-                                Toast.makeText(context, "Sign-out failed: ${e.message}", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-
+                    languageViewModel = languageViewModel
                 )
             }
 

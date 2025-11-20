@@ -16,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import student.projects.jetpackpam.VideoScreen
+import student.projects.jetpackpam.data.local.AppDatabase
+import student.projects.jetpackpam.data.local.OfflineRepository
 import student.projects.jetpackpam.models.AuthorizationModelViewModel
 import student.projects.jetpackpam.models.LanguageViewModel
 import student.projects.jetpackpam.models.LogsViewModel
@@ -39,6 +41,7 @@ import student.projects.jetpackpam.screens.settings.SettingsLogsScreen
 import student.projects.jetpackpam.screens.settings.SettingsMotorPositionScreen
 import student.projects.jetpackpam.screens.settings.SettingsMotorSpeedScreen
 import student.projects.jetpackpam.screens.settings.SettingsScreen
+import student.projects.jetpackpam.screens.sidenavscreen.FollowMeScreen
 import student.projects.jetpackpam.util.DeviceConfiguration
 
 @Composable
@@ -55,6 +58,8 @@ fun BottomNavGraph(
     val logsViewModel: LogsViewModel = viewModel()
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val deviceConfiguration = DeviceConfiguration.fromWindowSizeClass(windowSizeClass)
+    val offlineRepo = OfflineRepository(AppDatabase.getInstance(context).offlineDao())
+    val uid = userData?.userId ?: "local_user"
 
     NavHost(
         navController = navController,
@@ -79,10 +84,7 @@ fun BottomNavGraph(
         composable("profile") {
             ProfileScreen(
                 userData = userData,
-                languageViewModel= languageViewModel,
-                onSignOut = {
-                    authViewModel.signOutSafely(context, navController)
-                }
+                languageViewModel= languageViewModel
             )
         }
 
@@ -94,9 +96,9 @@ fun BottomNavGraph(
         composable("games") { StartUpScreen(navController) }
         composable("start") { StartUpScreen(navController) }
         composable("category") { CategorySelectionScreen(navController) }
-        composable("liveLogs") { LiveLogsScreen(navController, logsViewModel) }
+        composable("followMe") { FollowMeScreen(context, navController) }
 
-        composable("settings") { SettingsScreen(navController, logsViewModel) }
+        composable("settings") { SettingsScreen(navController,logsViewModel) }
 //        composable("settingsBiometrics") { SettingsBiometricsScreen(navController) }
 //        composable("settingsControllerSize") { SettingsControllerSizeScreen(navController) }
 //        composable("settingsMotorSpeed") { SettingsMotorSpeedScreen(navController) }

@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,12 +27,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import student.projects.jetpackpam.data.local.OfflineRepository
 
 @Composable
-fun SettingsBiometricsScreen(navController: NavController) {
+fun SettingsBiometricsScreen(
+    navController: NavController,
+    offlineRepo: OfflineRepository,
+    uid: String
+) {
 
     var biometricsEnabled by remember { mutableStateOf(false) }
     val PinkAccent = Color(0xFFE34FF2)
+
+    // Load saved value on Composable launch
+    LaunchedEffect(Unit) {
+        try {
+            val savedItems = offlineRepo.getUnsynced(uid)
+            val saved = savedItems.find { it.dataKey == "biometrics" }
+            saved?.let {
+                biometricsEnabled = Gson().fromJson(it.jsonData, Boolean::class.java)
+            }
+        } catch (_: Exception) { /* ignore */ }
+    }
 
     Column(
         modifier = Modifier
@@ -64,7 +85,25 @@ fun SettingsBiometricsScreen(navController: NavController) {
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = PinkAccent
                     ),
-                    onCheckedChange = { biometricsEnabled = it }
+                    onCheckedChange = { newValue ->
+                        biometricsEnabled = newValue
+
+                        // Save offline immediately
+
+                            try {
+                                // Debugging: log the new value
+                                println("Saving biometrics: $newValue")
+
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    // Save offline asynchronously
+                                    offlineRepo.saveOffline(uid, "biometrics", newValue)
+                                }
+                            } catch (e: Exception) {
+                                // Debugging: log save errors
+                                println("Error saving biometrics: ${e.message}")
+                            }
+
+                    }
                 )
             }
         }

@@ -33,7 +33,7 @@ fun SideNav(
         SideNavItem("fontSize", "fontSize", Icons.Default.FormatSize),
         SideNavItem("pamTheme", "pamTheme", Icons.Default.Palette),
         SideNavItem("personality", "personality", Icons.Default.Person),
-        SideNavItem("liveLogs", "liveLogs", Icons.Default.Receipt),
+        //SideNavItem("liveLogs", "liveLogs", Icons.Default.Receipt),
         SideNavItem("settings", "settings", Icons.Default.Settings)
     )
 

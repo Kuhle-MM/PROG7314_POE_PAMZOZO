@@ -42,5 +42,6 @@ string google_storage_bucket
 string google_web_client_id
 string project_id
 style Theme.JetPackPam
+style Theme.JetPackPam.Biometric.Transparent
 xml backup_rules
 xml data_extraction_rules

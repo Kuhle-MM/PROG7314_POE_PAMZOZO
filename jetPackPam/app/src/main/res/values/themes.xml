@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.JetPackPam" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Theme used for BiometricPromptActivity to avoid showing a blank full-screen window -->
+    <style name="Theme.JetPackPam.Biometric.Transparent" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Make the window background transparent -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- Translucent window so underlying UI remains visible -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- No action bar -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

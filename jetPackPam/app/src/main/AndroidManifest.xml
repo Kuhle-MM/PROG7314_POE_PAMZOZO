@@ -4,15 +4,21 @@
     package="student.projects.jetpackpam">
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <!-- Optional: Android 13+ runtime permission -->
-    <uses-permission
-        android:name="android.permission.POST_NOTIFICATIONS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".util.JetPackPamApplication"
@@ -26,31 +32,35 @@
         android:theme="@style/Theme.JetPackPam"
         android:usesCleartextTraffic="true">
 
-        <!-- Main launcher activity -->
+        <!-- Main Launcher Activity -->
         <activity
-            android:name="student.projects.jetpackpam.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="P.A.M"
             android:theme="@style/Theme.JetPackPam">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- Biometric transient authentication Activity -->
+        <!-- Biometric Authentication Host -->
         <activity
-            android:name="student.projects.jetpackpam.screens.accounthandler.authorization.BiometricPromptActivity"
+            android:name=".screens.accounthandler.authorization.BiometricPromptActivity"
             android:exported="false"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:excludeFromRecents="true"
             android:label="BiometricPromptActivity"
-            android:theme="@style/Theme.JetPackPam" />
+            android:theme="@style/Theme.JetPackPam.Biometric.Transparent"
+            android:taskAffinity=""/>
 
-        <!-- Firebase Messaging Service -->
+        <!-- Firebase Cloud Messaging -->
         <service
-            android:name="student.projects.jetpackpam.util.MyFirebaseMessagingService"
+            android:name=".util.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 

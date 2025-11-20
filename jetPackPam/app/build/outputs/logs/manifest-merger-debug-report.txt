@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-59:12
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-69:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-69:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-69:12
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:1-69:12
 MERGED from [androidx.navigation:navigation-common:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\e0373ec69a6a5c78121afb7e23d6891f\transformed\navigation-common-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-runtime:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\9281fe26bc506245ade5819deace1c09\transformed\navigation-runtime-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.8.3] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\f62b01ee5e6010fab93b26158050f4f4\transformed\navigation-common-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
@@ -173,7 +173,7 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\lab_serv
 	xmlns:android
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:5-67
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:5-66
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:7:5-67
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:7:5-67
 MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\aa7c2e843cc7f454a18821db71b6ec07\transformed\firebase-auth-23.0.0\AndroidManifest.xml:25:5-67
@@ -195,7 +195,7 @@ MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Us
 	android:name
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:7:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:5-79
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:5-78
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:8:5-79
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:8:5-79
 MERGED from [com.google.firebase:firebase-auth:23.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\aa7c2e843cc7f454a18821db71b6ec07\transformed\firebase-auth-23.0.0\AndroidManifest.xml:26:5-79
@@ -223,32 +223,72 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\
 	android:name
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:8:22-76
 uses-permission#android.permission.VIBRATE
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:9:5-66
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:9:5-65
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:22:5-66
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:22:5-66
 	android:name
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:9:22-63
 uses-permission#android.permission.RECORD_AUDIO
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:5-71
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:5-70
 	android:name
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:10:22-68
 uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:5-85
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:5-84
 	android:name
 		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:11:22-82
+uses-permission#android.permission.USE_BIOMETRIC
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:5-71
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:5-72
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:5-72
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:12:22-69
+uses-permission#android.permission.USE_FINGERPRINT
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:5-73
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:5-74
+MERGED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:5-74
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:22-71
+uses-permission#android.permission.BLUETOOTH
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:5-67
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:5-73
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:22-71
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:5-78
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:16:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:5-80
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:22-78
+uses-permission#android.permission.BLUETOOTH_ADVERTISE
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:5-77
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:22-75
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:5-75
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:22-73
+uses-permission#android.permission.BLUETOOTH_SCAN
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:5-72
+	android:name
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:22-70
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:13:5-15:47
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:5-113
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:5-77
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:15:5-77
 MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
 MERGED from [com.google.firebase:firebase-messaging:24.0.1] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\df62f21fc6e7f69d54ff13a7cda9bb76\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:23:5-77
 	tools:ignore
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:15:9-44
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:75-110
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:14:9-61
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:22-74
 application
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:5-57:19
-INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:17:5-57:19
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:23:5-67:19
+INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:23:5-67:19
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:46:5-109:19
 MERGED from [com.onesignal:notifications:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\832a51b98d2599ead54872ccdde53a69\transformed\notifications-5.4.0\AndroidManifest.xml:46:5-109:19
 MERGED from [com.onesignal:core:5.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\b15c2e1fd7d93a4f92611b8902bceb34\transformed\core-5.4.0\AndroidManifest.xml:10:5-20:19
@@ -342,67 +382,75 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\lab_serv
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\a73517399bf1ff9eab1fa020c7af33cf\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:25:9-35
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:31:9-35
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:23:9-30
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:29:9-30
 	android:fullBackupContent
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:21:9-54
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:27:9-54
 	android:roundIcon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:24:9-61
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:30:9-61
 	android:icon
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:22:9-41
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:28:9-41
 	android:allowBackup
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:19:9-35
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:25:9-35
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:26:9-48
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:32:9-48
 	android:dataExtractionRules
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:20:9-65
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:26:9-65
 	android:usesCleartextTraffic
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:27:9-44
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:33:9-44
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:18:9-51
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:24:9-51
 activity#student.projects.jetpackpam.MainActivity
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:30:9-39:20
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:9-45:20
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:33:13-34
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:39:13-34
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:32:13-36
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:38:13-36
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:34:13-52
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:40:13-52
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:31:13-68
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:37:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:35:13-38:29
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:41:13-44:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:17-69
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:42:17-68
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:36:25-66
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:42:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:37:17-77
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:43:17-76
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:37:27-74
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:43:27-74
 activity#student.projects.jetpackpam.screens.accounthandler.authorization.BiometricPromptActivity
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:42:9-46:55
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:48:9-56:38
 	android:label
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:45:13-52
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:54:13-52
+	android:turnScreenOn
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:52:13-40
+	android:excludeFromRecents
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:53:13-46
+	android:showWhenLocked
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:51:13-42
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:44:13-37
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:50:13-37
 	android:theme
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:46:13-52
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:55:13-74
+	android:taskAffinity
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:56:13-36
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:43:13-116
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:49:13-89
 service#student.projects.jetpackpam.util.MyFirebaseMessagingService
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:49:9-55:19
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:59:9-65:19
 	android:exported
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:51:13-37
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:61:13-37
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:50:13-87
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:60:13-60
 intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:52:13-54:29
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:62:13-64:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:53:17-78
+ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:63:17-77
 	android:name
-		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:53:25-75
+		ADDED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml:63:25-75
 uses-sdk
 INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\lab_services_student\Documents\Git\PROG7314_POE_PAMZOZO\jetPackPam\app\src\main\AndroidManifest.xml
@@ -1109,14 +1157,6 @@ ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_servi
 		ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:36:13-107
 	android:name
 		ADDED from [com.google.android.gms:play-services-auth:21.4.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\726957ccf47425d217a0ffc2291a759f\transformed\play-services-auth-21.4.0\AndroidManifest.xml:34:13-89
-uses-permission#android.permission.USE_BIOMETRIC
-ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:5-72
-	android:name
-		ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:22:22-69
-uses-permission#android.permission.USE_FINGERPRINT
-ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:5-74
-	android:name
-		ADDED from [androidx.biometric:biometric:1.2.0-alpha05] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\50b66f99925648c79621b7aca82237ee\transformed\biometric-1.2.0-alpha05\AndroidManifest.xml:25:22-71
 meta-data#com.google.firebase.components:com.google.firebase.database.ktx.FirebaseDatabaseLegacyRegistrar
 ADDED from [com.google.firebase:firebase-database-ktx:21.0.0] C:\Users\lab_services_student\.gradle\caches\8.13\transforms\23334400cd5014d163f88f0a9b52eeb4\transformed\firebase-database-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
 	android:value
